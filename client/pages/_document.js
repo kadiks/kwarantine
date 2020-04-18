@@ -1,0 +1,65 @@
+import Document, { Html, Head, Main, NextScript } from 'next/document';
+
+import Config from '../src/Config';
+import styles from '../src/utils/styles';
+const gaUid = Config.GA_TRACKING_ID;
+
+class MyDocument extends Document {
+  static async getInitialProps(ctx) {
+    const isProduction = Config.GA_TRACKING_ID !== '';
+    const initialProps = await Document.getInitialProps(ctx);
+    return { ...initialProps, isProduction };
+  }
+
+  setGoogleTags() {
+    return {
+      __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gaUid}');
+          `,
+    };
+  }
+
+  render() {
+    const { isProduction } = this.props;
+    return (
+      <Html>
+        <Head>
+          <meta charSet="utf8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Quicksand:wght@700&display=swap"
+            rel="stylesheet"
+          />
+          <link rel="stylesheet" href="/css/bootstrap.min.css" />
+          <link rel="stylesheet" href="/css/brands.min.css" />
+          <link rel="stylesheet" href="/css/animate.min.css" />
+          <link rel="stylesheet" href="/css/styles.css" />
+        </Head>
+        <body
+          style={{
+            background: styles.color.background,
+          }}
+        >
+          <Main />
+          <NextScript />
+          {isProduction && (
+            <>
+              <script
+                async
+                src={`https://www.googletagmanager.com/gtag/js?id=${gaUid}`}
+              />
+              <script dangerouslySetInnerHTML={this.setGoogleTags()} />
+            </>
+          )}
+          <script src="/assets/games/LongestWord.js"></script>
+          <script src="/js/games.js"></script>
+        </body>
+      </Html>
+    );
+  }
+}
+
+export default MyDocument;

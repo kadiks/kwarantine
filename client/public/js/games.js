@@ -1,0 +1,3 @@
+const games = {
+  longestword: LongestWord,
+};
