@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Config from '../src/Config';
 import { Header, Body } from '../src/components/core/text';
 import {
   ButtonGroup,
@@ -21,40 +22,70 @@ class Match extends React.Component {
   }
 
   async componentDidMount() {
-    const gameData = {
-      name: 'longestword',
-      data: {
-        letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+    // const gameData = {
+    //   name: 'LongestWord',
+    //   data: {
+    //     letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+    //   },
+    // };
+    const url = `${Config.API_URL}/api/go`;
+    // console.log('url', url);
+    const res = await fetch(url);
+    const matchData = await res.json();
+    const gameData = matchData[0];
+
+    this.setState(
+      {
+        game: new games[gameData.name](gameData.data),
       },
-    };
-    this.game = new games[gameData.name](gameData.data);
+      () => {
+        this.state.game.attachEvents();
+        this.state.game.on('state-updated', () => {
+          //   console.log('state has been updated', state);
+          this.setState({});
+        });
+      }
+    );
   }
 
   renderFinalWord() {
-    return this.game.state
+    return this.state.game.state
       .filter((l) => l.type === 'rm-letter')
       .map(this.renderLetter);
   }
 
   renderLetter(letter) {
     return (
-      <div key={letter.index} kwa-type={letter.type} kwa-value={letter.value}>
-        {letter.value}
+      <div
+        key={letter.value.index}
+        kwa-type={letter.type}
+        kwa-event={letter.trigger}
+        kwa-value-letter={letter.value.letter}
+        kwa-value-index={letter.value.index}
+      >
+        {letter.value.letter}
       </div>
     );
   }
 
   renderPossibilities() {
-    return this.game.state
+    return this.state.game.state
       .filter((l) => l.type === 'add-letter')
       .map(this.renderLetter);
   }
 
   render() {
+    const { game } = this.state;
+
+    if (game === null) {
+      return <div>Loading...</div>;
+    }
+    console.log('game.state', game.state);
+    const html = game.getHtml();
+    console.log('game.getHtml', html);
     return (
       <div className="container">
-        {this.renderFinalWord()}
-        {this.renderPossibilities()}
+        <div dangerouslySetInnerHTML={{ __html: html }}></div>
       </div>
     );
   }

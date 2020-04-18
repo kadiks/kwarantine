@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -1940,7 +1940,7 @@ const dev = {
 };
 const test = {
   // API_URL: 'http://192.168.1.48:3001',
-  API_URL: 'http://localhost:3001',
+  API_URL: 'http://localhost:3002',
   // API_URL: '',
   API_ENDPOINT: '/api',
   API_EXTENSION: '',
@@ -1952,7 +1952,7 @@ const prod = {
   API_EXTENSION: '',
   GA_TRACKING_ID: ''
 };
-const env = 'prod';
+const env = 'test';
 let Config = {};
 
 if (env === 'dev' || env === 'test' || env === 'prod') {
@@ -2766,7 +2766,7 @@ const styles = {
 
 /***/ }),
 
-/***/ 5:
+/***/ 3:
 /*!*******************************!*\
   !*** multi ./pages/_error.js ***!
   \*******************************/

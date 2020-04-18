@@ -7758,7 +7758,7 @@ var dev = {
 };
 var test = {
   // API_URL: 'http://192.168.1.48:3001',
-  API_URL: 'http://localhost:3001',
+  API_URL: 'http://localhost:3002',
   // API_URL: '',
   API_ENDPOINT: '/api',
   API_EXTENSION: '',
@@ -7770,7 +7770,7 @@ var prod = {
   API_EXTENSION: '',
   GA_TRACKING_ID: ''
 };
-var env = 'prod';
+var env = 'test';
 var Config = {};
 
 if (env === 'dev' || env === 'test' || env === 'prod') {
@@ -8613,7 +8613,7 @@ var styles = {
 
 /***/ }),
 
-/***/ 3:
+/***/ 1:
 /*!*********************************************************************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2F_error&absolutePagePath=%2FUsers%2Fjenaic%2FDesktop%2Fkryptonik%2Fprojects%2Fprojects%2Fsocialacoeur%2Fkwarantine%2Fclient%2Fpages%2F_error.js ***!
   \*********************************************************************************************************************************************************************************************/
@@ -8636,5 +8636,5 @@ module.exports = dll_c2e10d183b950a67d9e7;
 
 /***/ })
 
-},[[3,"static/runtime/webpack.js"]]]);
+},[[1,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=_error.js.map

@@ -1040,7 +1040,15 @@ class MyDocument extends next_document__WEBPACK_IMPORTED_MODULE_1___default.a {
         lineNumber: 54,
         columnNumber: 15
       }
-    }))));
+    })), __jsx("script", {
+      src: `${_src_Config__WEBPACK_IMPORTED_MODULE_2__["default"].API_URL}/assets/games.js`,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 57,
+        columnNumber: 11
+      }
+    })));
   }
 
 }
@@ -1068,7 +1076,7 @@ const dev = {
 };
 const test = {
   // API_URL: 'http://192.168.1.48:3001',
-  API_URL: 'http://localhost:3001',
+  API_URL: 'http://localhost:3002',
   // API_URL: '',
   API_ENDPOINT: '/api',
   API_EXTENSION: '',
@@ -1080,7 +1088,7 @@ const prod = {
   API_EXTENSION: '',
   GA_TRACKING_ID: ''
 };
-const env = 'prod';
+const env = 'test';
 let Config = {};
 
 if (env === 'dev' || env === 'test' || env === 'prod') {

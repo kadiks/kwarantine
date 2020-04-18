@@ -1,3 +1,0 @@
-const games = {
-  longestword: LongestWord,
-};
