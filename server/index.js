@@ -25,4 +25,22 @@ app.get("/api/go", (req, res) => {
   res.json(gameData);
 });
 
+io.on("connection", socket => {
+  const rounds = [...new Array(numRounds)].map(_ => {
+    return new (utils.pick(games))();
+  });
+  const gameData = rounds.map(g => g.getData());
+  // put namespaces in array, with uuid instead of fake
+  const ns = "/fake";
+  io.emit("room", ns);
+});
+
+nsp.on("connection", function(socket) {
+  // deal with user connection
+});
+
+nsp.on("input", function(socket) {
+  // deal with input.
+});
+
 http.listen(port, () => console.log(`listening on port: ${port}`));
