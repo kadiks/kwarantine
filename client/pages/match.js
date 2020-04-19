@@ -82,10 +82,12 @@ class Match extends React.Component {
     }
     console.log('game.state', game.state);
     const html = game.getHtml();
-    console.log('game.getHtml', html);
+    // console.log('game.getHtml', html);
     return (
       <div className="container">
-        <div dangerouslySetInnerHTML={{ __html: html }}></div>
+        <div className="kwa-game-container">
+          <div dangerouslySetInnerHTML={{ __html: html }}></div>
+        </div>
       </div>
     );
   }
