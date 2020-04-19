@@ -54,6 +54,7 @@ class MyDocument extends Document {
               <script dangerouslySetInnerHTML={this.setGoogleTags()} />
             </>
           )}
+          <script src={`${Config.API_URL}/socket.io/socket.io.js`}></script>
           <script src={`${Config.API_URL}/assets/games.js`}></script>
         </body>
       </Html>

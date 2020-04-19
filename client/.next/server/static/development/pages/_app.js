@@ -188,8 +188,8 @@ const dev = {
 
 };
 const test = {
-  // API_URL: 'http://192.168.1.48:3001',
-  API_URL: 'http://localhost:3002',
+  API_URL: 'http://192.168.1.48:3002',
+  // API_URL: 'http://localhost:3002',
   // API_URL: '',
   API_ENDPOINT: '/api',
   API_EXTENSION: '',

@@ -1,13 +1,16 @@
-const utils = require('../utils/');
-// https://blog.k.io/atech/creating-a-simple-custom-event-system-in-javascript
-const Dispatcher = require('../utils/Dispatcher');
+const { random, Dispatcher } = require('../utils/');
 
 function randLetter() {
-  return String.fromCodePoint(utils.randinc(65, 90));
+  return String.fromCodePoint(random.randinc(65, 90));
 }
 
 class LongestWord extends Dispatcher {
-  constructor({ numLetters = 6, letters = [], pId = 'p1' } = {}) {
+  constructor({
+    numLetters = 6,
+    letters = [],
+    pId = 'p1',
+    socket = null,
+  } = {}) {
     super();
     this._numLetters = numLetters;
     this._id = 'LongestWord';
@@ -18,10 +21,9 @@ class LongestWord extends Dispatcher {
     } else {
       this._letters = letters;
     }
+    this.socket = socket;
 
     this.state = this.getInitialState();
-
-    // this.dispatcher = new Dispatcher();
 
     this.handleEventContainer = this.handleEventContainer.bind(this);
     this.handleEventElement = this.handleEventElement.bind(this);
@@ -66,59 +68,12 @@ class LongestWord extends Dispatcher {
   }
 
   // Front
-  getHtml() {
-    const myWordHtml = this.getHtmlUserWord();
-    const leftLettersHtml = this.getHtmlLeftLetters();
-    const endGameBtn = this.getHtmlEndButton();
-
-    return `<div class="kwa-game">${myWordHtml}${endGameBtn}${leftLettersHtml}</div>`;
-  }
-
-  // Front
-  getHtmlEndButton() {
-    return `<button kwa-event="click" kwa-type="end-game">End</button>`;
-  }
-
-  // Front
-  getHtmlLeftLetters() {
-    const letters = this.state
-      .filter((l) => l.type === 'add-letter')
-      .map(this.getHtmlLetter)
-      .join('');
-
-    return `<p class="text-header">Possibilités</p>${letters}`;
-  }
-
-  //Front
-  getHtmlLetter(letter) {
-    return `<div
-        key="${letter.value.index}"
-        kwa-type="${letter.type}"
-        kwa-event="${letter.trigger}"
-        kwa-value-letter="${letter.value.letter}"
-        kwa-value-index="${letter.value.index}"
-      >
-        ${letter.value.letter}
-      </div>`;
-  }
-
-  // Front
-  getHtmlUserWord() {
-    const letters = this.state
-      .filter((l) => l.type === 'rm-letter')
-      .sort((a, b) => a.value.position - b.value.position)
-      .map(this.getHtmlLetter)
-      .join('');
-
-    return `<p class="text-header">Mot</p>${letters}`;
-  }
-
-  // Front
   getServerInput() {
     return this.state
       .filter((l) => l.type === 'rm-letter')
       .sort((a, b) => a.value.position - b.value.position)
-      .map((l) => l.value.letter);
+      .map((l) => l.value.letter)
+      .join('');
   }
 
   // Front
@@ -128,7 +83,7 @@ class LongestWord extends Dispatcher {
     console.log('target matches', target.matches('[kwa-event]'));
     if (target.matches('[kwa-event="click"]')) {
       if (target.matches('[kwa-type="end-game"]')) {
-        this.endGame();
+        this.input();
       } else {
         this.handleEventElement({ target });
       }
@@ -149,22 +104,70 @@ class LongestWord extends Dispatcher {
   }
 
   // Front
-  input(
-    player = this._pId,
-    {
-      value = {
-        index,
-        letter,
-      },
-      type,
-    } = {}
-  ) {
-    const input = this.getServerInput();
-    this.updateState(index);
+  input(player = this._pId, { value, type } = {}) {
+    if (this.socket === null) {
+      console.log(
+        'server/games/LongestWord#input cannot send input. Socket does not exist'
+      );
+      return;
+    }
+    const word = this.getServerInput();
+    console.log('server/games/LongestWord#input word', word);
+    this.socket.emit('game.input', word);
+    // this.updateState(index);
   }
 
   removeEvents() {
     this._containerEl.removeEventListener('click', this.handleEventContainer);
+  }
+
+  // Front
+  // https://stackoverflow.com/questions/29586411/react-js-is-it-possible-to-convert-a-react-component-to-html-doms#comment71545300_30654169
+  render() {
+    const myWordHtml = this.renderUserWord();
+    const leftLettersHtml = this.renderLeftLetters();
+    const endGameBtn = this.renderEndButton();
+
+    return `<div class="kwa-game">${myWordHtml}${endGameBtn}${leftLettersHtml}</div>`;
+  }
+
+  // Front
+  renderEndButton() {
+    return `<button kwa-event="click" kwa-type="end-game">End</button>`;
+  }
+
+  // Front
+  renderLeftLetters() {
+    const letters = this.state
+      .filter((l) => l.type === 'add-letter')
+      .map(this.renderLetter)
+      .join('');
+
+    return `<p class="text-header">Possibilités</p>${letters}`;
+  }
+
+  //Front
+  renderLetter(letter) {
+    return `<div
+        key="${letter.value.index}"
+        kwa-type="${letter.type}"
+        kwa-event="${letter.trigger}"
+        kwa-value-letter="${letter.value.letter}"
+        kwa-value-index="${letter.value.index}"
+      >
+        ${letter.value.letter}
+      </div>`;
+  }
+
+  // Front
+  renderUserWord() {
+    const letters = this.state
+      .filter((l) => l.type === 'rm-letter')
+      .sort((a, b) => a.value.position - b.value.position)
+      .map(this.renderLetter)
+      .join('');
+
+    return `<p class="text-header">Mot</p>${letters}`;
   }
 
   updateState(index) {

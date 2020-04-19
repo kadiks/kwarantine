@@ -1041,11 +1041,19 @@ class MyDocument extends next_document__WEBPACK_IMPORTED_MODULE_1___default.a {
         columnNumber: 15
       }
     })), __jsx("script", {
-      src: `${_src_Config__WEBPACK_IMPORTED_MODULE_2__["default"].API_URL}/assets/games.js`,
+      src: `${_src_Config__WEBPACK_IMPORTED_MODULE_2__["default"].API_URL}/socket.io/socket.io.js`,
       __self: this,
       __source: {
         fileName: _jsxFileName,
         lineNumber: 57,
+        columnNumber: 11
+      }
+    }), __jsx("script", {
+      src: `${_src_Config__WEBPACK_IMPORTED_MODULE_2__["default"].API_URL}/assets/games.js`,
+      __self: this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 58,
         columnNumber: 11
       }
     })));
@@ -1075,8 +1083,8 @@ const dev = {
 
 };
 const test = {
-  // API_URL: 'http://192.168.1.48:3001',
-  API_URL: 'http://localhost:3002',
+  API_URL: 'http://192.168.1.48:3002',
+  // API_URL: 'http://localhost:3002',
   // API_URL: '',
   API_ENDPOINT: '/api',
   API_EXTENSION: '',

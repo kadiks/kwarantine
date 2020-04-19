@@ -12,13 +12,19 @@ import { NavBar, Footer } from '../src/components/navigation';
 import styles from '../src/utils/styles';
 import Icon from '../src/components/core/Icon';
 
+import MatchConnect from '../src/utils/MatchConnect';
+
 class Match extends React.Component {
   constructor(props) {
     super(props);
 
+    this.matchConnect = new MatchConnect().getInstance();
+
     this.state = {
       game: null,
     };
+
+    this.startRound = this.startRound.bind(this);
   }
 
   async componentDidMount() {
@@ -28,15 +34,35 @@ class Match extends React.Component {
     //     letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
     //   },
     // };
-    const url = `${Config.API_URL}/api/go`;
-    // console.log('url', url);
-    const res = await fetch(url);
-    const matchData = await res.json();
-    const gameData = matchData[0];
+    console.log('#cmpDM');
+    await this.matchConnect.connect();
+    this.matchConnect.on('match.next.round', this.startRound);
+    // const url = `${Config.API_URL}/api/go`;
 
+    // this.setState(
+    //   {
+    //     game: new games[gameData.name]({
+    //       ...gameData.data,
+    //       socket: MatchConnect.socket,
+    //     }),
+    //   },
+    //   () => {
+    //     this.state.game.attachEvents();
+    //     this.state.game.on('state-updated', () => {
+    //       //   console.log('state has been updated', state);
+    //       this.setState({});
+    //     });
+    //   }
+    // );
+  }
+
+  startRound(round) {
     this.setState(
       {
-        game: new games[gameData.name](gameData.data),
+        game: new games[round.name]({
+          ...round.data,
+          socket: this.matchConnect.socket,
+        }),
       },
       () => {
         this.state.game.attachEvents();
@@ -81,7 +107,7 @@ class Match extends React.Component {
       return <div>Loading...</div>;
     }
     console.log('game.state', game.state);
-    const html = game.getHtml();
+    const html = game.render();
     // console.log('game.getHtml', html);
     return (
       <div className="container">
