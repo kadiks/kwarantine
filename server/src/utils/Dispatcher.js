@@ -1,3 +1,7 @@
+/**
+ * @class Dispatcher
+ */
+
 // https://blog.k.io/atech/creating-a-simple-custom-event-system-in-javascript
 class DispatcherEvent {
   constructor(eventName) {

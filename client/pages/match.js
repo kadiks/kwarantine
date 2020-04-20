@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { withRouter } from 'next/router';
 import Config from '../src/Config';
 import { Header, Body } from '../src/components/core/text';
 import {
@@ -17,11 +18,12 @@ import MatchConnect from '../src/utils/MatchConnect';
 class Match extends React.Component {
   constructor(props) {
     super(props);
-
     this.matchConnect = new MatchConnect().getInstance();
 
     this.state = {
       game: null,
+      currentPage: 'loading',
+      pageInfo: null,
     };
 
     this.startRound = this.startRound.bind(this);
@@ -37,6 +39,14 @@ class Match extends React.Component {
     console.log('#cmpDM');
     await this.matchConnect.connect();
     this.matchConnect.on('match.next.round', this.startRound);
+
+    this.matchConnect.on('match.end', (results) => {
+      this.setState({
+        currentPage: 'lastScoreboard',
+        pageInfo: results,
+      });
+    });
+
     // const url = `${Config.API_URL}/api/go`;
 
     // this.setState(
@@ -57,54 +67,77 @@ class Match extends React.Component {
   }
 
   startRound(round) {
+    console.log('pages/match#startRound round', round);
     this.setState(
       {
-        game: new games[round.name]({
+        game: new games[round.className]({
           ...round.data,
           socket: this.matchConnect.socket,
         }),
+        currentPage: 'game',
       },
       () => {
         this.state.game.attachEvents();
         this.state.game.on('state-updated', () => {
           //   console.log('state has been updated', state);
-          this.setState({});
+          this.setState({
+            currentPage: 'game',
+          });
         });
       }
     );
   }
 
-  renderFinalWord() {
-    return this.state.game.state
-      .filter((l) => l.type === 'rm-letter')
-      .map(this.renderLetter);
-  }
-
-  renderLetter(letter) {
+  renderLastScoreboard() {
+    const { pageInfo } = this.state;
+    console.log('pages/match#renderLastScoreboard pageInfo', pageInfo);
     return (
-      <div
-        key={letter.value.index}
-        kwa-type={letter.type}
-        kwa-event={letter.trigger}
-        kwa-value-letter={letter.value.letter}
-        kwa-value-index={letter.value.index}
-      >
-        {letter.value.letter}
+      <div>
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Jeu</th>
+              <th>Réponse</th>
+              <th>Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pageInfo.map((g, index) => {
+              const keys = Object.keys(g);
+              const { name, answer, score } = g[keys[0]];
+              return (
+                <tr key={index}>
+                  <td>{name}</td>
+                  <td>{answer}</td>
+                  <td>{score}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <button
+          onClick={() => {
+            this.props.router.push('/');
+          }}
+        >
+          Back to homepage
+        </button>
       </div>
     );
   }
 
-  renderPossibilities() {
-    return this.state.game.state
-      .filter((l) => l.type === 'add-letter')
-      .map(this.renderLetter);
-  }
-
   render() {
-    const { game } = this.state;
+    console.log('pages/match#render');
+    const { game, currentPage } = this.state;
 
     if (game === null) {
       return <div>Loading...</div>;
+    }
+    if (currentPage === 'loading') {
+      return <div>Loading front...</div>;
+    }
+    if (currentPage === 'lastScoreboard') {
+      return this.renderLastScoreboard();
     }
     console.log('game.state', game.state);
     const html = game.render();
@@ -119,4 +152,4 @@ class Match extends React.Component {
   }
 }
 
-export default Match;
+export default withRouter(Match);

@@ -7,16 +7,16 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const port = process.env.PORT;
-const utils = require('./utils');
+const utils = require('./src/utils');
 const browserify = require('browserify-middleware');
 const { uuid } = require('uuidv4');
 // Match imports
-const { Match, MatchManager } = require('./match');
+const { Match, MatchManager } = require('./src/match');
 // Game Imports
-const Games = require('./games');
-const games = Object.keys(Games).map((g) => Games[g]);
+const Games = require('./src/games');
+const games = Object.keys(Games).map((g) => Games[g].Server);
 // Domain Constants
-const numRounds = 1;
+const numRounds = 3;
 
 const matchMgr = new MatchManager().getInstance();
 
@@ -38,7 +38,9 @@ app.get('/api/go', (req, res) => {
 
 app.use(
   '/assets/games.js',
-  browserify(__dirname + '/games/index.js', { standalone: 'games' })
+  browserify(__dirname + '/src/games/client_bundler.js', {
+    standalone: 'games',
+  })
 );
 
 // Connects from the host.com/match page
@@ -46,47 +48,21 @@ io.on('connection', (socket) => {
   matchMgr.setIo(io);
   console.log('connected on main nsp');
 
-  // console.log(
-  //   'server/index matchMgr.matches.length #1',
-  //   matchMgr.matches.length
-  // );
-
-  const playerId = socket.id; // remove ns from user id
   let currentMatch = matchMgr.getWaitingMatch();
-  // console.log('currentMatch === null', currentMatch === null);
-  // console.log(
-  //   'currentMatch.isWaiting === true',
-  //   currentMatch.isWaiting === true
-  // );
   if (currentMatch === null || currentMatch.isWaiting === false) {
     const match = new Match({ id: uuid() });
     matchMgr.addMatch(match);
+
+    // TODO: create MatchManager#generateRounds()
     const selectedGames = [...new Array(numRounds)].map((_) => {
       return new (utils.random.pick(games))();
     });
     const rounds = selectedGames.map((g) => g.getData());
+    match.setGames(selectedGames);
     match.setRounds(rounds);
     currentMatch = match;
   }
-  // console.log(
-  //   'server/index matchMgr.matches.length #2',
-  //   matchMgr.matches.length
-  // );
-  // console.log('server/index currentMatch', currentMatch);
 
-  // console.log(
-  //   'server/index matchMgr.matches.length #4',
-  //   matchMgr.matches.length
-  // );
-  currentMatch.addPlayer(playerId);
-  // console.log(
-  //   'server/index matchMgr.matches.length #5',
-  //   matchMgr.matches.length
-  // );
-
-  // Found this: https://socket.io/docs/rooms-and-namespaces/, tried to implement it
-  // let me know if that works for you
-  // put namespaces in array, with uuid instead of fake
   const ns = `/${currentMatch.id}`;
   socket.emit('room', ns);
 
@@ -95,22 +71,21 @@ io.on('connection', (socket) => {
     // deal with nsp user connection
     console.log('connected on specific nsp');
     console.log('nsp on connection socket.id', socket.id);
-    const matchId = socket.id.split('#')[0].replace('/', '');
+    const socketIdSplitted = socket.id.split('#');
+    const matchId = socketIdSplitted[0].replace('/', '');
+    const playerId = socketIdSplitted[1];
     const match = matchMgr.getMatchById(matchId);
-    match.on('filled', (id) => {
-      console.log('FILLEED');
-      console.log('server/index match.on filled id', id);
-      const round = match.getNextRound();
-      setTimeout(() => {
-        socket.emit('match.next.round', round);
-        socket.broadcast.emit('match.next.round', round);
-      }, 1000);
-    });
-    socket.emit('test', 'okok');
-    socket.on('game.input', function (input) {
-      // deal with input.
-      console.log('socket game.input', a);
-    });
+    match.setSocket(socket);
+    match.attachConnectEvents();
+
+    // Add player
+    match.addPlayer(playerId);
+  });
+  socket.on('disconnect', () => {
+    console.log('main disconnect');
+    // TODO: check playerId and find game from that player
+    // TODO: if game is empty, then kill that game
+    // TODO: Use MatchManager#getMatchByPlayerId to get the match instance
   });
 });
 

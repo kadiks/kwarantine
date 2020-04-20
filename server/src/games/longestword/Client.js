@@ -1,26 +1,21 @@
-const { random, Dispatcher } = require('../utils/');
-
-function randLetter() {
-  return String.fromCodePoint(random.randinc(65, 90));
-}
+const { Dispatcher } = require('../../utils/');
 
 class LongestWord extends Dispatcher {
-  constructor({
-    numLetters = 6,
-    letters = [],
-    pId = 'p1',
-    socket = null,
-  } = {}) {
+  /**
+   * @namespace Client
+   * @memberof Games/LongestWord
+   * @classdesc Longest word game
+   *
+   * @extends Dispatcher
+   * @param {Object} params
+   * @param {Array} params.letters Letters to be displayed
+   * @param {SocketIO} params.socket Client socket
+   */
+  constructor({ letters = [], pId = 'p1', socket = null } = {}) {
     super();
-    this._numLetters = numLetters;
-    this._id = 'LongestWord';
     this._pId = pId;
     this._containerEl = null;
-    if (letters.length === 0) {
-      this._letters = [...new Array(this._numLetters)].map(randLetter);
-    } else {
-      this._letters = letters;
-    }
+    this._letters = letters;
     this.socket = socket;
 
     this.state = this.getInitialState();
@@ -29,29 +24,24 @@ class LongestWord extends Dispatcher {
     this.handleEventElement = this.handleEventElement.bind(this);
   }
 
-  // Front
+  /**
+   * Attach events to DOM
+   * @method
+   * @memberof Games/LongestWord.Client
+   */
   attachEvents() {
+    console.log('>> server/games/LongestWord#attachEvents');
     if (this._containerEl === null) {
       this._containerEl = document.querySelector('.kwa-game-container');
     }
     this._containerEl.addEventListener('click', this.handleEventContainer);
+    console.log('>> server/games/LongestWord#attachEvents');
   }
 
-  // endGame() {
-  //   console.log('>> server/games/LongestWord#endGame');
-  // }
-
-  // Backend
-  getData() {
-    return {
-      name: this._id,
-      data: {
-        letters: this._letters,
-      },
-    };
-  }
-
-  // Front
+  /**
+   * Generate the initial state of the whole game
+   * @memberof Games/LongestWord.Client
+   */
   getInitialState() {
     return this._letters.map((letter, index) => {
       return {
@@ -67,7 +57,10 @@ class LongestWord extends Dispatcher {
     });
   }
 
-  // Front
+  /**
+   * Generate the input that will be sent to the server
+   * @memberof Games/LongestWord.Client
+   */
   getServerInput() {
     return this.state
       .filter((l) => l.type === 'rm-letter')
@@ -78,9 +71,9 @@ class LongestWord extends Dispatcher {
 
   // Front
   handleEventContainer({ target }) {
-    console.log('click');
-    console.log('target matches', target.matches('[kwa-event="click"]'));
-    console.log('target matches', target.matches('[kwa-event]'));
+    // console.log('click');
+    // console.log('server/games/LongestWord#handleEventContainer matches', target.matches('[kwa-event="click"]'));
+    // console.log('server/games/LongestWord#handleEventContainer matches', target.matches('[kwa-event]'));
     if (target.matches('[kwa-event="click"]')) {
       if (target.matches('[kwa-type="end-game"]')) {
         this.input();
@@ -103,7 +96,15 @@ class LongestWord extends Dispatcher {
     this.dispatch('state-updated');
   }
 
-  // Front
+  /**
+   * Send the input to the server
+   * @memberof Games/LongestWord.Client
+   *
+   * @param {String} player
+   * @param {Object} opts
+   * @param {any} opts.value
+   * @param {String} opts.type Type of the event sent to the server
+   */
   input(player = this._pId, { value, type } = {}) {
     if (this.socket === null) {
       console.log(
@@ -112,18 +113,30 @@ class LongestWord extends Dispatcher {
       return;
     }
     const word = this.getServerInput();
+    if (this.isValidInput(word) === false) {
+      return;
+    }
     console.log('server/games/LongestWord#input word', word);
     this.socket.emit('game.input', word);
     // this.updateState(index);
   }
 
-  removeEvents() {
-    this._containerEl.removeEventListener('click', this.handleEventContainer);
+  isValidInput(input) {
+    return input.length > 0;
   }
 
-  // Front
-  // https://stackoverflow.com/questions/29586411/react-js-is-it-possible-to-convert-a-react-component-to-html-doms#comment71545300_30654169
-  render() {
+  /**
+   * Remove events to DOM
+   * @memberof Games/LongestWord.Client
+   */
+  removeEvents() {
+    this._containerEl.removeEventListener('click', this.handleEventContainer);
+  } // https://stackoverflow.com/questions/29586411/react-js-is-it-possible-to-convert-a-react-component-to-html-doms#comment71545300_30654169
+
+  /**
+   * Render the HTML to the page
+   * @memberof Games/LongestWord.Client
+   */ render() {
     const myWordHtml = this.renderUserWord();
     const leftLettersHtml = this.renderLeftLetters();
     const endGameBtn = this.renderEndButton();
@@ -170,6 +183,11 @@ class LongestWord extends Dispatcher {
     return `<p class="text-header">Mot</p>${letters}`;
   }
 
+  /**
+   * Update the state to render to the HTML
+   * @memberof Games/LongestWord.Client
+   * @param {Number} index
+   */
   updateState(index) {
     const userWordLength = this.state.filter((l) => l.type === 'rm-letter')
       .length;

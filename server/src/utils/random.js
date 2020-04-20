@@ -1,4 +1,4 @@
-const mots = require("../data/motsCleaned.json");
+const mots = require('../../data/motsCleaned.json');
 
 function randinc(min, max) {
   min = Math.ceil(min);
@@ -40,7 +40,7 @@ const letterFrequencies = {
   W: 3,
   X: 41,
   Y: 28,
-  Z: 15
+  Z: 15,
 };
 
 function randLetter() {
@@ -60,5 +60,5 @@ module.exports = {
   randinc,
   pick,
   validateWord,
-  randLetter
+  randLetter,
 };

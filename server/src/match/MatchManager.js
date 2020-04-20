@@ -49,6 +49,19 @@ class MatchManager {
     return match.match;
   }
 
+  getMatchByPlayerId(playerId) {
+    let match = null;
+    const ms = this.matches;
+
+    for (let index = 0; index < ms.length; index++) {
+      if (ms[index].players.includes(playerId)) {
+        match = ms[index];
+        break;
+      }
+    }
+    return match.match;
+  }
+
   getWaitingMatch() {
     if (this.waitingMatchId === null) {
       return null;

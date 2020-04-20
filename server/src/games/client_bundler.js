@@ -1,4 +1,4 @@
-const LongestWord = require('./LongestWord');
+const LongestWord = require('./longestword/Client');
 
 const Games = {
   LongestWord,
