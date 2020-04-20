@@ -2,7 +2,7 @@
 
 Real-time multiplayer mini games (actual game in French)
 
-![./extras/game_history_1.gif]
+![img](./extras/game_history_1.gif)
 
 ## Installation
 
