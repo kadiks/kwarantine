@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build-docs": "./node_modules/documentation/bin/documentation.js build ./src/** -f html -o docs",
+    "docs": "./node_modules/documentation/bin/documentation.js build ./src/** -f html -o docs",
     "test": "./node_modules/mocha/bin/mocha --recursive test/",
     "test-games": "./node_modules/mocha/bin/mocha --recursive test/games",
     "test-games-longestword": "./node_modules/mocha/bin/mocha --recursive test/games/longestword",
