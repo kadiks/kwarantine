@@ -13,9 +13,9 @@ class LongestWord extends Dispatcher {
    */
   constructor({ letters = [], pId = 'p1', socket = null } = {}) {
     super();
-    this._pId = pId;
-    this._containerEl = null;
-    this._letters = letters;
+    this.pId = pId;
+    this.containerEl = null;
+    this.letters = letters;
     this.socket = socket;
 
     this.state = this.getInitialState();
@@ -31,10 +31,10 @@ class LongestWord extends Dispatcher {
    */
   attachEvents() {
     console.log('>> server/games/LongestWord#attachEvents');
-    if (this._containerEl === null) {
-      this._containerEl = document.querySelector('.kwa-game-container');
+    if (this.containerEl === null) {
+      this.containerEl = document.querySelector('.kwa-game-container');
     }
-    this._containerEl.addEventListener('click', this.handleEventContainer);
+    this.containerEl.addEventListener('click', this.handleEventContainer);
     console.log('>> server/games/LongestWord#attachEvents');
   }
 
@@ -43,9 +43,9 @@ class LongestWord extends Dispatcher {
    * @memberof Games/LongestWord.Client
    */
   getInitialState() {
-    return this._letters.map((letter, index) => {
+    return this.letters.map((letter, index) => {
       return {
-        pId: this._pId,
+        pId: this.pId,
         trigger: 'click',
         value: {
           index,
@@ -93,7 +93,6 @@ class LongestWord extends Dispatcher {
       return;
     }
     this.updateState(index);
-    this.dispatch('state-updated');
   }
 
   /**
@@ -105,7 +104,7 @@ class LongestWord extends Dispatcher {
    * @param {any} opts.value
    * @param {String} opts.type Type of the event sent to the server
    */
-  input(player = this._pId, { value, type } = {}) {
+  input(player = this.pId, { value, type } = {}) {
     if (this.socket === null) {
       console.log(
         'server/games/LongestWord#input cannot send input. Socket does not exist'
@@ -130,7 +129,7 @@ class LongestWord extends Dispatcher {
    * @memberof Games/LongestWord.Client
    */
   removeEvents() {
-    this._containerEl.removeEventListener('click', this.handleEventContainer);
+    this.containerEl.removeEventListener('click', this.handleEventContainer);
   } // https://stackoverflow.com/questions/29586411/react-js-is-it-possible-to-convert-a-react-component-to-html-doms#comment71545300_30654169
 
   /**
@@ -202,6 +201,7 @@ class LongestWord extends Dispatcher {
         }
       }
     });
+    this.dispatch('state-updated');
   }
 }
 

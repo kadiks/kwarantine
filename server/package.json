@@ -1,27 +1,30 @@
 {
   "name": "kwarantine-server",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "The backend for kwarantine",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "build-docs": "./node_modules/documentation/bin/documentation.js build ./src/** -f html -o docs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/mocha/bin/mocha --recursive test/",
+    "test-games": "./node_modules/mocha/bin/mocha --recursive test/games",
+    "test-games-longestword": "./node_modules/mocha/bin/mocha --recursive test/games/longestword",
+    "test-match": "./node_modules/mocha/bin/mocha --recursive test/match"
   },
-  "author": "",
+  "author": "SocialHackeur.fr",
   "license": "ISC",
   "dependencies": {
     "browserify-middleware": "^8.1.1",
-    "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mocha": "^7.1.1",
     "socket.io": "^2.3.0",
     "uuidv4": "^6.0.7"
   },
   "devDependencies": {
-    "documentation": "^12.3.0"
+    "documentation": "^12.3.0",
+    "chai": "^4.2.0",
+    "mocha": "^7.1.1"
   }
 }

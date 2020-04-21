@@ -9,7 +9,7 @@ class LongestWord {
    * @param {Object} params
    * @param {Array} params.numLetters Letters to generate
    */
-  constructor({ numLetters = 10 } = {}) {
+  constructor({ numLetters = 10, letters = [] } = {}) {
     /**
      * @property
      * @memberof Games/LongestWord.Server
@@ -20,7 +20,31 @@ class LongestWord {
 
     // Game specific
     this.numLetters = numLetters;
-    this.letters = [...new Array(this.numLetters)].map(this.randLetter);
+    if (letters.length === 0) {
+      this.letters = LongestWord.getLetters(numLetters);
+    } else {
+      this.letters = letters;
+    }
+  }
+
+  /**
+   * Draw the letters to find a word from
+   *
+   * @static
+   * @memberof Games/LongestWord.Server
+   */
+  static getLetters(numLetters) {
+    return [...new Array(numLetters)].map(LongestWord.randLetter);
+  }
+
+  /**
+   * Generates a random letter
+   *
+   * @static
+   * @memberof Games/LongestWord.Server
+   */
+  static randLetter() {
+    return String.fromCodePoint(random.randinc(65, 90));
   }
 
   /**
@@ -89,15 +113,6 @@ class LongestWord {
   isValidInput(input) {
     const isValid = random.validateWord(input);
     return isValid;
-  }
-
-  /**
-   * Generates a random letter
-   *
-   * @memberof Games/LongestWord.Server
-   */
-  randLetter() {
-    return String.fromCodePoint(random.randinc(65, 90));
   }
 }
 
