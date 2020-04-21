@@ -11,7 +11,7 @@ function pick(xs) {
 }
 
 function validateWord(word) {
-  return mots.hasOwnProperty(word);
+  return mots.hasOwnProperty(word.toLowerCase());
 }
 
 const letterFrequencies = {
