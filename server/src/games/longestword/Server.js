@@ -34,7 +34,7 @@ class LongestWord {
    * @memberof Games/LongestWord.Server
    */
   static getLetters(numLetters) {
-    return [...new Array(numLetters)].map(LongestWord.randLetter);
+    return [...new Array(numLetters)].map(random.randLetter);
   }
 
   /**
@@ -67,7 +67,7 @@ class LongestWord {
     this.results[playerId] = {
       name: this.name,
       answer: input,
-      score: input.length,
+      score,
     };
     return score;
   }

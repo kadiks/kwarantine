@@ -16,7 +16,7 @@ const { Match, MatchManager } = require('./src/match');
 const Games = require('./src/games');
 const games = Object.keys(Games).map((g) => Games[g].Server);
 // Domain Constants
-const numRounds = 3;
+const numRounds = 1;
 
 const matchMgr = new MatchManager().getInstance();
 
@@ -75,6 +75,8 @@ io.on('connection', (socket) => {
     const matchId = socketIdSplitted[0].replace('/', '');
     const playerId = socketIdSplitted[1];
     const match = matchMgr.getMatchById(matchId);
+    // console.log('socket.id', socket.id);
+    console.log('matchId', matchId);
     match.setSocket(socket);
     match.attachConnectEvents();
 

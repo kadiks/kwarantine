@@ -1,3 +1,4 @@
+const constants = require('../constants');
 const LongestWord = require('./longestword/Client');
 
 const Games = {
@@ -5,7 +6,10 @@ const Games = {
 };
 
 if (typeof window !== 'undefined') {
-  window.games = Games;
+  window.kwa = {
+    games: Games,
+    constants,
+  };
 }
 
 module.exports = Games;

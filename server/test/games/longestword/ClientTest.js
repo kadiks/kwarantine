@@ -54,7 +54,7 @@ describe('LongestWord', () => {
     describe('#updateState', () => {
       it('should dispatch the event state-updated', (done) => {
         const game = new Game({ letters: lettersABC });
-        game.on('state-updated', () => {
+        game.on('game.state.updated', () => {
           done();
         });
         game.updateState(0);

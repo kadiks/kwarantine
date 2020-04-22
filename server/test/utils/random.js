@@ -10,6 +10,9 @@ describe('utils', () => {
       it('should validate uppercase word', () => {
         expect(fn.validateWord('LE')).to.eql(true);
       });
+      it('should validate conjugated word', () => {
+        expect(fn.validateWord('accroissions')).to.eql(true);
+      });
     });
   });
 });

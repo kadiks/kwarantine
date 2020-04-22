@@ -17,6 +17,19 @@ describe('LongestWord', () => {
       });
     });
 
+    describe('#calculateScore', () => {
+      it('should return 0 if the word does not exist', () => {
+        const letters = ['A', 'B', 'S'];
+        const game = new Game({ letters });
+        expect(game.calculatePlayerScore('B')).to.eql(0);
+      });
+      it('should return 3 if the word exists', () => {
+        const letters = ['A', 'B', 'S'];
+        const game = new Game({ letters });
+        expect(game.calculatePlayerScore('BAS')).to.eql(3);
+      });
+    });
+
     describe('#isSafeInput', () => {
       it('should return false if a letter does not match the orginal letters', () => {
         const letters = lettersABC;

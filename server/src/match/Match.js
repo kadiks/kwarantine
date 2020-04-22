@@ -27,7 +27,7 @@ class Match extends utils.Dispatcher {
       this.players.push(playerId);
       if (this.players.length === this.maxPlayers) {
         const round = this.getNextRound();
-        this.sendClient('match.next.round', round);
+        this.sendClient('match.next.round', { value: round });
       }
     }
   }
@@ -42,14 +42,14 @@ class Match extends utils.Dispatcher {
     console.log('match/Match#endGame this.games.length', this.games.length);
     if (this.roundIndex < this.games.length - 1) {
       const round = this.getNextRound();
-      this.sendClient('match.next.round', round);
+      this.sendClient('match.next.round', { value: round });
       return;
     }
     this.endMatch();
   }
 
   endMatch() {
-    this.sendClient('match.end', this.getResults());
+    this.sendClient('match.end', { value: this.getResults() });
   }
 
   getNextRound() {
@@ -63,8 +63,9 @@ class Match extends utils.Dispatcher {
     return this.games.map((g) => g.results);
   }
 
-  handleInput(input) {
-    // console.log('match/Match#handleInput this.games', this.games);
+  handleInput({ input, playerId }) {
+    console.log('match/Match#handleInput input', input);
+    console.log('match/Match#handleInput playerId', playerId);
     const game = this.games[this.roundIndex]; // get the current round <game>Server instance
     console.log('match/Match#handleInput this.roundIndex', this.roundIndex);
     console.log('match/Match#handleInput game', game);
@@ -74,16 +75,31 @@ class Match extends utils.Dispatcher {
     }
 
     console.log('match/Match#handleInput this.socket.id', this.socket.id);
-    const playerId = utils.socket.getPlayerId(this.socket.id);
+    console.log('match/Match#handleInput playerId', playerId);
+    // const playerId = utils.socket.getPlayerId(this.socket.id);
     const score = game.calculatePlayerScore(input, { playerId });
-    this.endGame();
+    if (Object.keys(game.scores).length === this.maxPlayers) {
+      this.endGame();
+      return;
+    }
+    this.sendClient('game.wait', { playerId });
   }
 
   isPlayerIdExists(playerId) {
     return this.players.includes(playerId);
   }
 
-  sendClient(eventName, value) {
+  sendClient(eventName, { playerId = null, value } = {}) {
+    // console.log('>> match/Match#sendClient');
+    // console.log('>> match/Match#sendClient eventName', eventName);
+    // console.log('>> match/Match#sendClient this.socket.id', this.socket.id);
+    // console.log('>> match/Match#sendClient this.socket.id', this.socket.id);
+    if (playerId) {
+      // console.log('match/Match#sendClient playerId', playerId);
+      // this.socket.to(playerId).emit(eventName, value);
+      this.socket.emit(eventName, value);
+      return;
+    }
     this.socket.emit(eventName, value);
     this.socket.broadcast.emit(eventName, value);
   }

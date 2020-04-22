@@ -1,4 +1,4 @@
-const mots = require('../../data/motsCleaned.json');
+const mots = require('../../data/dict.json');
 
 function randinc(min, max) {
   min = Math.ceil(min);
@@ -43,12 +43,16 @@ const letterFrequencies = {
   Z: 15,
 };
 
+/**
+ * Generates a random letter
+ *
+ */
 function randLetter() {
   const sumWeights = Object.values(letterFrequencies).reduce((x, y) => x + y);
   let target = randinc(0, sumWeights);
   const pairs = Object.entries(letterFrequencies);
   for (let i = 0; i < pairs.length; i++) {
-    console.log(target, pairs[i][1]);
+    // console.log(target, pairs[i][1]);
     if (target < pairs[i][1]) {
       return pairs[i][0];
     }
