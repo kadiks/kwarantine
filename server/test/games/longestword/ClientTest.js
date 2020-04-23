@@ -44,9 +44,21 @@ describe('LongestWord', () => {
         expect(game.getServerInput()).to.eql('CB');
         game.updateState(1);
         expect(game.getServerInput()).to.eql('C');
+        // game.updateState(0);
+        // expect(game.getServerInput()).to.eql('CA');
+        // game.updateState(1);
+        // expect(game.getServerInput()).to.eql('CAB');
+      });
+      it('should not remove the letter if it is not the last letter typed', () => {
+        const letters = lettersABC;
+        const game = new Game({ letters });
+        game.updateState(2);
+        expect(game.getServerInput()).to.eql('C');
         game.updateState(0);
         expect(game.getServerInput()).to.eql('CA');
         game.updateState(1);
+        expect(game.getServerInput()).to.eql('CAB');
+        game.updateState(0);
         expect(game.getServerInput()).to.eql('CAB');
         expect(game.getServerInput().length).to.eql(3);
       });

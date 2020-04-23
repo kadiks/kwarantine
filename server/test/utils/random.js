@@ -13,6 +13,9 @@ describe('utils', () => {
       it('should validate conjugated word', () => {
         expect(fn.validateWord('accroissions')).to.eql(true);
       });
+      it('test', () => {
+        expect(fn.validateWord('boum')).to.eql(true);
+      });
     });
   });
 });

@@ -10,14 +10,21 @@ class LongestWord extends Dispatcher {
    * @extends Dispatcher
    * @param {Object} params
    * @param {Array} params.letters Letters to be displayed
+   * @param {Number} params.duration Game duration in seconds
    * @param {SocketIO} params.socket Client socket
    */
-  constructor({ letters = [], playerId = 'p1', socket = null } = {}) {
+  constructor({
+    letters = [],
+    playerId = 'p1',
+    socket = null,
+    duration = 30,
+  } = {}) {
     super();
     this.playerId = playerId;
     this.containerEl = null;
     this.letters = letters;
     this.socket = socket;
+    this.duration = duration;
 
     this.state = this.getInitialState();
 
@@ -209,7 +216,7 @@ class LongestWord extends Dispatcher {
       .map(this.renderLeftLetter)
       .join('');
 
-    return `<p class="text-header">Possibilités</p><div class="kwa-keyboard">${letters}</div>`;
+    return `<p class="text-header">Possibilités</p><div class="kwa-answer">${letters}</div>`;
   }
 
   //Front
@@ -271,14 +278,17 @@ class LongestWord extends Dispatcher {
   updateState(index) {
     const userWordLength = this.state.filter((l) => l.type === 'rm-letter')
       .length;
+    // console.log('this.state', this.state);
     this.state.forEach((letterInfo) => {
       if (letterInfo.value.index === index) {
         if (letterInfo.type === 'add-letter') {
           letterInfo.type = 'rm-letter';
-          letterInfo.value.position = userWordLength - 1;
+          letterInfo.value.position = userWordLength;
         } else {
-          letterInfo.type = 'add-letter';
-          letterInfo.value.position = null;
+          if (letterInfo.value.position === userWordLength - 1) {
+            letterInfo.type = 'add-letter';
+            letterInfo.value.position = null;
+          }
         }
       }
     });

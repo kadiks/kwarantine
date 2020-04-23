@@ -1,0 +1,32 @@
+.kwa-keyboard {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+.kwa-answer {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.kwa-keyboard .kwa-keyboard-key,
+.kwa-answer .kwa-keyboard-key {
+  border: black solid 1px;
+}
+
+.kwa-keyboard .kwa-keyboard-key {
+}
+
+.kwa-keyboard-key {
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+  padding: 5px 0;
+  margin: 0 1px;
+}
+
+.kwa-keyboard .kwa-keyboard-key-empty,
+.kwa-answer .kwa-keyboard-key-empty {
+  border-color: transparent;
+  color: transparent;
+}

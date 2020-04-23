@@ -10,6 +10,7 @@ Real-time multiplayer mini games (actual game in French)
 cd client
 npm i
 cd ../server
+vim .env # with variables PORT and PORT_SSL
 npm i --save-dev
 npm start
 ```
@@ -27,5 +28,5 @@ Generate docs
 
 ```
 cd server
-npm run build-docs
+npm run docs
 ```

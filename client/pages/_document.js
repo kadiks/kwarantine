@@ -37,6 +37,9 @@ class MyDocument extends Document {
           <link rel="stylesheet" href="/css/brands.min.css" />
           <link rel="stylesheet" href="/css/animate.min.css" />
           <link rel="stylesheet" href="/css/styles.css" />
+
+          <script src={`${Config.API_URL}/socket.io/socket.io.js`}></script>
+          <script src={`${Config.API_URL}/assets/games.js`}></script>
         </Head>
         <body
           style={{
@@ -54,8 +57,6 @@ class MyDocument extends Document {
               <script dangerouslySetInnerHTML={this.setGoogleTags()} />
             </>
           )}
-          <script src={`${Config.API_URL}/socket.io/socket.io.js`}></script>
-          <script src={`${Config.API_URL}/assets/games.js`}></script>
         </body>
       </Html>
     );

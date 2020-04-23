@@ -16,7 +16,7 @@ const { Match, MatchManager } = require('./src/match');
 const Games = require('./src/games');
 const games = Object.keys(Games).map((g) => Games[g].Server);
 // Domain Constants
-const numRounds = 1;
+const numRounds = 3;
 
 const matchMgr = new MatchManager().getInstance();
 
