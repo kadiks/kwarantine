@@ -2,7 +2,8 @@
 
 Real-time multiplayer mini games (actual game in French)
 
-![img](./extras/game_history_1.gif)
+![img](./extras/game_history_2.gif)
+Current state
 
 ## Installation
 
@@ -30,6 +31,7 @@ Generate docs
 cd server
 npm run docs
 ```
+
 ## Miscellaneous
 
 - ID thatt generates funny avatars: l7QZktjfUBS8li98AAAA
