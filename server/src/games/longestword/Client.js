@@ -1,5 +1,5 @@
 const { events } = require('../../constants');
-const { Dispatcher } = require('../../utils/');
+const Dispatcher = require('../../utils/Dispatcher');
 
 class LongestWord extends Dispatcher {
   /**

@@ -3,15 +3,16 @@ import {
   LastScoreboard,
   Scoreboard,
   WaitForOthers,
+  WaitRoom,
   GameTitle,
   GameScreen,
 } from './match';
 
-export default ({ game, screen, screenInfo } = {}) => {
+export default ({ game, screen, screenInfo, roundNumber } = {}) => {
   return (
     <div className="container">
       <div className="kwa-game-container">
-        {renderScreen(screen, { game, screenInfo })}
+        {renderScreen(screen, { game, screenInfo, roundNumber })}
       </div>
     </div>
   );
@@ -20,6 +21,9 @@ export default ({ game, screen, screenInfo } = {}) => {
 const renderScreen = (screen, props) => {
   if (screen === 'loading') {
     return <Loader />;
+  }
+  if (screen === 'waitRoom') {
+    return <WaitRoom {...props} />;
   }
   if (screen === 'scoreboard') {
     return <Scoreboard {...props} />;

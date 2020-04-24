@@ -5,7 +5,7 @@ import { randinc } from '../../utils/random';
 // https://www.npmjs.com/package/@dicebear/avatars-avataaars-sprites
 class Avatar extends React.Component {
   render() {
-    const { playerId, mood = 'happy', width = 100 } = this.props;
+    const { playerId, mood = 'happy', width = 100, size = "normal" } = this.props;
     const moods = {
       happy: 'options[eyes][]=happy&options[mouth][]=smile',
       sad: 'options[eyes][]=surprised&options[mouth][]=sad',
@@ -17,23 +17,30 @@ class Avatar extends React.Component {
       styles.color.waiting,
     ];
     const bgColor = bgColors[randinc(0, bgColors.length - 1)].replace('#', '');
+    let updatedWidth = width;
+    if (size === "small") {
+      updatedWidth = 50;
+    }
+    if (size === 'large') {
+      updatedWidth = 120;
+    }
     return (
       <div
         className="kwa-avatar"
         style={{
-          width,
+          width: updatedWidth,
         }}
       >
-        <img
+        {/* <img
           src={`https://avatars.dicebear.com/v2/avataaars/${playerId}.svg?${
             moods[mood]
           }&options[background][]=%23${bgColor}&options[radius][]=${
             width * 0.5
           }`}
-        />
+        /> */}
         <img
           src={`https://avatars.dicebear.com/v2/avataaars/${playerId}.svg?options[background][]=%23${bgColor}&options[radius][]=${
-            width * 0.5
+            updatedWidth * 0.5
           }`}
         />
       </div>

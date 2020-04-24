@@ -8,15 +8,22 @@ class LongestWord {
    *
    * @param {Object} params
    * @param {Array} params.numLetters Letters to generate
+   * @param {Number} params.duration Game duration
+   * @param {Array} params.playerIds Ids of all players in the game
    */
-  constructor({ numLetters = 10, letters = [] } = {}) {
+  constructor({ numLetters = 10, duration = 60, playerIds = [], letters = [] } = {}) {
     /**
      * @property
      * @memberof Games/LongestWord.Server
      */
-    this.scores = {};
-    this.results = {};
+    // prop scores might not be needed as being duplicated in results
     this.name = 'Le mot le plus long'; // TODO: i18n
+    this.rules = 'Trouver le mot le plus long'; // TODO: i18n
+    this.playerIds = playerIds; // for debug purposes
+    this.scores = this.getInitialScores(playerIds);
+    this.results = this.getInitialResults(playerIds);
+    this.duration = duration;
+    this.hasAnswered = [];
 
     // Game specific
     this.numLetters = numLetters;
@@ -25,6 +32,26 @@ class LongestWord {
     } else {
       this.letters = letters;
     }
+  }
+
+  getInitialResults(playerIds) {
+    const results = {};
+    playerIds.forEach((playerId) => {
+      results[playerId] = {
+        name: this.name,
+        score: 0,
+        answer: ''
+      };
+    });
+    return results;
+  }
+
+  getInitialScores(playerIds) {
+    const scores = {};
+    playerIds.forEach((playerId) => {
+      scores[playerId] = 0;
+    });
+    return scores;
   }
 
   /**
@@ -59,16 +86,19 @@ class LongestWord {
    */
   calculatePlayerScore(input, { playerId = 'p1' } = {}) {
     let score = 0;
+    if (this.hasAnswered.includes(playerId) === false) {
+      this.hasAnswered.push(playerId);
+    }
     if (this.isValidInput(input) === true) {
       score = input.length; // the player has the n pts that matches the number of letters
     }
 
+    console.log('#calculatePlayerScore playerId', playerId);
+    console.log('#calculatePlayerScore this.results', this.results);
+
     this.scores[playerId] = score;
-    this.results[playerId] = {
-      name: this.name,
-      answer: input,
-      score,
-    };
+    this.results[playerId].answer = input;
+    this.results[playerId].score = score;
     return score;
   }
 
@@ -83,6 +113,7 @@ class LongestWord {
       name: this.name,
       data: {
         letters: this.letters,
+        duration: this.duration
       },
     };
   }

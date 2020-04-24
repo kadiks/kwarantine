@@ -12,10 +12,14 @@ class MatchConnect extends Dispatcher {
     this.socket = null;
     this.playerId = null;
     this.rounds = [];
+    this.evts = null;
 
     this.goToNextRound = this.goToNextRound.bind(this);
     this.goToLastScoreboard = this.goToLastScoreboard.bind(this);
+    this.goToScoreboard = this.goToScoreboard.bind(this);
+    this.goToGameTitle = this.goToGameTitle.bind(this);
     this.goToGameWait = this.goToGameWait.bind(this);
+    this.onWaitRoom = this.onWaitRoom.bind(this);
     this.endMatch = this.endMatch.bind(this);
   }
 
@@ -26,52 +30,60 @@ class MatchConnect extends Dispatcher {
       .on('join', () => console.log('client nsp join'))
       .on('match.rounds', this.setRounds)
       // .on('match.waitroom', this.goToWaitRoom)
-      .on(kwa.constants.cEvents.MATCH_WAITROOM, this.goToWaitRoom)
+      .on(this.evts.MATCH_WAITROOM, this.onWaitRoom)
       // .on('match.mid.scoreboard', this.goToScoreboard)
-      .on(kwa.constants.cEvents.MATCH_MID_SCOREBOARD, this.goToScoreboard)
+      .on(this.evts.GAME_PREPARE, this.goToGameTitle)
+      .on(this.evts.MATCH_MID_SCOREBOARD, this.goToScoreboard)
       // .on('game.wait', this.goToGameWait)
-      .on(kwa.constants.cEvents.GAME_WAIT, this.goToGameWait)
+      .on(this.evts.GAME_WAIT, this.goToGameWait)
       // .on('match.last.scoreboard', this.goToLastScoreboard)
       // .on('match.next.round', this.goToNextRound)
-      .on(kwa.constants.cEvents.MATCH_NEXT_ROUND, this.goToNextRound)
+      .on(this.evts.MATCH_NEXT_ROUND, this.goToNextRound)
       // .on('match.end', this.goToLastScoreboard)
-      .on(kwa.constants.cEvents.MATCH_END, this.goToLastScoreboard)
+      .on(this.evts.MATCH_END, this.goToLastScoreboard)
       .on('disconnect', this.removeEvents);
   }
 
   endMatch() {
     console.log('>> utils/Api#endMatch');
-    this.dispatch(kwa.constants.cEvents.MATCH_END);
+    this.dispatch(this.evts.MATCH_END);
   }
 
   goToNextRound(round) {
     console.log('>> utils/Api#goToNextRound');
     // console.log('utils/Api#goToNextRound round', round);
-    this.dispatch(kwa.constants.cEvents.MATCH_NEXT_ROUND, round);
+    this.dispatch(this.evts.MATCH_NEXT_ROUND, round);
   }
 
-  gotToScoreboard() {
+  goToScoreboard(results) {
     console.log('>> utils/Api#gotToScoreboard');
-    this.dispatch(kwa.constants.cEvents.MATCH_MID_SCOREBOARD);
+    this.dispatch(this.evts.MATCH_MID_SCOREBOARD, results);
   }
 
   goToLastScoreboard(results) {
     console.log('>> utils/Api#goToLastScoreboard');
-    this.dispatch('match.end', results);
+    this.dispatch(this.evts.MATCH_END, results);
   }
 
-  goToWaitRoom() {
-    console.log('>> utils/Api#goToWaitRoom');
-    this.dispatch(kwa.constants.cEvents.MATCH_WAITROOM);
+  goToGameTitle(instructions) {
+    console.log('>> utils/Api#goToGameTitle');
+    this.dispatch(this.evts.GAME_PREPARE, instructions);
+  }
+
+  onWaitRoom(room) {
+    console.log('>> utils/Api#onWaitRoom');
+    console.log('utils/Api#onWaitRoom room', room);
+    this.dispatch(this.evts.MATCH_WAITROOM, room);
   }
 
   goToGameWait() {
     console.log('>> utils/Api#goToGameWait');
-    this.dispatch(kwa.constants.cEvents.GAME_WAIT);
+    this.dispatch(this.evts.GAME_WAIT);
   }
 
   connect() {
     return new Promise((resolve) => {
+      this.evts = kwa.constants.cEvents;
       const url = Config.API_URL;
       console.log('utils/Api#connect url', url);
       const socket = io(url);

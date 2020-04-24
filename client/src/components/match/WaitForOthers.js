@@ -1,7 +1,7 @@
 export default ({ game, screenInfo } = {}) => {
   return (
     <div>
-      <p>Wait for Others</p>
+      <h2>Salle d'attentte</h2>
     </div>
   );
 };

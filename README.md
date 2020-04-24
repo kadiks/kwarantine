@@ -30,3 +30,6 @@ Generate docs
 cd server
 npm run docs
 ```
+## Miscellaneous
+
+- ID thatt generates funny avatars: l7QZktjfUBS8li98AAAA

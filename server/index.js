@@ -11,12 +11,9 @@ const utils = require('./src/utils');
 const browserify = require('browserify-middleware');
 const { uuid } = require('uuidv4');
 // Match imports
-const { Match, MatchManager } = require('./src/match');
-// Game Imports
-const Games = require('./src/games');
-const games = Object.keys(Games).map((g) => Games[g].Server);
+const { Match, MatchManager, Player } = require('./src/match');
 // Domain Constants
-const numRounds = 3;
+const numRounds = 2;
 
 const matchMgr = new MatchManager().getInstance();
 
@@ -44,22 +41,15 @@ app.use(
 );
 
 // Connects from the host.com/match page
-io.on('connection', (socket) => {
+io.on('connect', (socket) => {
   matchMgr.setIo(io);
   console.log('connected on main nsp');
 
   let currentMatch = matchMgr.getWaitingMatch();
   if (currentMatch === null || currentMatch.isWaiting === false) {
-    const match = new Match({ id: uuid() });
+    const match = new Match({ id: uuid(), numRounds });
     matchMgr.addMatch(match);
 
-    // TODO: create MatchManager#generateRounds()
-    const selectedGames = [...new Array(numRounds)].map((_) => {
-      return new (utils.random.pick(games))();
-    });
-    const rounds = selectedGames.map((g) => g.getData());
-    match.setGames(selectedGames);
-    match.setRounds(rounds);
     currentMatch = match;
   }
 
@@ -76,12 +66,16 @@ io.on('connection', (socket) => {
     const playerId = socketIdSplitted[1];
     const match = matchMgr.getMatchById(matchId);
     // console.log('socket.id', socket.id);
-    console.log('matchId', matchId);
+    // console.log('matchId', matchId);
     match.setSocket(socket);
-    match.attachConnectEvents();
 
     // Add player
-    match.addPlayer(playerId);
+    const player = new Player({
+      id: playerId,
+      socket
+    });
+    match.addPlayer(player);
+    match.attachConnectEvents(player);
   });
   socket.on('disconnect', () => {
     console.log('main disconnect');

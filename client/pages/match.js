@@ -26,7 +26,9 @@ class MatchPage extends React.Component {
     this.state = {
       game: null,
       screen: 'loading',
+      duration: 0,
       screenInfo: null,
+      roundNumber: 0
     };
 
     this.startRound = this.startRound.bind(this);
@@ -40,20 +42,43 @@ class MatchPage extends React.Component {
     //   },
     // };
     // console.log('#cmpDM');
+    const evts = kwa.constants.cEvents;
     await this.matchConnect.connect();
-    this.matchConnect.on('match.next.round', this.startRound);
+    // TODO: chain events?
+    this.matchConnect.on(evts.MATCH_WAITROOM, (room) => {
+      console.log('pages/match#cmDM evts.MATCH_WAITROOM room', room);
+      this.setState({
+        screen: 'waitRoom',
+        screenInfo: room
+      });
+    });
+    this.matchConnect.on(evts.MATCH_NEXT_ROUND, this.startRound);
+    // this.matchConnect.on('match.next.round', this.startRound);
 
-    this.matchConnect.on('match.end', (results) => {
+    this.matchConnect.on(evts.MATCH_END, (results) => {
       this.setState({
         screen: 'lastScoreboard',
         screenInfo: results,
       });
     });
 
-    this.matchConnect.on('game.wait', () => {
+    this.matchConnect.on(evts.GAME_WAIT, () => {
       this.setState({
         screen: 'waitForOthers',
         screenInfo: null,
+      });
+    });
+
+    this.matchConnect.on(evts.MATCH_MID_SCOREBOARD, (results) => {
+      this.setState({
+        screen: 'scoreboard',
+        screenInfo: results
+      });
+    });
+    this.matchConnect.on(evts.GAME_PREPARE, (instructions) => {
+      this.setState({
+        screen: 'gameTitle',
+        screenInfo: instructions
       });
     });
   }
@@ -64,7 +89,6 @@ class MatchPage extends React.Component {
     //   'pages/match#startRound this.matchConnect.playerId',
     //   this.matchConnect.playerId
     // );
-
     this.setState(
       {
         game: new kwa.games[round.className]({
@@ -72,8 +96,9 @@ class MatchPage extends React.Component {
           playerId: this.matchConnect.playerId,
           socket: this.matchConnect.socket, // might not be needed...
         }),
-        duration: round.duration,
+        duration: round.data.duration,
         screen: 'game',
+        roundNumber: this.state.roundNumber + 1
       },
       () => {
         this.state.game.attachEvents();
@@ -87,89 +112,15 @@ class MatchPage extends React.Component {
     );
   }
 
-  renderLastScoreboard() {
-    const { screenInfo } = this.state;
-    console.log('pages/match#renderLastScoreboard screenInfo', screenInfo);
-    let total = 0;
-    const results = screenInfo.map((g, index) => {
-      const keys = Object.keys(g);
-      const result = g[keys[0]];
-      total += result.score;
-      return result;
-    });
-    results.push({
-      name: 'TOTAL',
-      answer: '',
-      score: total,
-    });
-    return (
-      <div>
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>Jeu</th>
-              <th>Réponse</th>
-              <th>Points</th>
-            </tr>
-          </thead>
-          <tbody>
-            {results.map(({ name, answer, score }, index) => {
-              return (
-                <tr key={index}>
-                  <td>{name}</td>
-                  <td>{answer}</td>
-                  <td>{score}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <button
-          onClick={() => {
-            this.props.router.push('/');
-          }}
-        >
-          Back to homepage
-        </button>
-      </div>
-    );
-  }
-
-  renderLoading() {
-    return (
-      <div>
-        <h2>Loading front...</h2>
-      </div>
-    );
-  }
-
-  renderWaitForOthers() {
-    return (
-      <div>
-        <h2>Réponse enregistrée</h2>
-        <h3>En attente des autres joueurs</h3>
-      </div>
-    );
-  }
-
   render() {
     // console.log('pages/match#render');
-    const { game, screen, screenInfo } = this.state;
-    switch (screen) {
-      case 'loading':
-        return this.renderLoading();
-      case 'lastScoreboard':
-        return this.renderLastScoreboard();
-      case 'waitForOthers':
-        return this.renderWaitForOthers();
-    }
-    console.log('game.state', game.state);
-    const html = game.render();
-    // console.log('game.getHtml', html);
+    const { game, screen, screenInfo, roundNumber } = this.state;
+    console.log('pages/match#render screen', screen);
+    console.log('pages/match#render screenInfo', screenInfo);
     return (
       <div className="container">
         <div className="kwa-game-container">
-          <Match game={game} screen={screen} screenInfo={screenInfo} />
+          <Match game={game} screen={screen} screenInfo={screenInfo} roundNumber={roundNumber}/>
         </div>
       </div>
     );

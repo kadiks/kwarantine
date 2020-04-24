@@ -1,7 +1,8 @@
 export default ({ game, screenInfo } = {}) => {
   return (
-    <div>
-      <p>Game title</p>
+    <div className="text-center">
+      <h2>{screenInfo.name}</h2>
+      <p>{screenInfo.rules}</p>
     </div>
   );
 };
