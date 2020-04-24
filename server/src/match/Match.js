@@ -4,7 +4,7 @@ const Games = require('../games');
 const allServerGames = Object.keys(Games).map((g) => Games[g].Server);
 
 class Match extends utils.Dispatcher {
-  constructor({ id, numRounds = 14, maxPlayers = 2 } = {}) {
+  constructor({ id, numRounds = 14, maxPlayers = 4 } = {}) {
     super();
     this.id = id;
     this.maxPlayers = maxPlayers;
@@ -18,11 +18,11 @@ class Match extends utils.Dispatcher {
 
     this.durations = {
       midGameScoreboard: 10,
-      gamePrepare: 5
+      gamePrepare: 5,
     };
 
     this.timers = {
-      roundTimeUp: null
+      roundTimeUp: null,
     };
 
     this.handleInput = this.handleInput.bind(this);
@@ -34,8 +34,8 @@ class Match extends utils.Dispatcher {
 
   /**
    * Adds a player to the room
-   * 
-   * @param {Player} player 
+   *
+   * @param {Player} player
    */
   addPlayer(player) {
     if (this.isPlayerExists(player) === true) {
@@ -50,12 +50,13 @@ class Match extends utils.Dispatcher {
           this.startGame();
         }, this.durations.gamePrepare * 1000);
       } else {
-        const value =  {
+        const value = {
           numPlayers: this.players.length,
-          maxPlayers: this.maxPlayers
+          maxPlayers: this.maxPlayers,
         };
         this.sendClient(evts.MATCH_WAITROOM, {
-          value});
+          value,
+        });
       }
     }
   }
@@ -78,7 +79,7 @@ class Match extends utils.Dispatcher {
           this.startGame();
         }, this.durations.gamePrepare * 1000);
       }, this.durations.midGameScoreboard * 1000);
-      
+
       return;
     }
     this.endMatch();
@@ -86,7 +87,7 @@ class Match extends utils.Dispatcher {
 
   endMatch() {
     const value = {
-      results: this.getResults()
+      results: this.getResults(),
     };
     this.sendClient('match.end', { value });
   }
@@ -105,11 +106,11 @@ class Match extends utils.Dispatcher {
   }
 
   getPlayerById(playerId) {
-    return this.players.find(p => p.id === playerId) || null;
+    return this.players.find((p) => p.id === playerId) || null;
   }
 
   getResults() {
-    return this.games.map(({results}) => {
+    return this.games.map(({ results }) => {
       console.log('results', results);
       return results;
     });
@@ -143,7 +144,7 @@ class Match extends utils.Dispatcher {
     // TODO: create MatchManager#generateRounds()
     const games = [...new Array(this.numRounds)].map((_) => {
       return new (utils.random.pick(allServerGames))({
-        playerIds: this.players.map(p => p.id)
+        playerIds: this.players.map((p) => p.id),
       });
     });
     const rounds = games.map((g) => g.getData());
@@ -155,7 +156,7 @@ class Match extends utils.Dispatcher {
   }
 
   isPlayerExists(player) {
-    return this.players.some(p => p.id === player.id);
+    return this.players.some((p) => p.id === player.id);
   }
 
   sendClient(eventName, { playerId = null, value } = {}) {
@@ -205,7 +206,7 @@ class Match extends utils.Dispatcher {
     const game = this.games[this.roundIndex];
     const value = {
       name: game.name,
-      rules: game.rules
+      rules: game.rules,
     };
     this.sendClient(evts.GAME_PREPARE, { value });
   }
@@ -213,8 +214,8 @@ class Match extends utils.Dispatcher {
   showMidGameScoreboard() {
     const game = this.getCurrentGame();
     console.log('server/match/Match#showMidGameScoreboard game', game);
-    const value = { 
-      results: game.results
+    const value = {
+      results: game.results,
     };
     this.sendClient(evts.MATCH_MID_SCOREBOARD, { value });
   }
@@ -230,7 +231,6 @@ class Match extends utils.Dispatcher {
     }, round.data.duration * 1000);
     this.sendClient('match.next.round', { value: round });
   }
-
 }
 
 module.exports = Match;
