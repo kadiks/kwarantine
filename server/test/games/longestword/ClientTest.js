@@ -6,7 +6,7 @@ const lettersABC = ['A', 'B', 'C'];
 describe('LongestWord', () => {
   describe('Client', () => {
     describe('#constructor', () => {
-      it('letters property should be an empty by default', () => {
+      it('letters property should be an empty array by default', () => {
         const game = new Game();
         expect(game.letters.length).to.eql(0);
       });
@@ -64,7 +64,7 @@ describe('LongestWord', () => {
       });
     });
     describe('#updateState', () => {
-      it('should dispatch the event state-updated', (done) => {
+      it('should dispatch the event game.state.updated', (done) => {
         const game = new Game({ letters: lettersABC });
         game.on('game.state.updated', () => {
           done();

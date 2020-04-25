@@ -16,9 +16,13 @@ export default ({ game, screenInfo } = {}) => {
     return b.score - a.score;
   });
   return (
-    <div>
-      <h2>Classement intermédiaire</h2>
-      <Countdown duration={10} />
+    <div className="row">
+      <div className="col-10">
+        <h2>Classement intermédiaire</h2>
+      </div>
+      <div className="col-2">
+        <Countdown duration={10} />
+      </div>
       <table className="table table-striped">
         <thead>
           <th>N°</th>

@@ -94,12 +94,14 @@ class LongestWord {
     if (this.hasAnswered.includes(playerId) === false) {
       this.hasAnswered.push(playerId);
     }
-    if (this.isValidInput(input) === true) {
-      score = input.length; // the player has the n pts that matches the number of letters
+    if (this.isSafeInput(input) === true) {
+      if (this.isValidInput(input) === true) {
+        score = input.length; // the player has the n pts that matches the number of letters
+      }
     }
 
-    console.log('#calculatePlayerScore playerId', playerId);
-    console.log('#calculatePlayerScore this.results', this.results);
+    // console.log('game/LongestWord/Server#calculatePlayerScore playerId', playerId);
+    // console.log('game/LongestWord/Server#calculatePlayerScore this.results', this.results);
 
     this.scores[playerId] = score;
     this.results[playerId].answer = input;

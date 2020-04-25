@@ -4,7 +4,7 @@ const Games = require('../games');
 const allServerGames = Object.keys(Games).map((g) => Games[g].Server);
 
 class Match extends utils.Dispatcher {
-  constructor({ id, numRounds = 14, maxPlayers = 3 } = {}) {
+  constructor({ id, numRounds = 14, maxPlayers = 4 } = {}) {
     super();
     this.id = id;
     this.maxPlayers = maxPlayers;
@@ -72,8 +72,7 @@ class Match extends utils.Dispatcher {
   }
 
   endGame() {
-    console.log('match/Match#endGame this.roundIndex', this.roundIndex);
-    console.log('match/Match#endGame this.games.length', this.games.length);
+    // console.losg('match/Match#endGame this.games.length', this.games.length);
     clearTimeout(this.timers.roundTimeUp);
     if (this.roundIndex < this.games.length - 1) {
       this.showMidGameScoreboard();
@@ -119,7 +118,7 @@ class Match extends utils.Dispatcher {
 
   getResults() {
     return this.games.map(({ results }) => {
-      console.log('results', results);
+      // console.log('match/Match#getResults results', results);
       return results;
     });
   }
@@ -168,7 +167,7 @@ class Match extends utils.Dispatcher {
   }
 
   sendClient(eventName, { playerId = null, value } = {}) {
-    console.log('>> match/Match#sendClient');
+    // console.log('>> match/Match#sendClient');
     console.log('>> match/Match#sendClient eventName', eventName);
     // console.log('>> match/Match#sendClient this.socket.id', this.socket.id);
     // console.log('>> match/Match#sendClient this.socket.id', this.socket.id);
@@ -229,7 +228,7 @@ class Match extends utils.Dispatcher {
 
   showMidGameScoreboard() {
     const game = this.getCurrentGame();
-    console.log('server/match/Match#showMidGameScoreboard game', game);
+    // console.log('server/match/Match#showMidGameScoreboard game', game);
     const value = {
       results: game.results,
     };
@@ -240,9 +239,9 @@ class Match extends utils.Dispatcher {
     // const round = this.getNextRound();
     // this.sendClient('match.next.round', { value: round });
     const round = this.getCurrentRound();
-    console.log('server/match/Match#startGame round', round);
+    // console.log('server/match/Match#startGame round', round);
     this.timers.roundTimeUp = setTimeout(() => {
-      console.log('gametimer finished');
+      // console.log('gametimer finished');
       this.endGame();
     }, round.data.duration * 1000);
     this.sendClient('match.next.round', { value: round });

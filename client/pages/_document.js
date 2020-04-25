@@ -34,7 +34,7 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
           <link rel="stylesheet" href="/css/bootstrap.min.css" />
-          <link rel="stylesheet" href="/css/brands.min.css" />
+          {/* <link rel="stylesheet" href="/css/brands.min.css" /> */}
           <link rel="stylesheet" href="/css/animate.min.css" />
           <link rel="stylesheet" href="/css/styles.css" />
 

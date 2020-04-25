@@ -105,6 +105,8 @@ class LongestWord extends Dispatcher {
     if (target.matches('[kwa-event="click"]')) {
       if (target.matches('[kwa-type="end-game"]')) {
         this.input();
+      } else if (target.matches('[kwa-type="rm-last-letter"]')) {
+        this.removeLastLetter();
       } else {
         this.handleEventElement({ target });
       }
@@ -194,19 +196,25 @@ class LongestWord extends Dispatcher {
     const myWordHtml = this.renderUserWord();
     const leftLettersHtml = this.renderLeftLetters();
     const endGameBtn = this.renderEndButton();
+    const backBtn = this.renderBackButton();
     const styleHtml = this.renderStyleEl();
 
     return `<div class="kwa-game">
   ${myWordHtml}
-  ${endGameBtn}
+  ${backBtn}
   ${leftLettersHtml}
   ${styleHtml}
+  ${endGameBtn}
 </div>`;
+  }
+
+  renderBackButton() {
+    return `<div class="text-center mb-3"><button type="button" class="btn-lg btn-outline-warning" kwa-event="click" kwa-type="rm-last-letter">Effacer</button></div>`;
   }
 
   // Front
   renderEndButton() {
-    return `<button kwa-event="click" kwa-type="end-game">End</button>`;
+    return `<div class="text-center mt-3"><button type="button" class="btn-lg btn-warning" kwa-event="click" kwa-type="end-game">Envoyer</button></div>`;
   }
 
   // Front
@@ -216,7 +224,7 @@ class LongestWord extends Dispatcher {
       .map(this.renderLeftLetter)
       .join('');
 
-    return `<p class="text-header">Possibilités</p><div class="kwa-answer">${letters}</div>`;
+    return `<h3 class="text-center mb-3">Possibilités</h3><div class="kwa-answer mb-5">${letters}</div>`;
   }
 
   //Front
@@ -267,7 +275,7 @@ class LongestWord extends Dispatcher {
       .map(this.renderLetter)
       .join('');
 
-    return `<p class="text-header">Mot</p><div class="kwa-answer">${letters}</div>`;
+    return `<h3 class="text-center mb-3">Mot</h3><div class="kwa-answer mb-3">${letters}</div>`;
   }
 
   /**

@@ -1,12 +1,35 @@
 import { Avatar } from '../player';
 import { withRouter } from 'next/router';
+import {
+  Basic as Button,
+} from '../core/button';
 
 const LastScoreboard = (props) => {
   // console.log('cmp/match/LastScoreboard props.screenInfo', props.screenInfo);
   return (
-    <div>
+    <div className="row">
+      <div className="col-12 text-center">
+        <Button
+            onClick={() => {
+              window.location = window.location.origin;
+              // props.router.push('/');
+            }}
+          >
+          Sortir du confinement !
+        </Button>
+      </div>
       {renderPlayersScore(props)}
       {renderMyScore(props)}
+      <div className="col-12 text-right">
+        <Button
+          onClick={() => {
+            window.location = window.location.origin;
+            // props.router.push('/');
+          }}
+        >
+          Sortir du confinement !
+        </Button>
+      </div>
     </div>
   );
 };
@@ -44,7 +67,7 @@ const renderPlayersScore = ({ game, screenInfo }) => {
   // console.log('#renderPlayersScore RESULTS RESULTS', results);
   
   return (
-    <div>
+    <div className="col-12">
     <h2>Classement final</h2>
     <table className="table table-striped">
       <thead>
@@ -90,9 +113,9 @@ const renderMyScore = ({ game, screenInfo }) => {
   const results = getScoreboardByPlayerId(screenInfo.results, {
     playerId: game.playerId
   });
-  console.log('#renderMyScore RESULTS RESULTS', results);
+  // console.log('#renderMyScore RESULTS RESULTS', results);
   return (
-    <div>
+    <div className="col-12">
       <h4>Récapitulatif de mes scores</h4>
       <table className="table table-striped">
         <thead>
@@ -114,13 +137,6 @@ const renderMyScore = ({ game, screenInfo }) => {
           })}
         </tbody>
       </table>
-      <button
-        onClick={() => {
-          router.push('/');
-        }}
-      >
-        Back to homepage
-      </button>
     </div>
   );
 };

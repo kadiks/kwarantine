@@ -13,7 +13,7 @@ const { uuid } = require('uuidv4');
 // Match imports
 const { Match, MatchManager, Player } = require('./src/match');
 // Domain Constants
-const numRounds = 5;
+const numRounds = 1;
 
 const matchMgr = new MatchManager().getInstance();
 
