@@ -77,10 +77,10 @@ io.on('connect', (socket) => {
     match.addPlayer(player);
     match.attachConnectEvents(player);
     socket.on('disconnect', () => {
-      //console.log('player.id', player.id)
-      //console.log(matchMgr.getMatchByPlayerId(player.id))
-      const r = match.removeByPlayerId(player.id)
-      console.log('r:', r)
+      const numPlayers = match.removeByPlayerId(player.id)
+      if(!numPlayers){
+	matchMgr.removeMatchById(match.id)
+      }
     })
   });
   
