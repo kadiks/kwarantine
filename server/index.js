@@ -79,6 +79,7 @@ io.on('connect', (socket) => {
     socket.on('disconnect', () => {
       const numPlayers = match.removeByPlayerId(player.id)
       if(!numPlayers){
+	console.log('kill')
 	matchMgr.removeMatchById(match.id)
       }
     })

@@ -6,6 +6,7 @@ const allServerGames = Object.keys(Games).map((g) => Games[g].Server);
 class Match extends utils.Dispatcher {
   constructor({ id, numRounds = 14, maxPlayers = 3 } = {}) {
     super();
+    this.gameOn = false
     this.id = id;
     this.maxPlayers = maxPlayers;
     this.roundIndex = 0;
@@ -45,6 +46,7 @@ class Match extends utils.Dispatcher {
     if (this.players.length < this.maxPlayers) {
       this.players.push(player);
       if (this.players.length === this.maxPlayers) {
+	this.gameOn = true;
         this.initializeGames();
         this.showGamePresentation();
         setTimeout(() => {
@@ -196,6 +198,9 @@ class Match extends utils.Dispatcher {
     const index = ids.indexOf(playerId)
     if(index !== -1){
       this.players.splice(index, 1);
+      if(this.gameOn){
+	this.maxPlayers--
+      }
     }
     return this.players.length
   }
