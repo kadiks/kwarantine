@@ -4,7 +4,7 @@ const Games = require('../games');
 const allServerGames = Object.keys(Games).map((g) => Games[g].Server);
 
 class Match extends utils.Dispatcher {
-  constructor({ id, numRounds = 14, maxPlayers = 4 } = {}) {
+  constructor({ id, numRounds = 14, maxPlayers = 2 } = {}) {
     super();
     this.gameOn = false
     this.id = id;

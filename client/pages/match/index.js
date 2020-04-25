@@ -1,22 +1,22 @@
 import React from 'react';
 import Link from 'next/link';
 import { withRouter } from 'next/router';
-import Config from '../src/Config';
-import { Header, Body } from '../src/components/core/text';
+import Config from '../../src/Config';
+import { Header, Body } from '../../src/components/core/text';
 import {
   ButtonGroup,
   Basic as Button,
   Link as ButtonLink,
-} from '../src/components/core/button';
-import { NavBar, Footer } from '../src/components/navigation';
-import { Avatar } from '../src/components/player';
-import { Timer } from '../src/components/match';
-import Match from '../src/components/MatchComp';
+} from '../../src/components/core/button';
+import { NavBar, Footer } from '../../src/components/navigation';
+import { Avatar } from '../../src/components/player';
+import { Timer } from '../../src/components/match';
+import Match from '../../src/components/MatchComp';
 
-import styles from '../src/utils/styles';
-import Icon from '../src/components/core/Icon';
+import styles from '../../src/utils/styles';
+import Icon from '../../src/components/core/Icon';
 
-import MatchConnect from '../src/utils/MatchConnect';
+import MatchConnect from '../../src/utils/MatchConnect';
 
 class MatchPage extends React.Component {
   constructor(props) {

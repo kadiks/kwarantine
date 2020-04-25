@@ -20,10 +20,10 @@ const prod = {
   API_URL: 'https://kwarantine.fr',
   API_ENDPOINT: '/api',
   API_EXTENSION: '',
-  GA_TRACKING_ID: '',
+  GA_TRACKING_ID: 'UA-12326200-18',
 };
 
-const env = 'test';
+const env = 'prod';
 
 let Config = {};
 

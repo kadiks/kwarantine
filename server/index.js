@@ -40,6 +40,9 @@ app.use(
   })
 );
 
+app.use('/', express.static('public'));
+
+
 // Connects from the host.com/match page
 io.on('connect', (socket) => {
   matchMgr.setIo(io);
