@@ -46,7 +46,7 @@ class MatchManager {
         break;
       }
     }
-    return match.match;
+    return match ? match.match : null;
   }
 
   getMatchByPlayerId(playerId) {
