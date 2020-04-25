@@ -14,9 +14,10 @@ class MatchConnect extends Dispatcher {
     this.rounds = [];
     this.evts = null;
 
-    this.goToNextRound = this.goToNextRound.bind(this);
+    this.goToGamePresentation = this.goToGamePresentation.bind(this);
     this.goToLastScoreboard = this.goToLastScoreboard.bind(this);
     this.goToScoreboard = this.goToScoreboard.bind(this);
+    this.goToNextRound = this.goToNextRound.bind(this);
     this.goToGameTitle = this.goToGameTitle.bind(this);
     this.goToGameWait = this.goToGameWait.bind(this);
     this.onWaitRoom = this.onWaitRoom.bind(this);
@@ -36,6 +37,7 @@ class MatchConnect extends Dispatcher {
       .on(this.evts.MATCH_MID_SCOREBOARD, this.goToScoreboard)
       // .on('game.wait', this.goToGameWait)
       .on(this.evts.GAME_WAIT, this.goToGameWait)
+      .on(this.evts.GAME_PRESENTATION, this.goToGamePresentation)
       // .on('match.last.scoreboard', this.goToLastScoreboard)
       // .on('match.next.round', this.goToNextRound)
       .on(this.evts.MATCH_NEXT_ROUND, this.goToNextRound)
@@ -53,6 +55,12 @@ class MatchConnect extends Dispatcher {
     console.log('>> utils/Api#goToNextRound');
     // console.log('utils/Api#goToNextRound round', round);
     this.dispatch(this.evts.MATCH_NEXT_ROUND, round);
+  }
+
+  goToGamePresentation(playerIds) {
+    console.log('>> utils/Api#goToGamePresentation');
+    // console.log('utils/Api#goToNextRound round', round);
+    this.dispatch(this.evts.GAME_PRESENTATION, playerIds);
   }
 
   goToScoreboard(results) {

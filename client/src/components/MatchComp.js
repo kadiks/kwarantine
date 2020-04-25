@@ -6,6 +6,7 @@ import {
   WaitRoom,
   GameTitle,
   GameScreen,
+  GamePresentation,
 } from './match';
 
 export default ({ game, screen, screenInfo, roundNumber } = {}) => {
@@ -36,6 +37,9 @@ const renderScreen = (screen, props) => {
   }
   if (screen === 'waitForOthers') {
     return <WaitForOthers {...props} />;
+  }
+  if (screen === 'gamePresentation') {
+    return <GamePresentation {...props} />;
   }
   if (screen === 'game') {
     return <GameScreen {...props} />;

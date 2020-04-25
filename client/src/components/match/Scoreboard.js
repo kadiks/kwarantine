@@ -1,4 +1,5 @@
 import { Avatar } from '../player';
+import { Countdown } from '../core/loader';
 
 export default ({ game, screenInfo } = {}) => {
   const { results } = screenInfo;
@@ -17,6 +18,7 @@ export default ({ game, screenInfo } = {}) => {
   return (
     <div>
       <h2>Classement intermédiaire</h2>
+      <Countdown duration={10} />
       <table className="table table-striped">
         <thead>
           <th>N°</th>
@@ -34,7 +36,9 @@ export default ({ game, screenInfo } = {}) => {
             return (
               <tr key={playerId}>
                 <td style={styles}>{index + 1}</td>
-                <td style={styles}><Avatar playerId={playerId} size="small" /></td>
+                <td style={styles}>
+                  <Avatar playerId={playerId} size="small" />
+                </td>
                 <td style={styles}>{answer}</td>
                 <td style={styles}>{score}</td>
               </tr>

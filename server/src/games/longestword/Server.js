@@ -11,7 +11,12 @@ class LongestWord {
    * @param {Number} params.duration Game duration
    * @param {Array} params.playerIds Ids of all players in the game
    */
-  constructor({ numLetters = 10, duration = 60, playerIds = [], letters = [] } = {}) {
+  constructor({
+    numLetters = 10,
+    duration = 30,
+    playerIds = [],
+    letters = [],
+  } = {}) {
     /**
      * @property
      * @memberof Games/LongestWord.Server
@@ -40,7 +45,7 @@ class LongestWord {
       results[playerId] = {
         name: this.name,
         score: 0,
-        answer: ''
+        answer: '',
       };
     });
     return results;
@@ -113,7 +118,7 @@ class LongestWord {
       name: this.name,
       data: {
         letters: this.letters,
-        duration: this.duration
+        duration: this.duration,
       },
     };
   }

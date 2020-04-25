@@ -20,6 +20,10 @@ const events = {
    */
   // Not used for now, directly using setTimeout from server. But if there are some discrepancies, it will be used to be sent out from client to server
   GAME_TIME_UP: 'game.time.up',
+  /**
+   * @property {String} [S->C] When the game is about to start to show all the faces
+   */
+  GAME_PRESENTATION: 'game.presentation',
 
   /**
    * @property {String} [S->C] When a player goes to the waitroom. Dispatch to the whole room with the current number of participants

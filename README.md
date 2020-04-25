@@ -3,7 +3,8 @@
 Real-time multiplayer mini games (actual game in French)
 
 ![img](./extras/game_history_2.gif)
-Current state
+
+Current status
 
 ## Installation
 

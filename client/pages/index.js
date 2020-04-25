@@ -7,6 +7,7 @@ import {
   Link as ButtonLink,
 } from '../src/components/core/button';
 import { NavBar, Footer } from '../src/components/navigation';
+import { Countdown } from '../src/components/core/loader';
 
 import styles from '../src/utils/styles';
 import Icon from '../src/components/core/Icon';

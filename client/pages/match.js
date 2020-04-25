@@ -28,7 +28,7 @@ class MatchPage extends React.Component {
       screen: 'loading',
       duration: 0,
       screenInfo: null,
-      roundNumber: 0
+      roundNumber: 0,
     };
 
     this.startRound = this.startRound.bind(this);
@@ -49,7 +49,10 @@ class MatchPage extends React.Component {
       console.log('pages/match#cmDM evts.MATCH_WAITROOM room', room);
       this.setState({
         screen: 'waitRoom',
-        screenInfo: room
+        screenInfo: {
+          playerId: this.matchConnect.playerId,
+          ...room,
+        },
       });
     });
     this.matchConnect.on(evts.MATCH_NEXT_ROUND, this.startRound);
@@ -72,13 +75,22 @@ class MatchPage extends React.Component {
     this.matchConnect.on(evts.MATCH_MID_SCOREBOARD, (results) => {
       this.setState({
         screen: 'scoreboard',
-        screenInfo: results
+        screenInfo: results,
       });
     });
     this.matchConnect.on(evts.GAME_PREPARE, (instructions) => {
       this.setState({
         screen: 'gameTitle',
-        screenInfo: instructions
+        screenInfo: instructions,
+      });
+    });
+    this.matchConnect.on(evts.GAME_PRESENTATION, (playerIds) => {
+      this.setState({
+        screen: 'gamePresentation',
+        screenInfo: {
+          playerId: this.matchConnect.playerId,
+          ...playerIds,
+        },
       });
     });
   }
@@ -98,7 +110,7 @@ class MatchPage extends React.Component {
         }),
         duration: round.data.duration,
         screen: 'game',
-        roundNumber: this.state.roundNumber + 1
+        roundNumber: this.state.roundNumber + 1,
       },
       () => {
         this.state.game.attachEvents();
@@ -120,7 +132,12 @@ class MatchPage extends React.Component {
     return (
       <div className="container">
         <div className="kwa-game-container">
-          <Match game={game} screen={screen} screenInfo={screenInfo} roundNumber={roundNumber}/>
+          <Match
+            game={game}
+            screen={screen}
+            screenInfo={screenInfo}
+            roundNumber={roundNumber}
+          />
         </div>
       </div>
     );

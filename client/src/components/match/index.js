@@ -5,6 +5,7 @@ import WaitForOthers from './WaitForOthers';
 import WaitRoom from './WaitRoom';
 import GameTitle from './GameTitle';
 import GameScreen from './GameScreen';
+import GamePresentation from './GamePresentation';
 
 export {
   Timer,
@@ -14,4 +15,5 @@ export {
   WaitForOthers,
   GameTitle,
   GameScreen,
+  GamePresentation,
 };
