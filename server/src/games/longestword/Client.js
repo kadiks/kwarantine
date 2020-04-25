@@ -38,11 +38,10 @@ class LongestWord extends Dispatcher {
     const letters = this.state.filter((l) => l.type === 'add-letter');
     let index = -1;
     for (let i = 0; i < letters.length; i++) {
-      console.log('#1', letters[i].value.letter);
-      console.log('#2', letter);
-      console.log('#3', letters[i].value.letter === letter);
+      // console.log('#1', letters[i].value.letter);
+      // console.log('#2', letter);
+      // console.log('#3', letters[i].value.letter === letter);
       if (letters[i].value.letter === letter && index === -1) {
-        console.log('hm?');
         index = letters[i].value.index;
       }
     }
@@ -56,14 +55,14 @@ class LongestWord extends Dispatcher {
    * @memberof Games/LongestWord.Client
    */
   attachEvents() {
-    console.log('>> server/games/LongestWord#attachEvents');
+    // console.log('>> server/games/LongestWord#attachEvents');
     if (this.containerEl === null) {
       this.containerEl = document.querySelector('.kwa-game-container');
     }
     this.containerEl.addEventListener('click', this.handleEventContainer);
     document.addEventListener('keypress', this.onKeyPress);
     document.addEventListener('keydown', this.onKeyDown);
-    console.log('>> server/games/LongestWord#attachEvents');
+    // console.log('>> server/games/LongestWord#attachEvents');
   }
 
   /**
@@ -144,7 +143,7 @@ class LongestWord extends Dispatcher {
     if (this.isValidInput(word) === false) {
       return;
     }
-    console.log('server/games/LongestWord#input word', word);
+    // console.log('server/games/LongestWord#input word', word);
     this.socket.emit('game.input', { input: word, playerId: this.playerId });
     // this.updateState(index);
   }
@@ -154,7 +153,7 @@ class LongestWord extends Dispatcher {
   }
 
   onKeyPress({ keyCode }) {
-    console.log('server/games/LongestWord#onKeyPress keyCode', keyCode);
+    // console.log('server/games/LongestWord#onKeyPress keyCode', keyCode);
     if (keyCode === 13) {
       this.input();
       return;
@@ -181,7 +180,7 @@ class LongestWord extends Dispatcher {
     const letters = this.state
       .filter((l) => l.type === 'rm-letter')
       .sort((a, b) => a.value.position - b.value.position);
-    console.log('server/games/LongestWord#removeLastLetter letters', letters);
+    // console.log('server/games/LongestWord#removeLastLetter letters', letters);
     const lastLetter = letters[letters.length - 1];
     const index = lastLetter.value.index;
     this.updateState(index);
