@@ -133,6 +133,8 @@ class LongestWord {
    * @param {String} input
    */
   isSafeInput(input) {
+    console.log('isSafeInput:', input)
+    console.log('this.letters', this.letters)
     let isSafe = true;
     const letters = JSON.parse(JSON.stringify(this.letters));
     const inputAr = input.split('');
