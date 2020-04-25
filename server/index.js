@@ -79,11 +79,14 @@ io.on('connect', (socket) => {
     socket.on('disconnect', () => {
       // A player has disconnected, remove him
       const numPlayers = match.removeByPlayerId(player.id)
-      // If removable leads to no players in game,
+      // If removal leads to no players in game,
       if(!numPlayers){
 	// remove game too
 	matchMgr.removeMatchById(match.id)
 	// and clean namespace
+	// - Force removal of all connections, to be sure
+	// - Remove all event listeners
+	// - Remove reference in io object
 	// There shouldn't be any remaining sockets in here
 	// But we can't leak.
 	Object.keys(nsp.connected).forEach( socketId => {
