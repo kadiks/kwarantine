@@ -194,11 +194,6 @@ class Match extends utils.Dispatcher {
   removeByPlayerId(playerId) {
     const ids = this.players.map( p => p.id )
     const index = ids.indexOf(playerId)
-/*
-    if (index < 0) {
-      return;
-    }
-*/
     if(index !== -1){
       this.players.splice(index, 1);
     }
