@@ -190,12 +190,19 @@ class Match extends utils.Dispatcher {
     this.socket.broadcast.emit(eventName, value);
   }
 
+  // Returns the number of players remaining after ?deletion
   removeByPlayerId(playerId) {
-    const index = this.players.indexOf(playerId);
+    const ids = this.players.map( p => p.id )
+    const index = ids.indexOf(playerId)
+/*
     if (index < 0) {
       return;
     }
-    this.players.splice(index, 1);
+*/
+    if(index !== -1){
+      this.players.splice(index, 1);
+    }
+    return this.players.length
   }
 
   setGames(games) {

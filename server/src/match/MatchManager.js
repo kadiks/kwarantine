@@ -54,7 +54,8 @@ class MatchManager {
     const ms = this.matches;
 
     for (let index = 0; index < ms.length; index++) {
-      if (ms[index].players.includes(playerId)) {
+      const ids = ms[index].match.players.map( p => p.id )
+      if (ids.includes(playerId)) {
         match = ms[index];
         break;
       }

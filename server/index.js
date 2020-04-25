@@ -76,7 +76,14 @@ io.on('connect', (socket) => {
     });
     match.addPlayer(player);
     match.attachConnectEvents(player);
+    socket.on('disconnect', () => {
+      //console.log('player.id', player.id)
+      //console.log(matchMgr.getMatchByPlayerId(player.id))
+      const r = match.removeByPlayerId(player.id)
+      console.log('r:', r)
+    })
   });
+  
   socket.on('disconnect', () => {
     console.log('main disconnect');
     // TODO: check playerId and find game from that player
