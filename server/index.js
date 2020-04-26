@@ -1,21 +1,44 @@
 require('dotenv').config();
 // General Imports & Constants
+const fs = require('fs');
 const apiversion = '0.0.1';
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
-const port = process.env.PORT;
+const sslOpts = {
+  key: fs.readFileSync('./certs/private.key'),
+  cert: fs.readFileSync('./certs/certificate.crt'),
+  ca: fs.readFileSync('./certs/ca_bundle.crt'),
+};
+const http = require('http');
+const https = require('https').createServer(app);
+const io = require('socket.io')(https);
+const env = process.env.NODE_ENV || 'dev';
+const port = process.env.PORT || 3000;
+const portSsl = process.env.PORT_SSL || 3000;
+
 const utils = require('./src/utils');
 const browserify = require('browserify-middleware');
 const { uuid } = require('uuidv4');
 // Match imports
 const { Match, MatchManager, Player } = require('./src/match');
 // Domain Constants
-const numRounds = 1;
+const numRounds = 5;
 
 const matchMgr = new MatchManager().getInstance();
+
+if (env === 'production') {
+  // https://stackoverflow.com/a/49176816
+  app.use(function (req, res, next) {
+    if (req.secure) {
+      // request was via https, so do no special handling
+      next();
+    } else {
+      // request was via http, so redirect to https
+      res.redirect('https://' + req.headers.host + req.url);
+    }
+  });
+}
 
 if (process.env.NODE_ENV !== 'prod') {
   app.use(cors());
@@ -41,7 +64,6 @@ app.use(
 );
 
 app.use('/', express.static('public'));
-
 
 // Connects from the host.com/match page
 io.on('connect', (socket) => {
@@ -81,26 +103,26 @@ io.on('connect', (socket) => {
     match.attachConnectEvents(player);
     socket.on('disconnect', () => {
       // A player has disconnected, remove him
-      const numPlayers = match.removeByPlayerId(player.id)
+      const numPlayers = match.removeByPlayerId(player.id);
       // If removal leads to no players in game,
-      if(!numPlayers){
-	// remove game too
-	matchMgr.removeMatchById(match.id)
-	// and clean namespace
-	// - Force removal of all connections, to be sure
-	// - Remove all event listeners
-	// - Remove reference in io object
-	// There shouldn't be any remaining sockets in here
-	// But we can't leak.
-	Object.keys(nsp.connected).forEach( socketId => {
-	  nsp.connected[socketId].disconnect();
-	})
-	nsp.removeAllListeners();
-	delete io.nsps[ns]
+      if (!numPlayers) {
+        // remove game too
+        matchMgr.removeMatchById(match.id);
+        // and clean namespace
+        // - Force removal of all connections, to be sure
+        // - Remove all event listeners
+        // - Remove reference in io object
+        // There shouldn't be any remaining sockets in here
+        // But we can't leak.
+        Object.keys(nsp.connected).forEach((socketId) => {
+          nsp.connected[socketId].disconnect();
+        });
+        nsp.removeAllListeners();
+        delete io.nsps[ns];
       }
-    })
+    });
   });
-  
+
   socket.on('disconnect', () => {
     console.log('main disconnect');
     // TODO: check playerId and find game from that player
@@ -109,4 +131,16 @@ io.on('connect', (socket) => {
   });
 });
 
-http.listen(port, () => console.log(`listening on port: ${port}`));
+// if (env === 'production') {
+http.createServer(app).listen(port);
+https.listen(portSsl, () => {
+  console.log('Server started on port SSL:', portSsl, 'and port:', port);
+});
+// } else {
+//   app.listen(port, () => {
+//     console.log('Server started on port:', port);
+//   });
+// }
+
+// http.createServer(app);
+// http.listen(port, () => console.log(`listening on port: ${port}`));

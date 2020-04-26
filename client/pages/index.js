@@ -18,16 +18,23 @@ export default function Home() {
     <div className="container">
       <div className="row">
         <div className="col-12 text-center mt-3 mb-3">
-          <div className="logo" onClick={() => {
-            const audio = new Audio('/sounds/laugh.mp3');
-            audio.play();
-          }}>
+          <div
+            className="logo"
+            onClick={() => {
+              const audio = new Audio('/sounds/laugh.mp3');
+              audio.play();
+            }}
+          >
             <img className="img-fluid" src="/img/logo.png" />
           </div>
           <BrandName />
         </div>
         <div className="col-12 text-center">
-          <Body>Vous êtes infecté(e). Vous devez vous mettre en quarantaine avec d'autres personnes malades pour que vous ne contaminiez personne</Body>
+          <Body>
+            Vous êtes infecté(e). Vous devez vous mettre en quarantaine avec
+            d'autres personnes malades pour que vous ne contaminiez pas la
+            population saine.
+          </Body>
           <ButtonLink href="/match">Se confiner</ButtonLink>
         </div>
       </div>
