@@ -11,16 +11,19 @@ const sslOpts = {
   ca: fs.readFileSync('./certs/ca_bundle.crt'),
 };
 const http = require('http');
-const https = require('https').createServer(sslOpts, app);
+const https = require('https');
 const env = process.env.NODE_ENV || 'dev';
 const port = process.env.PORT || 3000;
 const portSsl = process.env.PORT_SSL || 3000;
 
-let io = require('socket.io')(https);
+let server;
 
-if (env !== 'production') {
-  io = require('socket.io')(http);
+if (env === 'production') {
+  server = https.createServer(sslOpts, app);
+} else {
+  server = http.createServer(app);
 }
+const io = require('socket.io')(server);
 
 const utils = require('./src/utils');
 const browserify = require('browserify-middleware');
@@ -43,9 +46,7 @@ if (env === 'production') {
       res.redirect('https://' + req.headers.host + req.url);
     }
   });
-}
-
-if (process.env.NODE_ENV !== 'prod') {
+} else {
   app.use(cors());
 }
 
@@ -136,16 +137,16 @@ io.on('connect', (socket) => {
   });
 });
 
-// if (env === 'production') {
-http.createServer(app).listen(port);
-https.listen(portSsl, () => {
-  console.log('Server started on port SSL:', portSsl, 'and port:', port);
-});
-// } else {
-//   app.listen(port, () => {
-//     console.log('Server started on port:', port);
-//   });
-// }
+if (env === 'production') {
+  http.createServer(app).listen(port);
+  server.listen(portSsl, () => {
+    console.log('Server started on port SSL:', portSsl, 'and port:', port);
+  });
+} else {
+  server.listen(port, () => {
+    console.log('Server started on port:', port);
+  });
+}
 
 // http.createServer(app);
 // http.listen(port, () => console.log(`listening on port: ${port}`));
