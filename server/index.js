@@ -11,11 +11,16 @@ const sslOpts = {
   ca: fs.readFileSync('./certs/ca_bundle.crt'),
 };
 const http = require('http');
-const https = require('https').createServer(app);
-const io = require('socket.io')(https);
+const https = require('https').createServer(sslOpts, app);
 const env = process.env.NODE_ENV || 'dev';
 const port = process.env.PORT || 3000;
 const portSsl = process.env.PORT_SSL || 3000;
+
+let io = require('socket.io')(https);
+
+if (env !== 'production') {
+  io = require('socket.io')(http);
+}
 
 const utils = require('./src/utils');
 const browserify = require('browserify-middleware');
