@@ -6,15 +6,20 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const sslOpts = {
-  key: fs.readFileSync('./certs/private.key'),
-  cert: fs.readFileSync('./certs/certificate.crt'),
-  ca: fs.readFileSync('./certs/ca_bundle.crt'),
+  // key: fs.readFileSync('./certs/private.key'),
+  // cert: fs.readFileSync('./certs/certificate.crt'),
+  // ca: fs.readFileSync('./certs/ca_bundle.crt'),
+  key: fs.readFileSync('./certs/privkey.pem'),
+  cert: fs.readFileSync('./certs/cert.pem'),
+  ca: fs.readFileSync('./certs/chain.pem')
 };
 const http = require('http');
 const https = require('https');
-const env = process.env.NODE_ENV || 'dev';
+const isHttpOnly = process.env.IS_HTTP_ONLY || false;
+let env = isHttpOnly ? 'dev' : process.env.NODE_ENV || 'dev';
 const port = process.env.PORT || 3000;
 const portSsl = process.env.PORT_SSL || 3000;
+
 
 let server;
 

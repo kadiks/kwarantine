@@ -132,7 +132,7 @@ class Match extends utils.Dispatcher {
     // console.log('match/Match#handleInput this.roundIndex', this.roundIndex);
     // console.log('match/Match#handleInput game', game);
     if (game.isSafeInput(input) === false) {
-      console.log('Input is not safe');
+      console.log(`Input [input] is not safe`);
       return;
     }
 
