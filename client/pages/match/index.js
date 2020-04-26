@@ -101,6 +101,7 @@ class MatchPage extends React.Component {
     //   'pages/match#startRound this.matchConnect.playerId',
     //   this.matchConnect.playerId
     // );
+    this.state.game.removeEvents();
     this.setState(
       {
         game: new kwa.games[round.className]({
