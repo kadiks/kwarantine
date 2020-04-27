@@ -13,7 +13,7 @@ class LongestWord {
    */
   constructor({
     numLetters = 10,
-    duration = 30,
+    duration = 20,
     playerIds = [],
     letters = [],
   } = {}) {

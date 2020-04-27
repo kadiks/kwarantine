@@ -1,6 +1,6 @@
 require('dotenv').config();
 // General Imports & Constants
-const fs = require('fs');
+const fs = require('fs-extra');
 const apiversion = '0.0.1';
 const express = require('express');
 const cors = require('cors');
@@ -34,8 +34,6 @@ const browserify = require('browserify-middleware');
 const { uuid } = require('uuidv4');
 // Match imports
 const { Match, MatchManager, Player } = require('./src/match');
-// Domain Constants
-const numRounds = 10;
 
 const matchMgr = new MatchManager().getInstance();
 
@@ -63,14 +61,35 @@ app.use(
 
 app.use('/', express.static('public'));
 
+const loadSettings = async () => {
+  const settingsFilename = env !== 'production' ? 'settings_dev' : 'settings';
+  const content = await fs.readFile(`./${settingsFilename}.json`, 'utf8');
+  const settings = JSON.parse(content);
+  const selectedGames = settings.games;
+  const numRounds = settings.numRounds;
+
+  console.log('#loadSettings settings', settings);
+  
+  return {
+    selectedGames,
+    numRounds
+  };
+};
+
 // Connects from the host.com/match page
-io.on('connect', (socket) => {
+io.on('connect', async (socket) => {
   matchMgr.setIo(io);
   console.log('connected on main nsp');
 
   let currentMatch = matchMgr.getWaitingMatch();
+  console.log('currentMatch', currentMatch);
   if (currentMatch === null || currentMatch.isWaiting === false) {
-    const match = new Match({ id: uuid(), numRounds });
+    const { selectedGames, numRounds } = await loadSettings();
+    const match = new Match({
+      id: uuid(),
+      numRounds,
+      selectedGames
+    });
     matchMgr.addMatch(match);
 
     currentMatch = match;

@@ -4,7 +4,7 @@ const Games = require('../games');
 const allServerGames = Object.keys(Games).map((g) => Games[g].Server);
 
 class Match extends utils.Dispatcher {
-  constructor({ id, numRounds = 14, maxPlayers = 1 } = {}) {
+  constructor({ id, numRounds = 14, maxPlayers = 1, selectedGames = [] } = {}) {
     super();
     this.gameOn = false;
     this.id = id;
@@ -16,6 +16,7 @@ class Match extends utils.Dispatcher {
     this.players = [];
     this.scores = [];
     this.sockets = {};
+    this.selectedGames = selectedGames;
 
     this.durations = {
       midGameScoreboard: 10,
@@ -152,14 +153,18 @@ class Match extends utils.Dispatcher {
   initializeGames() {
     // TODO: create MatchManager#generateRounds()
     const games = [...new Array(this.numRounds)].map((_) => {
-      return new (utils.random.pick(allServerGames))({
+      const selectedGames = allServerGames.filter(a => {
+        // Gets only the game from the settings
+        return this.selectedGames.includes(a.name);
+      });
+      return new (utils.random.pick(selectedGames))({
         playerIds: this.players.map((p) => p.id),
       });
     });
     const rounds = games.map((g) => g.getData());
     this.rounds = rounds;
     this.games = games;
-    console.log();
+    console.log(rounds.forEach(r => console.log(r.className, r.data)));
     // match.setGames(selectedGames);
     // match.setRounds(rounds);
   }
