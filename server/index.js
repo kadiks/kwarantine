@@ -11,7 +11,7 @@ const sslOpts = {
   // ca: fs.readFileSync('./certs/ca_bundle.crt'),
   key: fs.readFileSync('./certs/privkey.pem'),
   cert: fs.readFileSync('./certs/cert.pem'),
-  ca: fs.readFileSync('./certs/chain.pem')
+  ca: fs.readFileSync('./certs/chain.pem'),
 };
 const http = require('http');
 const https = require('https');
@@ -19,7 +19,6 @@ const isHttpOnly = process.env.IS_HTTP_ONLY || false;
 let env = isHttpOnly ? 'dev' : process.env.NODE_ENV || 'dev';
 const port = process.env.PORT || 3000;
 const portSsl = process.env.PORT_SSL || 3000;
-
 
 let server;
 
@@ -36,7 +35,7 @@ const { uuid } = require('uuidv4');
 // Match imports
 const { Match, MatchManager, Player } = require('./src/match');
 // Domain Constants
-const numRounds = 5;
+const numRounds = 2;
 
 const matchMgr = new MatchManager().getInstance();
 
