@@ -18,18 +18,25 @@ import Icon from '../src/components/core/Icon';
 
 class Home extends React.Component {
 
-  static async getInitialProps() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      stats: {}
+    };
+  }
+
+  async componentDidMount() {
     const url = `${Config.API_URL}${Config.API_ENDPOINT}/stats`;
     const res = await fetch(url);
     const stats = await res.json();
-    return {
+    this.setState({
       stats
-    };
+    });
   }
 
 
   render() {
-    const { stats } = this.props;
+    const { stats = {}} = this.state;
     return (
       <div className="container">
         <div className="row">
