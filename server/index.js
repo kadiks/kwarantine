@@ -62,7 +62,7 @@ app.use(
 app.use('/', express.static('public'));
 
 const loadSettings = async () => {
-  const settingsFilename = env !== 'production' ? 'settings_dev' : 'settings';
+  const settingsFilename = process.env.NODE_ENV !== 'production' ? 'settings_dev' : 'settings';
   const content = await fs.readFile(`./${settingsFilename}.json`, 'utf8');
   const settings = JSON.parse(content);
 

@@ -2,6 +2,6 @@
     "games": [
         "LongestWord"
     ],
-    "rounds": 10,
+    "numRounds": 10,
     "maxPlayers": 2
 }
