@@ -35,7 +35,7 @@ const { uuid } = require('uuidv4');
 // Match imports
 const { Match, MatchManager, Player } = require('./src/match');
 // Domain Constants
-const numRounds = 2;
+const numRounds = 10;
 
 const matchMgr = new MatchManager().getInstance();
 
@@ -53,18 +53,6 @@ if (env === 'production') {
 } else {
   app.use(cors());
 }
-
-app.get('/api', (req, res) => {
-  res.json({ name: 'kwarantine', version: apiversion });
-});
-
-app.get('/api/go', (req, res) => {
-  const rounds = [...new Array(numRounds)].map(() => {
-    return new (utils.random.pick(games))();
-  });
-  const gameData = rounds.map((g) => g.getData());
-  res.json(gameData);
-});
 
 app.use(
   '/assets/games.js',
