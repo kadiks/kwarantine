@@ -65,14 +65,13 @@ const loadSettings = async () => {
   const settingsFilename = env !== 'production' ? 'settings_dev' : 'settings';
   const content = await fs.readFile(`./${settingsFilename}.json`, 'utf8');
   const settings = JSON.parse(content);
-  const selectedGames = settings.games;
-  const numRounds = settings.numRounds;
 
-  console.log('#loadSettings settings', settings);
+  // console.log('#loadSettings settings', settings);
   
   return {
-    selectedGames,
-    numRounds
+    selectedGames: settings.games,
+    numRounds: settings.numRounds,
+    maxPlayers: settings.maxPlayers
   };
 };
 
@@ -84,11 +83,12 @@ io.on('connect', async (socket) => {
   let currentMatch = matchMgr.getWaitingMatch();
   console.log('currentMatch', currentMatch);
   if (currentMatch === null || currentMatch.isWaiting === false) {
-    const { selectedGames, numRounds } = await loadSettings();
+    const { selectedGames, numRounds, maxPlayers } = await loadSettings();
     const match = new Match({
       id: uuid(),
       numRounds,
-      selectedGames
+      selectedGames,
+      maxPlayers
     });
     matchMgr.addMatch(match);
 
