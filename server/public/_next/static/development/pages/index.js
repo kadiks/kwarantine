@@ -1973,7 +1973,13 @@ var Link = /*#__PURE__*/function (_react$Component) {
       // "<page>/index.html" directly.
 
 
-      if (false) { var rewriteUrlForNextExport; }
+      if (true) {
+        var rewriteUrlForNextExport = __webpack_require__(/*! ../next-server/lib/router/rewrite-url-for-export */ "./node_modules/next/dist/next-server/lib/router/rewrite-url-for-export.js").rewriteUrlForNextExport;
+
+        if (props.href && typeof __NEXT_DATA__ !== 'undefined' && __NEXT_DATA__.nextExport) {
+          props.href = rewriteUrlForNextExport(props.href);
+        }
+      }
 
       return _react["default"].cloneElement(child, props);
     }
@@ -2326,6 +2332,49 @@ if (true) {
 
 /***/ }),
 
+/***/ "./node_modules/next/dist/next-server/lib/router/rewrite-url-for-export.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/next/dist/next-server/lib/router/rewrite-url-for-export.js ***!
+  \*********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _slicedToArray = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/slicedToArray.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function rewriteUrlForNextExport(url) {
+  var _url$split = url.split('#'),
+      _url$split2 = _slicedToArray(_url$split, 2),
+      pathname = _url$split2[0],
+      hash = _url$split2[1]; // tslint:disable-next-line
+
+
+  var _pathname$split = pathname.split('?'),
+      _pathname$split2 = _slicedToArray(_pathname$split, 2),
+      path = _pathname$split2[0],
+      qs = _pathname$split2[1];
+
+  if (path) {
+    path = path.replace(/\/$/, ''); // Append a trailing slash if this path does not have an extension
+
+    if (!/\.[^/]+\/?$/.test(path)) path += "/";
+  }
+
+  if (qs) path += '?' + qs;
+  if (hash) path += '#' + hash;
+  return path;
+}
+
+exports.rewriteUrlForNextExport = rewriteUrlForNextExport;
+
+/***/ }),
+
 /***/ "./node_modules/next/dist/next-server/lib/router/router.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/next/dist/next-server/lib/router/router.js ***!
@@ -2659,7 +2708,14 @@ var Router = /*#__PURE__*/function () {
         as = addBasePath(as); // Add the ending slash to the paths. So, we can serve the
         // "<page>/index.html" directly for the SSR page.
 
-        if (false) { var rewriteUrlForNextExport; }
+        if (true) {
+          var rewriteUrlForNextExport = __webpack_require__(/*! ./rewrite-url-for-export */ "./node_modules/next/dist/next-server/lib/router/rewrite-url-for-export.js").rewriteUrlForNextExport; // @ts-ignore this is temporarily global (attached to window)
+
+
+          if (__NEXT_DATA__.nextExport) {
+            as = rewriteUrlForNextExport(as);
+          }
+        }
 
         _this2.abortComponentLoad(as); // If the url change is only related to a hash change
         // We should not proceed. We should only change the state.
@@ -3122,9 +3178,11 @@ var Router = /*#__PURE__*/function () {
   }], [{
     key: "_rewriteUrlForNextExport",
     value: function _rewriteUrlForNextExport(url) {
-      if (false) { var rewriteUrlForNextExport; } else {
-        return url;
-      }
+      if (true) {
+        var rewriteUrlForNextExport = __webpack_require__(/*! ./rewrite-url-for-export */ "./node_modules/next/dist/next-server/lib/router/rewrite-url-for-export.js").rewriteUrlForNextExport;
+
+        return rewriteUrlForNextExport(url);
+      } else {}
     }
   }]);
 
@@ -7691,14 +7749,14 @@ function Home() {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 25,
+      lineNumber: 28,
       columnNumber: 13
     }
   })), __jsx(_src_components_BrandName__WEBPACK_IMPORTED_MODULE_6__["default"], {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 27,
+      lineNumber: 30,
       columnNumber: 11
     }
   })), __jsx("div", {
@@ -7706,22 +7764,22 @@ function Home() {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 29,
+      lineNumber: 32,
       columnNumber: 9
     }
   }, __jsx(_src_components_core_text__WEBPACK_IMPORTED_MODULE_2__["Body"], {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 30,
+      lineNumber: 33,
       columnNumber: 11
     }
-  }, "Vous \xEAtes infect\xE9(e). Vous devez vous mettre en quarantaine avec d'autres personnes malades pour que vous ne contaminiez personne"), __jsx(_src_components_core_button__WEBPACK_IMPORTED_MODULE_3__["Link"], {
+  }, "Vous \xEAtes infect\xE9(e). Vous devez vous mettre en quarantaine avec d'autres personnes malades pour que vous ne contaminiez pas la population saine."), __jsx(_src_components_core_button__WEBPACK_IMPORTED_MODULE_3__["Link"], {
     href: "/match",
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 31,
+      lineNumber: 38,
       columnNumber: 11
     }
   }, "Se confiner"))));
@@ -7747,18 +7805,18 @@ var dev = {
 
 };
 var test = {
-  API_URL: 'http://192.168.1.11:3002',
-  // API_URL: 'http://localhost:3002',
+  // API_URL: 'http://192.168.1.48:3001',
+  API_URL: 'http://localhost:3001',
   // API_URL: '',
   API_ENDPOINT: '/api',
   API_EXTENSION: '',
   GA_TRACKING_ID: ''
 };
 var prod = {
-  API_URL: 'https://kwarantine.fr',
+  API_URL: 'http://kwarantine.fr',
   API_ENDPOINT: '/api',
   API_EXTENSION: '',
-  GA_TRACKING_ID: ''
+  GA_TRACKING_ID: 'UA-12326200-18'
 };
 var env = 'test';
 var Config = {};

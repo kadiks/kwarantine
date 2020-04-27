@@ -18795,20 +18795,20 @@ var assign=Object.assign.bind(Object);function g(){return assign;}Object.defineP
 
 /***/ }),
 
-/***/ "./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Fmatch&absolutePagePath=%2FUsers%2Fjenaic%2FDocuments%2Fcode%2Fkwarantine%2Fclient%2Fpages%2Fmatch.js!./":
-/*!***********************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Fmatch&absolutePagePath=%2FUsers%2Fjenaic%2FDocuments%2Fcode%2Fkwarantine%2Fclient%2Fpages%2Fmatch.js ***!
-  \***********************************************************************************************************************************************************************************************/
+/***/ "./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Fmatch&absolutePagePath=%2FUsers%2Fjenaic%2FDocuments%2Fcode%2Fkwarantine%2Fclient%2Fpages%2Fmatch%2Findex.js!./":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Fmatch&absolutePagePath=%2FUsers%2Fjenaic%2FDocuments%2Fcode%2Fkwarantine%2Fclient%2Fpages%2Fmatch%2Findex.js ***!
+  \*******************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
     (window.__NEXT_P=window.__NEXT_P||[]).push(["/match", function() {
-      var mod = __webpack_require__(/*! ./pages/match.js */ "./pages/match.js")
+      var mod = __webpack_require__(/*! ./pages/match/index.js */ "./pages/match/index.js")
       if(true) {
-        module.hot.accept(/*! ./pages/match.js */ "./pages/match.js", function() {
+        module.hot.accept(/*! ./pages/match/index.js */ "./pages/match/index.js", function() {
           if(!next.router.components["/match"]) return
-          var updatedPage = __webpack_require__(/*! ./pages/match.js */ "./pages/match.js")
+          var updatedPage = __webpack_require__(/*! ./pages/match/index.js */ "./pages/match/index.js")
           next.router.update("/match", updatedPage)
         })
       }
@@ -19131,7 +19131,13 @@ var Link = /*#__PURE__*/function (_react$Component) {
       // "<page>/index.html" directly.
 
 
-      if (false) { var rewriteUrlForNextExport; }
+      if (true) {
+        var rewriteUrlForNextExport = __webpack_require__(/*! ../next-server/lib/router/rewrite-url-for-export */ "./node_modules/next/dist/next-server/lib/router/rewrite-url-for-export.js").rewriteUrlForNextExport;
+
+        if (props.href && typeof __NEXT_DATA__ !== 'undefined' && __NEXT_DATA__.nextExport) {
+          props.href = rewriteUrlForNextExport(props.href);
+        }
+      }
 
       return _react["default"].cloneElement(child, props);
     }
@@ -19484,6 +19490,49 @@ if (true) {
 
 /***/ }),
 
+/***/ "./node_modules/next/dist/next-server/lib/router/rewrite-url-for-export.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/next/dist/next-server/lib/router/rewrite-url-for-export.js ***!
+  \*********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _slicedToArray = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/slicedToArray.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function rewriteUrlForNextExport(url) {
+  var _url$split = url.split('#'),
+      _url$split2 = _slicedToArray(_url$split, 2),
+      pathname = _url$split2[0],
+      hash = _url$split2[1]; // tslint:disable-next-line
+
+
+  var _pathname$split = pathname.split('?'),
+      _pathname$split2 = _slicedToArray(_pathname$split, 2),
+      path = _pathname$split2[0],
+      qs = _pathname$split2[1];
+
+  if (path) {
+    path = path.replace(/\/$/, ''); // Append a trailing slash if this path does not have an extension
+
+    if (!/\.[^/]+\/?$/.test(path)) path += "/";
+  }
+
+  if (qs) path += '?' + qs;
+  if (hash) path += '#' + hash;
+  return path;
+}
+
+exports.rewriteUrlForNextExport = rewriteUrlForNextExport;
+
+/***/ }),
+
 /***/ "./node_modules/next/dist/next-server/lib/router/router.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/next/dist/next-server/lib/router/router.js ***!
@@ -19817,7 +19866,14 @@ var Router = /*#__PURE__*/function () {
         as = addBasePath(as); // Add the ending slash to the paths. So, we can serve the
         // "<page>/index.html" directly for the SSR page.
 
-        if (false) { var rewriteUrlForNextExport; }
+        if (true) {
+          var rewriteUrlForNextExport = __webpack_require__(/*! ./rewrite-url-for-export */ "./node_modules/next/dist/next-server/lib/router/rewrite-url-for-export.js").rewriteUrlForNextExport; // @ts-ignore this is temporarily global (attached to window)
+
+
+          if (__NEXT_DATA__.nextExport) {
+            as = rewriteUrlForNextExport(as);
+          }
+        }
 
         _this2.abortComponentLoad(as); // If the url change is only related to a hash change
         // We should not proceed. We should only change the state.
@@ -20280,9 +20336,11 @@ var Router = /*#__PURE__*/function () {
   }], [{
     key: "_rewriteUrlForNextExport",
     value: function _rewriteUrlForNextExport(url) {
-      if (false) { var rewriteUrlForNextExport; } else {
-        return url;
-      }
+      if (true) {
+        var rewriteUrlForNextExport = __webpack_require__(/*! ./rewrite-url-for-export */ "./node_modules/next/dist/next-server/lib/router/rewrite-url-for-export.js").rewriteUrlForNextExport;
+
+        return rewriteUrlForNextExport(url);
+      } else {}
     }
   }]);
 
@@ -25718,10 +25776,10 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./pages/match.js":
-/*!************************!*\
-  !*** ./pages/match.js ***!
-  \************************/
+/***/ "./pages/match/index.js":
+/*!******************************!*\
+  !*** ./pages/match/index.js ***!
+  \******************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -25742,16 +25800,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! next/router */ "./node_modules/next/dist/client/router.js");
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var _src_Config__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../src/Config */ "./src/Config.js");
-/* harmony import */ var _src_components_core_text__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../src/components/core/text */ "./src/components/core/text/index.js");
-/* harmony import */ var _src_components_core_button__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../src/components/core/button */ "./src/components/core/button/index.js");
-/* harmony import */ var _src_components_navigation__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../src/components/navigation */ "./src/components/navigation/index.js");
-/* harmony import */ var _src_components_player__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../src/components/player */ "./src/components/player/index.js");
-/* harmony import */ var _src_components_match__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../src/components/match */ "./src/components/match/index.js");
-/* harmony import */ var _src_components_MatchComp__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../src/components/MatchComp */ "./src/components/MatchComp.js");
-/* harmony import */ var _src_utils_styles__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../src/utils/styles */ "./src/utils/styles.js");
-/* harmony import */ var _src_components_core_Icon__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../src/components/core/Icon */ "./src/components/core/Icon.js");
-/* harmony import */ var _src_utils_MatchConnect__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../src/utils/MatchConnect */ "./src/utils/MatchConnect.js");
+/* harmony import */ var _src_Config__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../src/Config */ "./src/Config.js");
+/* harmony import */ var _src_components_core_text__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../src/components/core/text */ "./src/components/core/text/index.js");
+/* harmony import */ var _src_components_core_button__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../src/components/core/button */ "./src/components/core/button/index.js");
+/* harmony import */ var _src_components_navigation__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../src/components/navigation */ "./src/components/navigation/index.js");
+/* harmony import */ var _src_components_player__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../src/components/player */ "./src/components/player/index.js");
+/* harmony import */ var _src_components_match__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../src/components/match */ "./src/components/match/index.js");
+/* harmony import */ var _src_components_MatchComp__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../src/components/MatchComp */ "./src/components/MatchComp.js");
+/* harmony import */ var _src_utils_styles__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../src/utils/styles */ "./src/utils/styles.js");
+/* harmony import */ var _src_components_core_Icon__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../src/components/core/Icon */ "./src/components/core/Icon.js");
+/* harmony import */ var _src_utils_MatchConnect__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../../src/utils/MatchConnect */ "./src/utils/MatchConnect.js");
 /* harmony import */ var _src_utils_MatchConnect__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(_src_utils_MatchConnect__WEBPACK_IMPORTED_MODULE_20__);
 
 
@@ -25761,7 +25819,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _jsxFileName = "/Users/jenaic/Documents/code/kwarantine/client/pages/match.js";
+var _jsxFileName = "/Users/jenaic/Documents/code/kwarantine/client/pages/match/index.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement;
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -25894,6 +25952,10 @@ var MatchPage = /*#__PURE__*/function (_React$Component) {
       //   'pages/match#startRound this.matchConnect.playerId',
       //   this.matchConnect.playerId
       // );
+      if (this.state.game !== null) {
+        this.state.game.removeEvents();
+      }
+
       this.setState({
         game: new kwa.games[round.className](_objectSpread({}, round.data, {
           playerId: this.matchConnect.playerId,
@@ -25930,7 +25992,7 @@ var MatchPage = /*#__PURE__*/function (_React$Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 133,
+          lineNumber: 136,
           columnNumber: 7
         }
       }, __jsx("div", {
@@ -25938,7 +26000,7 @@ var MatchPage = /*#__PURE__*/function (_React$Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 134,
+          lineNumber: 137,
           columnNumber: 9
         }
       }, __jsx(_src_components_MatchComp__WEBPACK_IMPORTED_MODULE_17__["default"], {
@@ -25949,7 +26011,7 @@ var MatchPage = /*#__PURE__*/function (_React$Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 135,
+          lineNumber: 138,
           columnNumber: 11
         }
       })));
@@ -25981,18 +26043,18 @@ var dev = {
 
 };
 var test = {
-  API_URL: 'http://192.168.1.11:3002',
-  // API_URL: 'http://localhost:3002',
+  // API_URL: 'http://192.168.1.48:3001',
+  API_URL: 'http://localhost:3001',
   // API_URL: '',
   API_ENDPOINT: '/api',
   API_EXTENSION: '',
   GA_TRACKING_ID: ''
 };
 var prod = {
-  API_URL: 'https://kwarantine.fr',
+  API_URL: 'http://kwarantine.fr',
   API_ENDPOINT: '/api',
   API_EXTENSION: '',
-  GA_TRACKING_ID: ''
+  GA_TRACKING_ID: 'UA-12326200-18'
 };
 var env = 'test';
 var Config = {};
@@ -28924,6 +28986,7 @@ var MatchConnect = /*#__PURE__*/function (_Dispatcher) {
     key: "goToLastScoreboard",
     value: function goToLastScoreboard(results) {
       console.log('>> utils/Api#goToLastScoreboard');
+      this.socket.disconnect();
       this.dispatch(this.evts.MATCH_END, results);
     }
   }, {
@@ -28970,6 +29033,7 @@ var MatchConnect = /*#__PURE__*/function (_Dispatcher) {
           resolve();
         });
         socket.on('disconnect', function () {
+          console.log('socket on disconnect');
           socket.removeAllListeners();
         });
       });
@@ -28977,8 +29041,7 @@ var MatchConnect = /*#__PURE__*/function (_Dispatcher) {
   }, {
     key: "removeEvents",
     value: function removeEvents() {
-      // console.log('>> utils/Api#removeEvents');
-      this.socket.removeAllListeners();
+      console.log('>> utils/Api#removeEvents'); // this.socket.removeAllListeners();
     }
   }, {
     key: "setRounds",
@@ -29093,14 +29156,14 @@ var styles = {
 
 /***/ }),
 
-/***/ 3:
-/*!***************************************************************************************************************************************************!*\
-  !*** multi next-client-pages-loader?page=%2Fmatch&absolutePagePath=%2FUsers%2Fjenaic%2FDocuments%2Fcode%2Fkwarantine%2Fclient%2Fpages%2Fmatch.js ***!
-  \***************************************************************************************************************************************************/
+/***/ 2:
+/*!***********************************************************************************************************************************************************!*\
+  !*** multi next-client-pages-loader?page=%2Fmatch&absolutePagePath=%2FUsers%2Fjenaic%2FDocuments%2Fcode%2Fkwarantine%2Fclient%2Fpages%2Fmatch%2Findex.js ***!
+  \***********************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! next-client-pages-loader?page=%2Fmatch&absolutePagePath=%2FUsers%2Fjenaic%2FDocuments%2Fcode%2Fkwarantine%2Fclient%2Fpages%2Fmatch.js! */"./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Fmatch&absolutePagePath=%2FUsers%2Fjenaic%2FDocuments%2Fcode%2Fkwarantine%2Fclient%2Fpages%2Fmatch.js!./");
+module.exports = __webpack_require__(/*! next-client-pages-loader?page=%2Fmatch&absolutePagePath=%2FUsers%2Fjenaic%2FDocuments%2Fcode%2Fkwarantine%2Fclient%2Fpages%2Fmatch%2Findex.js! */"./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Fmatch&absolutePagePath=%2FUsers%2Fjenaic%2FDocuments%2Fcode%2Fkwarantine%2Fclient%2Fpages%2Fmatch%2Findex.js!./");
 
 
 /***/ }),
@@ -29116,5 +29179,5 @@ module.exports = dll_2adc2403d89adc16ead0;
 
 /***/ })
 
-},[[3,"static/runtime/webpack.js"]]]);
+},[[2,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=match.js.map

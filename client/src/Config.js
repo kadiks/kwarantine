@@ -23,7 +23,7 @@ const prod = {
   GA_TRACKING_ID: 'UA-12326200-18',
 };
 
-const env = 'test';
+const env = 'prod';
 
 let Config = {};
 
