@@ -22,6 +22,7 @@ class Match extends utils.Dispatcher {
       midGameScoreboard: 10,
       gamePrepare: 5,
       gamePresentation: 5,
+      waitroom: 60
     };
 
     this.timers = {
@@ -29,6 +30,11 @@ class Match extends utils.Dispatcher {
     };
 
     this.handleInput = this.handleInput.bind(this);
+
+    setTimeout(() => {
+      this.maxPlayers = this.players.length;
+      this.startMatch();
+    }, this.durations.waitroom * 1000);
   }
 
   get isWaiting() {
@@ -47,15 +53,7 @@ class Match extends utils.Dispatcher {
     if (this.players.length < this.maxPlayers) {
       this.players.push(player);
       if (this.players.length === this.maxPlayers) {
-        this.gameOn = true;
-        this.initializeGames();
-        this.showGamePresentation();
-        setTimeout(() => {
-          this.showGamePrepare();
-          setTimeout(() => {
-            this.startGame();
-          }, this.durations.gamePrepare * 1000);
-        }, this.durations.gamePresentation * 1000);
+        this.startMatch();
       } else {
         const value = {
           numPlayers: this.players.length,
@@ -151,7 +149,10 @@ class Match extends utils.Dispatcher {
   }
 
   initializeGames() {
-    // TODO: create MatchManager#generateRounds()
+    utils.updateStats({
+      players: this.players.length,
+      games: this.numRounds
+    });
     const games = [...new Array(this.numRounds)].map((_) => {
       const selectedGames = allServerGames.filter(a => {
         // Gets only the game from the settings
@@ -194,6 +195,18 @@ class Match extends utils.Dispatcher {
     // this.socket.to(this.id).emit(eventName, value);
     this.socket.emit(eventName, value);
     this.socket.broadcast.emit(eventName, value);
+  }
+
+  startMatch() {
+    this.gameOn = true;
+    this.initializeGames();
+    this.showGamePresentation();
+    setTimeout(() => {
+      this.showGamePrepare();
+      setTimeout(() => {
+        this.startGame();
+      }, this.durations.gamePrepare * 1000);
+    }, this.durations.gamePresentation * 1000);
   }
 
   // Returns the number of players remaining after ?deletion

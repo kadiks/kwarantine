@@ -52,6 +52,15 @@ if (env === 'production') {
   app.use(cors());
 }
 
+app.get('/api/stats', async (req, res) => {
+  const statsPath = `${__dirname}/stats.json`;
+  // console.log('server/index statsPath', statsPath);
+
+  const content = await fs.readFile(statsPath, 'utf8');
+  const stats = JSON.parse(content);
+  res.json(stats);
+});
+
 app.use(
   '/assets/games.js',
   browserify(__dirname + '/src/games/client_bundler.js', {
@@ -81,7 +90,7 @@ io.on('connect', async (socket) => {
   console.log('connected on main nsp');
 
   let currentMatch = matchMgr.getWaitingMatch();
-  console.log('currentMatch', currentMatch);
+  // console.log('currentMatch', currentMatch);
   if (currentMatch === null || currentMatch.isWaiting === false) {
     const { selectedGames, numRounds, maxPlayers } = await loadSettings();
     const match = new Match({
