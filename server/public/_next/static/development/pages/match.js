@@ -27945,11 +27945,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../player */ "./src/components/player/index.js");
+/* harmony import */ var _core_loader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../core/loader */ "./src/components/core/loader/index.js");
 var _this = undefined,
     _jsxFileName = "/Users/jenaic/Documents/code/kwarantine/client/src/components/match/WaitRoom.js";
 
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
 
 /* harmony default export */ __webpack_exports__["default"] = (function () {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
@@ -27962,7 +27964,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 6,
+      lineNumber: 7,
       columnNumber: 5
     }
   }, __jsx("div", {
@@ -27970,14 +27972,14 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 7,
+      lineNumber: 8,
       columnNumber: 7
     }
   }, __jsx("h2", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 8,
+      lineNumber: 9,
       columnNumber: 9
     }
   }, "Salle d'attente")), __jsx("div", {
@@ -27985,14 +27987,14 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 10,
+      lineNumber: 11,
       columnNumber: 7
     }
   }, __jsx("p", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 11,
+      lineNumber: 12,
       columnNumber: 9
     }
   }, "En attente de confin\xE9s ", screenInfo.numPlayers, " / ", screenInfo.maxPlayers)), __jsx("div", {
@@ -28000,7 +28002,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 15,
+      lineNumber: 16,
       columnNumber: 7
     }
   }, __jsx(_player__WEBPACK_IMPORTED_MODULE_1__["Presentation"], {
@@ -28008,7 +28010,31 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 16,
+      lineNumber: 17,
+      columnNumber: 9
+    }
+  })), __jsx("div", {
+    className: "col-12 mt-5",
+    __self: _this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 19,
+      columnNumber: 7
+    }
+  }, "La partie d\xE9marre dans..."), __jsx("div", {
+    className: "col-12",
+    __self: _this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 22,
+      columnNumber: 7
+    }
+  }, __jsx(_core_loader__WEBPACK_IMPORTED_MODULE_2__["Countdown"], {
+    duration: 60,
+    __self: _this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 23,
       columnNumber: 9
     }
   })));
@@ -28087,53 +28113,85 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
 var Footer = function Footer() {
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      _ref$stats = _ref.stats,
+      stats = _ref$stats === void 0 ? {} : _ref$stats;
+
   return __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx("div", {
-    className: "row footer-nav-flag mt-5",
+    className: "row footer-nav text-center mb-auto mt-5",
     __self: _this,
     __source: {
       fileName: _jsxFileName,
       lineNumber: 12,
       columnNumber: 13
     }
-  }), __jsx("div", {
-    className: "row footer-nav text-center mb-auto",
+  }, __jsx("div", {
+    className: "col-12 text-left",
     __self: _this,
     __source: {
       fileName: _jsxFileName,
       lineNumber: 13,
-      columnNumber: 13
-    }
-  }, __jsx("div", {
-    className: "col-12 col-md-8 col-lg-4 offset-md-2 offset-lg-4",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 14,
       columnNumber: 17
     }
-  }, __jsx(_core_text__WEBPACK_IMPORTED_MODULE_1__["Header"], {
-    size: 'xs',
+  }, Object.keys(stats).length !== 0 && __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx(_core_text__WEBPACK_IMPORTED_MODULE_1__["Body"], {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 15,
-      columnNumber: 21
+      lineNumber: 16,
+      columnNumber: 25
     }
-  }, "Made with\xA0", __jsx(_core_Icon__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    name: "favorite",
-    color: _utils_styles__WEBPACK_IMPORTED_MODULE_3__["default"].color.secondary,
-    size: 18,
+  }, "Vies sauv\xE9es de l'ennui : ", stats.players), __jsx(_core_text__WEBPACK_IMPORTED_MODULE_1__["Body"], {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
       lineNumber: 17,
       columnNumber: 25
     }
+  }, "Salles de confinements cr\xE9es : ", stats.matches), __jsx(_core_text__WEBPACK_IMPORTED_MODULE_1__["Body"], {
+    __self: _this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 18,
+      columnNumber: 25
+    }
+  }, "Jours de confinements : ", stats.games)), __jsx(_core_text__WEBPACK_IMPORTED_MODULE_1__["Body"], {
+    size: 'xs',
+    __self: _this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 21,
+      columnNumber: 21
+    }
+  }, "Mutations du virus : v", _Config__WEBPACK_IMPORTED_MODULE_4__["default"].VERSION, "alpha")), __jsx("div", {
+    className: "col-12 col-md-8 col-lg-4 offset-md-2 offset-lg-4",
+    __self: _this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 23,
+      columnNumber: 17
+    }
+  }, __jsx(_core_text__WEBPACK_IMPORTED_MODULE_1__["Body"], {
+    __self: _this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 24,
+      columnNumber: 21
+    }
+  }, "Made with\xA0", __jsx(_core_Icon__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    name: "favorite",
+    color: _utils_styles__WEBPACK_IMPORTED_MODULE_3__["default"].color.quarternary,
+    size: 18,
+    __self: _this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 26,
+      columnNumber: 25
+    }
   }), "\xA0by\xA0", __jsx("br", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 22,
+      lineNumber: 31,
       columnNumber: 25
     }
   }), __jsx("a", {
@@ -28142,37 +28200,23 @@ var Footer = function Footer() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 23,
+      lineNumber: 32,
       columnNumber: 25
     }
-  }, "Gregory Houldsworth"), __jsx("br", {
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 28,
-      columnNumber: 25
-    }
-  }), __jsx("a", {
-    href: "https://www.michaellouisjean.com/",
-    target: "_blank",
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 29,
-      columnNumber: 25
-    }
-  }, "Micha\xEBl Louis-Jean"), __jsx("br", {
-    __self: _this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 34,
-      columnNumber: 25
-    }
-  }), "&\xA0", __jsx("br", {
+  }, __jsx(_core_text__WEBPACK_IMPORTED_MODULE_1__["Header"], {
+    size: "xs",
+    isInline: true,
     __self: _this,
     __source: {
       fileName: _jsxFileName,
       lineNumber: 35,
+      columnNumber: 29
+    }
+  }, "Gregory Houldsworth")), " (dev fullstack)", __jsx("br", {
+    __self: _this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 37,
       columnNumber: 25
     }
   }), __jsx("a", {
@@ -28181,26 +28225,54 @@ var Footer = function Footer() {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 36,
+      lineNumber: 38,
       columnNumber: 25
     }
-  }, "J\xE9na\xEFc Cambr\xE9"))), __jsx("div", {
-    className: "col-12 text-right",
+  }, __jsx(_core_text__WEBPACK_IMPORTED_MODULE_1__["Header"], {
+    size: "xs",
+    isInline: true,
+    __self: _this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 41,
+      columnNumber: 29
+    }
+  }, "J\xE9na\xEFc Cambr\xE9")), " (dev fullstack & chef de projet)", __jsx("br", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
       lineNumber: 43,
-      columnNumber: 17
+      columnNumber: 25
     }
-  }, __jsx(_core_text__WEBPACK_IMPORTED_MODULE_1__["Body"], {
-    size: 'xs',
+  }), __jsx("a", {
+    href: "https://cv.jenaiccambre.com/",
+    target: "_blank",
     __self: _this,
     __source: {
       fileName: _jsxFileName,
       lineNumber: 44,
-      columnNumber: 21
+      columnNumber: 25
     }
-  }, "Version ", _Config__WEBPACK_IMPORTED_MODULE_4__["default"].VERSION))));
+  }, __jsx(_core_text__WEBPACK_IMPORTED_MODULE_1__["Header"], {
+    size: "xs",
+    isInline: true,
+    __self: _this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 47,
+      columnNumber: 29
+    }
+  }, "???")), " (designer) - pourquoi pas vous ?\xA0", __jsx(_core_Icon__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    name: "sentiment_very_satisfied",
+    color: _utils_styles__WEBPACK_IMPORTED_MODULE_3__["default"].color.quarternary,
+    size: 18,
+    __self: _this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 48,
+      columnNumber: 68
+    }
+  })))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Footer);
@@ -29156,7 +29228,7 @@ var styles = {
 
 /***/ }),
 
-/***/ 2:
+/***/ 3:
 /*!***********************************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2Fmatch&absolutePagePath=%2FUsers%2Fjenaic%2FDocuments%2Fcode%2Fkwarantine%2Fclient%2Fpages%2Fmatch%2Findex.js ***!
   \***********************************************************************************************************************************************************/
@@ -29179,5 +29251,5 @@ module.exports = dll_2adc2403d89adc16ead0;
 
 /***/ })
 
-},[[2,"static/runtime/webpack.js"]]]);
+},[[3,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=match.js.map
