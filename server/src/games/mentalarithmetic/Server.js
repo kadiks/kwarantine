@@ -2,7 +2,7 @@ const { random } = require('../../utils/');
 
 class MentalArithmetic {
     constructor({
-        duration = 20,
+        duration = 3,
         playerIds = [],
         operation = []
     }) {
