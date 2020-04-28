@@ -59,7 +59,7 @@ class LongestWord extends Dispatcher {
     if (this.containerEl === null) {
       this.containerEl = document.querySelector('.kwa-game-container');
     }
-    this.containerEl.classList.add(this.constructor.name);
+    // this.containerEl.classList.add(this.constructor.name);
     this.containerEl.addEventListener('click', this.handleEventContainer);
     document.addEventListener('keypress', this.onKeyPress);
     document.addEventListener('keydown', this.onKeyDown);

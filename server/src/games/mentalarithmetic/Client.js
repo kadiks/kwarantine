@@ -26,7 +26,7 @@ class MentalArithmetic extends Dispatcher {
         if (this.containerEl === null) {
             this.containerEl = document.querySelector('.kwa-game-container');
         }
-        this.containerEl.classList.add(this.constructor.name);
+        // this.containerEl.classList.add(this.constructor.name);
         console.log('this.containerEl', this.containerEl);
         this.containerEl.addEventListener('click', this.handleEventContainer);
     }
