@@ -7,6 +7,7 @@ class Match extends utils.Dispatcher {
   constructor({ id, numRounds = 14, maxPlayers = 1, selectedGames = [] } = {}) {
     super();
     this.gameOn = false;
+    this.isOpenToInput = false;
     this.id = id;
     this.maxPlayers = maxPlayers;
     this.roundIndex = 0;
@@ -22,7 +23,7 @@ class Match extends utils.Dispatcher {
       midGameScoreboard: 10,
       gamePrepare: 5,
       gamePresentation: 5,
-      waitroom: 60
+      waitroom: 5
     };
 
     this.timers = {
@@ -96,6 +97,7 @@ class Match extends utils.Dispatcher {
   endMatch() {
     const value = {
       results: this.getResults(),
+      playerIds: this.players.map(p => p.id)
     };
     this.sendClient('match.end', { value });
   }
@@ -126,20 +128,29 @@ class Match extends utils.Dispatcher {
 
   handleInput({ input, playerId }) {
     console.log('match/Match#handleInput input', input);
+    console.log('match/Match#handleInput input', playerId);
+    if (this.isOpenToInput === false) {
+      return;
+    }
     // console.log('match/Match#handleInput playerId', playerId);
-    const game = this.games[this.roundIndex]; // get the current round <game>Server instance
+    const game = this.getCurrentGame(); // get the current round <game>Server instance
     // console.log('match/Match#handleInput this.roundIndex', this.roundIndex);
     // console.log('match/Match#handleInput game', game);
     if (game.isSafeInput(input) === false) {
-      console.log(`Input [input] is not safe`);
+      console.log(`Input [${input}] is not safe`);
       return;
     }
 
     // console.log('match/Match#handleInput this.socket.id', this.socket.id);
     // console.log('match/Match#handleInput playerId', playerId);
     // const playerId = utils.socket.getPlayerId(this.socket.id);
-    const score = game.calculatePlayerScore(input, { playerId });
+    const time = (new Date()).getTime() - this.currentGameStartTime;
+    game.calculatePlayerScore(input, { playerId, time });
+    console.log('match/Match#handleInput game.hasAnswered.length', game.hasAnswered.length);
+    console.log('match/Match#handleInput this.maxPlayers', this.maxPlayers);
     if (game.hasAnswered.length === this.maxPlayers) {
+      console.log('match/Match#handleInput this.endGame OK');
+      this.isOpenToInput = false;
       this.endGame();
       return;
     }
@@ -235,10 +246,11 @@ class Match extends utils.Dispatcher {
   }
 
   showGamePrepare() {
-    const game = this.games[this.roundIndex];
+    const game = this.getCurrentGame();
     const value = {
       name: game.name,
       rules: game.rules,
+      duration: game.duration
     };
     this.sendClient(evts.GAME_PREPARE, { value });
   }
@@ -256,20 +268,20 @@ class Match extends utils.Dispatcher {
     // console.log('server/match/Match#showMidGameScoreboard game', game);
     const value = {
       results: game.results,
+      playerIds: this.players.map(p => p.id)
     };
     this.sendClient(evts.MATCH_MID_SCOREBOARD, { value });
   }
 
   startGame() {
-    // const round = this.getNextRound();
-    // this.sendClient('match.next.round', { value: round });
     const round = this.getCurrentRound();
     // console.log('server/match/Match#startGame round', round);
+    this.currentGameStartTime = (new Date()).getTime();
     this.timers.roundTimeUp = setTimeout(() => {
-      // console.log('gametimer finished');
       this.endGame();
     }, round.data.duration * 1000);
     this.sendClient('match.next.round', { value: round });
+    this.isOpenToInput = true;
   }
 }
 

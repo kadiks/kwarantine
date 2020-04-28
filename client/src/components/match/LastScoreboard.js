@@ -37,25 +37,28 @@ const LastScoreboard = (props) => {
 const getScoreboardByPlayerId = (results, { playerId }) => {
   let total = 0;
   const resultsWithTotal = results.map((g) => {
-    const keys = Object.keys(g);
+    // const keys = Object.keys(g);
+    const player = g.find(p => p.playerId === playerId);
     // console.log('playerId', playerId);
     // console.log('g', g);
     // console.log('keys', keys);
-    const result = g[playerId];
-    total += result.score;
-    return result;
+    // const result = g[playerId];
+    console.log('player', player);
+    console.log('playerId', playerId);
+    console.log('g', g);
+    total += player.score;
+    return player;
   });
   resultsWithTotal.push({
     name: 'TOTAL',
-    answer: '',
+    answerDisplay: '',
     score: total,
   });
   return resultsWithTotal;
 };
 
 const renderPlayersScore = ({ game, screenInfo }) => {
-  const playerIds = Object.keys(screenInfo.results[0]);
-  const results = playerIds.map(playerId => {
+  const results = screenInfo.playerIds.map(playerId => {
     const resultPlayer = getScoreboardByPlayerId(screenInfo.results, { playerId }); 
     const totalPlayer = resultPlayer[resultPlayer.length - 1];
     totalPlayer.playerId = playerId;
