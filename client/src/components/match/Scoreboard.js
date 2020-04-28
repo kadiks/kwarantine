@@ -22,7 +22,8 @@ export default ({ game, screenInfo } = {}) => {
         <h2>Classement intermédiaire</h2>
       </div>
       <div className="col-2">
-        <Countdown duration={10} />
+        <Countdown
+          duration={kwa.constants.durations.MID_GAME_SCOREBOARD} />
       </div>
       <table className="table table-striped">
         <thead>

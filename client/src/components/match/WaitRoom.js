@@ -20,7 +20,7 @@ export default ({ game, screenInfo } = {}) => {
         La partie démarre dans...
       </div>
       <div className="col-12">
-        <Countdown duration={60} />
+        <Countdown duration={kwa.constants.durations.WAITROOM} />
       </div>
     </div>
   );

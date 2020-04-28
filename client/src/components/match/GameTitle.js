@@ -5,7 +5,7 @@ export default ({ game, screenInfo } = {}) => {
     <div className="text-center">
       <h2>{screenInfo.name}</h2>
       <p>{screenInfo.rules}</p>
-      <Countdown duration={5} />
+      <Countdown duration={kwa.constants.durations.GAME_PREPARE} />
     </div>
   );
 };

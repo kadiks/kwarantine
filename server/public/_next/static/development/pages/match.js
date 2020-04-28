@@ -25906,6 +25906,8 @@ var MatchPage = /*#__PURE__*/function (_React$Component) {
                 _this2.setState({
                   screen: 'lastScoreboard',
                   screenInfo: results
+                }, function () {
+                  _this2.matchConnect.socket.disconnect();
                 });
               });
               this.matchConnect.on(evts.GAME_WAIT, function () {
@@ -25992,7 +25994,7 @@ var MatchPage = /*#__PURE__*/function (_React$Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 136,
+          lineNumber: 138,
           columnNumber: 7
         }
       }, __jsx("div", {
@@ -26000,7 +26002,7 @@ var MatchPage = /*#__PURE__*/function (_React$Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 137,
+          lineNumber: 139,
           columnNumber: 9
         }
       }, __jsx(_src_components_MatchComp__WEBPACK_IMPORTED_MODULE_17__["default"], {
@@ -26011,7 +26013,7 @@ var MatchPage = /*#__PURE__*/function (_React$Component) {
         __self: this,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 138,
+          lineNumber: 140,
           columnNumber: 11
         }
       })));
@@ -26056,7 +26058,7 @@ var prod = {
   API_EXTENSION: '',
   GA_TRACKING_ID: 'UA-12326200-18'
 };
-var env = 'prod';
+var env = 'test';
 var Config = {};
 
 if (env === 'dev' || env === 'test' || env === 'prod') {
@@ -27007,7 +27009,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       columnNumber: 7
     }
   }, __jsx(_core_loader__WEBPACK_IMPORTED_MODULE_2__["Countdown"], {
-    duration: 5,
+    duration: kwa.constants.durations.GAME_PRESENTATION,
     __self: _this,
     __source: {
       fileName: _jsxFileName,
@@ -27170,7 +27172,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       columnNumber: 7
     }
   }, screenInfo.rules), __jsx(_core_loader__WEBPACK_IMPORTED_MODULE_1__["Countdown"], {
-    duration: 5,
+    duration: kwa.constants.durations.GAME_PREPARE,
     __self: _this,
     __source: {
       fileName: _jsxFileName,
@@ -27644,7 +27646,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       columnNumber: 7
     }
   }, __jsx(_core_loader__WEBPACK_IMPORTED_MODULE_2__["Countdown"], {
-    duration: 10,
+    duration: kwa.constants.durations.MID_GAME_SCOREBOARD,
     __self: _this,
     __source: {
       fileName: _jsxFileName,
@@ -27656,56 +27658,56 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 27,
+      lineNumber: 28,
       columnNumber: 7
     }
   }, __jsx("thead", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 28,
+      lineNumber: 29,
       columnNumber: 9
     }
   }, __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 29,
+      lineNumber: 30,
       columnNumber: 11
     }
   }, "N\xB0"), __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 30,
+      lineNumber: 31,
       columnNumber: 11
     }
   }, "Joueu.r.se"), __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 31,
+      lineNumber: 32,
       columnNumber: 11
     }
   }, "R\xE9ponse"), __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 32,
+      lineNumber: 33,
       columnNumber: 11
     }
   }, "Temps"), __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 33,
+      lineNumber: 34,
       columnNumber: 11
     }
   }, "Points")), __jsx("tbody", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 35,
+      lineNumber: 36,
       columnNumber: 9
     }
   }, results.map(function (_ref2, index) {
@@ -27725,7 +27727,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 48,
+        lineNumber: 49,
         columnNumber: 15
       }
     }, __jsx("td", {
@@ -27733,7 +27735,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 49,
+        lineNumber: 50,
         columnNumber: 17
       }
     }, index + 1), __jsx("td", {
@@ -27741,7 +27743,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 50,
+        lineNumber: 51,
         columnNumber: 17
       }
     }, __jsx(_player__WEBPACK_IMPORTED_MODULE_1__["Avatar"], {
@@ -27750,7 +27752,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 51,
+        lineNumber: 52,
         columnNumber: 19
       }
     })), __jsx("td", {
@@ -27758,7 +27760,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 53,
+        lineNumber: 54,
         columnNumber: 17
       }
     }, answerDisplay), __jsx("td", {
@@ -27766,7 +27768,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 54,
+        lineNumber: 55,
         columnNumber: 17
       }
     }, (time * 0.001).toFixed(3), " s"), __jsx("td", {
@@ -27774,7 +27776,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 55,
+        lineNumber: 56,
         columnNumber: 17
       }
     }, score));
@@ -28051,7 +28053,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       columnNumber: 7
     }
   }, __jsx(_core_loader__WEBPACK_IMPORTED_MODULE_2__["Countdown"], {
-    duration: 60,
+    duration: kwa.constants.durations.WAITROOM,
     __self: _this,
     __source: {
       fileName: _jsxFileName,
@@ -29079,8 +29081,8 @@ var MatchConnect = /*#__PURE__*/function (_Dispatcher) {
     key: "goToLastScoreboard",
     value: function goToLastScoreboard(results) {
       console.log('>> utils/Api#goToLastScoreboard');
-      this.socket.disconnect();
       this.dispatch(this.evts.MATCH_END, results);
+      this.socket.disconnect();
     }
   }, {
     key: "goToGameTitle",

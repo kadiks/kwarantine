@@ -11,7 +11,8 @@ export default ({ game, screenInfo } = {}) => {
         <Presentation screenInfo={screenInfo} />
       </div>
       <div className="col-12">
-        <Countdown duration={5} />
+        <Countdown
+          duration={kwa.constants.durations.GAME_PRESENTATION} />
       </div>
     </div>
   );

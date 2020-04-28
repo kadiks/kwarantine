@@ -3949,7 +3949,7 @@ var prod = {
   API_EXTENSION: '',
   GA_TRACKING_ID: 'UA-12326200-18'
 };
-var env = 'prod';
+var env = 'test';
 var Config = {};
 
 if (env === 'dev' || env === 'test' || env === 'prod') {

@@ -1,5 +1,6 @@
 const utils = require('../utils');
 const evts = require('../constants/cEvents');
+const durations = require('../constants/durations');
 const Games = require('../games');
 const allServerGames = Object.keys(Games).map((g) => Games[g].Server);
 
@@ -19,13 +20,6 @@ class Match extends utils.Dispatcher {
     this.sockets = {};
     this.selectedGames = selectedGames;
 
-    this.durations = {
-      midGameScoreboard: 10,
-      gamePrepare: 5,
-      gamePresentation: 5,
-      waitroom: 60
-    };
-
     this.timers = {
       roundTimeUp: null,
     };
@@ -35,7 +29,7 @@ class Match extends utils.Dispatcher {
     setTimeout(() => {
       this.maxPlayers = this.players.length;
       this.startMatch();
-    }, this.durations.waitroom * 1000);
+    }, durations.WAITROOM * 1000);
   }
 
   get isWaiting() {
@@ -83,15 +77,15 @@ class Match extends utils.Dispatcher {
         this.showGamePrepare();
         setTimeout(() => {
           this.startGame();
-        }, this.durations.gamePrepare * 1000);
-      }, this.durations.midGameScoreboard * 1000);
+        }, durations.GAME_PREPARE * 1000);
+      }, durations.MID_GAME_SCOREBOARD * 1000);
 
       return;
     }
     this.showMidGameScoreboard();
     setTimeout(() => {
       this.endMatch();
-    }, this.durations.midGameScoreboard * 1000);
+    }, durations.MID_GAME_SCOREBOARD * 1000);
   }
 
   endMatch() {
@@ -99,7 +93,7 @@ class Match extends utils.Dispatcher {
       results: this.getResults(),
       playerIds: this.players.map(p => p.id)
     };
-    this.sendClient('match.end', { value });
+    this.sendClient(evts.MATCH_END, { value });
   }
 
   getCurrentGame() {
@@ -146,10 +140,10 @@ class Match extends utils.Dispatcher {
     // const playerId = utils.socket.getPlayerId(this.socket.id);
     const time = (new Date()).getTime() - this.currentGameStartTime;
     game.calculatePlayerScore(input, { playerId, time });
-    console.log('match/Match#handleInput game.hasAnswered.length', game.hasAnswered.length);
-    console.log('match/Match#handleInput this.maxPlayers', this.maxPlayers);
+    // console.log('match/Match#handleInput game.hasAnswered.length', game.hasAnswered.length);
+    // console.log('match/Match#handleInput this.maxPlayers', this.maxPlayers);
     if (game.hasAnswered.length === this.maxPlayers) {
-      console.log('match/Match#handleInput this.endGame OK');
+      // console.log('match/Match#handleInput this.endGame OK');
       this.isOpenToInput = false;
       this.endGame();
       return;
@@ -216,8 +210,8 @@ class Match extends utils.Dispatcher {
       this.showGamePrepare();
       setTimeout(() => {
         this.startGame();
-      }, this.durations.gamePrepare * 1000);
-    }, this.durations.gamePresentation * 1000);
+      }, durations.GAME_PREPARE * 1000);
+    }, durations.GAME_PRESENTATION * 1000);
   }
 
   // Returns the number of players remaining after ?deletion
@@ -280,7 +274,7 @@ class Match extends utils.Dispatcher {
     this.timers.roundTimeUp = setTimeout(() => {
       this.endGame();
     }, round.data.duration * 1000);
-    this.sendClient('match.next.round', { value: round });
+    this.sendClient(evts.MATCH_NEXT_ROUND, { value: round });
     this.isOpenToInput = true;
   }
 }

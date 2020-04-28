@@ -62,6 +62,8 @@ class MatchPage extends React.Component {
       this.setState({
         screen: 'lastScoreboard',
         screenInfo: results,
+      }, () => {
+        this.matchConnect.socket.disconnect();
       });
     });
 
