@@ -3,7 +3,7 @@ const dev = {
   API_ENDPOINT: '/api',
   API_EXTENSION: '.json',
   GA_TRACKING_ID: '',
-  VERSION: '0.1.0',
+  VERSION: '0.2.0',
   // IMAGE_SOURCE: 'nd'
 };
 
@@ -23,7 +23,7 @@ const prod = {
   GA_TRACKING_ID: 'UA-12326200-18',
 };
 
-const env = 'test';
+const env = 'prod';
 
 let Config = {};
 

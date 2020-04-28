@@ -26039,7 +26039,7 @@ var dev = {
   API_ENDPOINT: '/api',
   API_EXTENSION: '.json',
   GA_TRACKING_ID: '',
-  VERSION: '0.1.0' // IMAGE_SOURCE: 'nd'
+  VERSION: '0.2.0' // IMAGE_SOURCE: 'nd'
 
 };
 var test = {
@@ -26056,7 +26056,7 @@ var prod = {
   API_EXTENSION: '',
   GA_TRACKING_ID: 'UA-12326200-18'
 };
-var env = 'test';
+var env = 'prod';
 var Config = {};
 
 if (env === 'dev' || env === 'test' || env === 'prod') {
@@ -27259,17 +27259,23 @@ var getScoreboardByPlayerId = function getScoreboardByPlayerId(results, _ref) {
   var playerId = _ref.playerId;
   var total = 0;
   var resultsWithTotal = results.map(function (g) {
-    var keys = Object.keys(g); // console.log('playerId', playerId);
+    // const keys = Object.keys(g);
+    var player = g.find(function (p) {
+      return p.playerId === playerId;
+    }); // console.log('playerId', playerId);
     // console.log('g', g);
     // console.log('keys', keys);
+    // const result = g[playerId];
 
-    var result = g[playerId];
-    total += result.score;
-    return result;
+    console.log('player', player);
+    console.log('playerId', playerId);
+    console.log('g', g);
+    total += player.score;
+    return player;
   });
   resultsWithTotal.push({
     name: 'TOTAL',
-    answer: '',
+    answerDisplay: '',
     score: total
   });
   return resultsWithTotal;
@@ -27278,8 +27284,7 @@ var getScoreboardByPlayerId = function getScoreboardByPlayerId(results, _ref) {
 var renderPlayersScore = function renderPlayersScore(_ref2) {
   var game = _ref2.game,
       screenInfo = _ref2.screenInfo;
-  var playerIds = Object.keys(screenInfo.results[0]);
-  var results = playerIds.map(function (playerId) {
+  var results = screenInfo.playerIds.map(function (playerId) {
     var resultPlayer = getScoreboardByPlayerId(screenInfo.results, {
       playerId: playerId
     });
@@ -27296,14 +27301,14 @@ var renderPlayersScore = function renderPlayersScore(_ref2) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 70,
+      lineNumber: 73,
       columnNumber: 5
     }
   }, __jsx("h2", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 71,
+      lineNumber: 74,
       columnNumber: 5
     }
   }, "Classement final"), __jsx("table", {
@@ -27311,42 +27316,42 @@ var renderPlayersScore = function renderPlayersScore(_ref2) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 72,
+      lineNumber: 75,
       columnNumber: 5
     }
   }, __jsx("thead", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 73,
+      lineNumber: 76,
       columnNumber: 7
     }
   }, __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 74,
+      lineNumber: 77,
       columnNumber: 9
     }
   }, "N\xB0"), __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 75,
+      lineNumber: 78,
       columnNumber: 9
     }
   }, "Joueu.r.se"), __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 76,
+      lineNumber: 79,
       columnNumber: 9
     }
   }, "Points")), __jsx("tbody", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 78,
+      lineNumber: 81,
       columnNumber: 7
     }
   }, sortedResults.map(function (_ref3, index) {
@@ -27365,7 +27370,7 @@ var renderPlayersScore = function renderPlayersScore(_ref2) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 86,
+        lineNumber: 89,
         columnNumber: 13
       }
     }, __jsx("td", {
@@ -27373,7 +27378,7 @@ var renderPlayersScore = function renderPlayersScore(_ref2) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 87,
+        lineNumber: 90,
         columnNumber: 15
       }
     }, index + 1), __jsx("td", {
@@ -27381,7 +27386,7 @@ var renderPlayersScore = function renderPlayersScore(_ref2) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 88,
+        lineNumber: 91,
         columnNumber: 15
       }
     }, __jsx(_player__WEBPACK_IMPORTED_MODULE_1__["Avatar"], {
@@ -27390,7 +27395,7 @@ var renderPlayersScore = function renderPlayersScore(_ref2) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 88,
+        lineNumber: 91,
         columnNumber: 34
       }
     })), __jsx("td", {
@@ -27398,7 +27403,7 @@ var renderPlayersScore = function renderPlayersScore(_ref2) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 89,
+        lineNumber: 92,
         columnNumber: 15
       }
     }, score));
@@ -27429,14 +27434,14 @@ var renderMyScore = function renderMyScore(_ref4) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 118,
+      lineNumber: 121,
       columnNumber: 5
     }
   }, __jsx("h4", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 119,
+      lineNumber: 122,
       columnNumber: 7
     }
   }, "R\xE9capitulatif de mes scores"), __jsx("table", {
@@ -27444,49 +27449,49 @@ var renderMyScore = function renderMyScore(_ref4) {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 120,
+      lineNumber: 123,
       columnNumber: 7
     }
   }, __jsx("thead", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 121,
+      lineNumber: 124,
       columnNumber: 9
     }
   }, __jsx("tr", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 122,
+      lineNumber: 125,
       columnNumber: 11
     }
   }, __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 123,
+      lineNumber: 126,
       columnNumber: 13
     }
   }, "Jeu"), __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 124,
+      lineNumber: 127,
       columnNumber: 13
     }
   }, "R\xE9ponse"), __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 125,
+      lineNumber: 128,
       columnNumber: 13
     }
   }, "Points"))), __jsx("tbody", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 128,
+      lineNumber: 131,
       columnNumber: 9
     }
   }, results.map(function (_ref5, index) {
@@ -27498,28 +27503,28 @@ var renderMyScore = function renderMyScore(_ref4) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 131,
+        lineNumber: 134,
         columnNumber: 15
       }
     }, __jsx("td", {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 132,
+        lineNumber: 135,
         columnNumber: 17
       }
     }, name), __jsx("td", {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 133,
+        lineNumber: 136,
         columnNumber: 17
       }
     }, answer), __jsx("td", {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 134,
+        lineNumber: 137,
         columnNumber: 17
       }
     }, score));
@@ -27594,17 +27599,17 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       game = _ref.game,
       screenInfo = _ref.screenInfo;
 
-  var results = screenInfo.results;
-  var playerIds = Object.keys(results);
-  var resultsArr = playerIds.map(function (playerId) {
-    return {
-      playerId: playerId,
-      answer: results[playerId].answer,
-      score: results[playerId].score,
-      name: results[playerId].name
-    };
-  });
-  resultsArr.sort(function (a, b) {
+  var results = screenInfo.results; // const playerIds = Object.keys(results);
+  // const resultsArr = playerIds.map((playerId) => {
+  //   return {
+  //     playerId,
+  //     answer: results[playerId].answer,
+  //     score: results[playerId].score,
+  //     name: results[playerId].name,
+  //   };
+  // });
+
+  results.sort(function (a, b) {
     return b.score - a.score;
   });
   return __jsx("div", {
@@ -27612,7 +27617,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 19,
+      lineNumber: 20,
       columnNumber: 5
     }
   }, __jsx("div", {
@@ -27620,14 +27625,14 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 20,
+      lineNumber: 21,
       columnNumber: 7
     }
   }, __jsx("h2", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 21,
+      lineNumber: 22,
       columnNumber: 9
     }
   }, "Classement interm\xE9diaire")), __jsx("div", {
@@ -27635,7 +27640,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 23,
+      lineNumber: 24,
       columnNumber: 7
     }
   }, __jsx(_core_loader__WEBPACK_IMPORTED_MODULE_2__["Countdown"], {
@@ -27643,7 +27648,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 24,
+      lineNumber: 25,
       columnNumber: 9
     }
   })), __jsx("table", {
@@ -27651,55 +27656,63 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 26,
+      lineNumber: 27,
       columnNumber: 7
     }
   }, __jsx("thead", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 27,
+      lineNumber: 28,
       columnNumber: 9
     }
   }, __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 28,
+      lineNumber: 29,
       columnNumber: 11
     }
   }, "N\xB0"), __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 29,
+      lineNumber: 30,
       columnNumber: 11
     }
   }, "Joueu.r.se"), __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 30,
+      lineNumber: 31,
       columnNumber: 11
     }
   }, "R\xE9ponse"), __jsx("th", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 31,
+      lineNumber: 32,
+      columnNumber: 11
+    }
+  }, "Temps"), __jsx("th", {
+    __self: _this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 33,
       columnNumber: 11
     }
   }, "Points")), __jsx("tbody", {
     __self: _this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 33,
+      lineNumber: 35,
       columnNumber: 9
     }
-  }, resultsArr.map(function (_ref2, index) {
+  }, results.map(function (_ref2, index) {
     var playerId = _ref2.playerId,
-        answer = _ref2.answer,
-        score = _ref2.score;
+        answerDisplay = _ref2.answerDisplay,
+        score = _ref2.score,
+        time = _ref2.time;
     var styles = {};
 
     if (playerId === game.playerId) {
@@ -27712,7 +27725,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 41,
+        lineNumber: 48,
         columnNumber: 15
       }
     }, __jsx("td", {
@@ -27720,7 +27733,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 42,
+        lineNumber: 49,
         columnNumber: 17
       }
     }, index + 1), __jsx("td", {
@@ -27728,7 +27741,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 43,
+        lineNumber: 50,
         columnNumber: 17
       }
     }, __jsx(_player__WEBPACK_IMPORTED_MODULE_1__["Avatar"], {
@@ -27737,7 +27750,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 44,
+        lineNumber: 51,
         columnNumber: 19
       }
     })), __jsx("td", {
@@ -27745,15 +27758,23 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 46,
+        lineNumber: 53,
         columnNumber: 17
       }
-    }, answer), __jsx("td", {
+    }, answerDisplay), __jsx("td", {
       style: styles,
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 47,
+        lineNumber: 54,
+        columnNumber: 17
+      }
+    }, (time * 0.001).toFixed(3), " s"), __jsx("td", {
+      style: styles,
+      __self: _this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 55,
         columnNumber: 17
       }
     }, score));
@@ -29228,7 +29249,7 @@ var styles = {
 
 /***/ }),
 
-/***/ 3:
+/***/ 2:
 /*!***********************************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2Fmatch&absolutePagePath=%2FUsers%2Fjenaic%2FDocuments%2Fcode%2Fkwarantine%2Fclient%2Fpages%2Fmatch%2Findex.js ***!
   \***********************************************************************************************************************************************************/
@@ -29251,5 +29272,5 @@ module.exports = dll_2adc2403d89adc16ead0;
 
 /***/ })
 
-},[[3,"static/runtime/webpack.js"]]]);
+},[[2,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=match.js.map

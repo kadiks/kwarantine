@@ -36,3 +36,20 @@ npm run docs
 ## Miscellaneous
 
 - ID thatt generates funny avatars: l7QZktjfUBS8li98AAAA
+
+## Changelog
+
+### 0.2.0
+
+- Added game (Mental arithmetic)
+- Can play at 4 or alone
+- Settings management
+- Score uniformisation
+- Adding time in score attribution
+
+### 0.1.0
+
+- First release
+- Socket io backend 
+- Ability to play at 4
+- One game (longest word)

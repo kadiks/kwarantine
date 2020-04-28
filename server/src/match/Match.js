@@ -23,7 +23,7 @@ class Match extends utils.Dispatcher {
       midGameScoreboard: 10,
       gamePrepare: 5,
       gamePresentation: 5,
-      waitroom: 5
+      waitroom: 60
     };
 
     this.timers = {
