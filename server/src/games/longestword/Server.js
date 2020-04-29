@@ -21,7 +21,6 @@ class LongestWord {
      * @property
      * @memberof Games/LongestWord.Server
      */
-    // prop scores might not be needed as being duplicated in results
     this.name = 'Le mot le plus long'; // TODO: i18n
     this.rules = 'Trouvez le mot le plus long'; // TODO: i18n
     this.playerIds = playerIds; // for debug purposes

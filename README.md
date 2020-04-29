@@ -35,9 +35,14 @@ npm run docs
 
 ## Miscellaneous
 
-- ID thatt generates funny avatars: l7QZktjfUBS8li98AAAA
+- ID that generates funny avatars: l7QZktjfUBS8li98AAAA
 
 ## Changelog
+
+### 0.3.0
+
+- Add game (Guess the flag)
+- Daily count of games
 
 ### 0.2.1
 

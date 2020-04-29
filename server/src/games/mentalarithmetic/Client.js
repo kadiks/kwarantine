@@ -1,4 +1,3 @@
-const { events } = require('../../constants');
 const Dispatcher = require('../../utils/Dispatcher');
 
 class MentalArithmetic extends Dispatcher {
@@ -78,12 +77,12 @@ class MentalArithmetic extends Dispatcher {
 
     renderHtmlPossibilities() {
         const possibilitiesHtml = this.possibilities.map(p => {
-            return `<div class="btn-group" role="group">
+            return `<div class="col-3 text-center">
     <button kwa-event="click" type="button" class="btn btn-lg btn-outline-warning mr-3" style="color: black;">${p}</button>
 </div>`;
         }).join('');
         return `<div class="col-12">
-    <div class="btn-toolbar">
+    <div class="row">
         ${possibilitiesHtml}
     </div>
 </div>`;

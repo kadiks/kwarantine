@@ -1,10 +1,12 @@
 const constants = require('../constants');
 const LongestWord = require('./longestword/Client');
 const MentalArithmetic = require('./mentalarithmetic/Client');
+const Flag = require('./flag/Client');
 
 const Games = {
   LongestWord,
-  MentalArithmetic
+  MentalArithmetic,
+  Flag
 };
 
 if (typeof window !== 'undefined') {

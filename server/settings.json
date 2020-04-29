@@ -1,7 +1,9 @@
 {
     "games": [
-        "LongestWord"
+        "Flag",
+        "LongestWord",
+        "MentalArithmetic"
     ],
-    "numRounds": 5,
+    "numRounds": 7,
     "maxPlayers": 4
 }

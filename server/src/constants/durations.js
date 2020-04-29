@@ -14,7 +14,7 @@ const durations = {
     /**
      * @property {Number}
      */
-    WAITROOM: 30
+    WAITROOM: 5
 };
 
 module.exports = durations;

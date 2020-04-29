@@ -7,4 +7,4 @@ client/.next/*
 client/out/*
 *.swp
 server/certs/*
-server/stats.json
+server/stats/*

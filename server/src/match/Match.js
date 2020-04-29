@@ -28,6 +28,7 @@ class Match extends utils.Dispatcher {
 
     setTimeout(() => {
       this.maxPlayers = this.players.length;
+      console.log('before startMatch');
       this.startMatch();
     }, durations.WAITROOM * 1000);
   }
@@ -154,23 +155,30 @@ class Match extends utils.Dispatcher {
   }
 
   initializeGames() {
+    console.log('>> match/Match#initializeGames');
     utils.updateStats({
       players: this.players.length,
       games: this.numRounds
     });
+    console.log('match/Match#initializeGames #1');
     const games = [...new Array(this.numRounds)].map((_) => {
+      console.log('match/Match#initializeGames #2');
       const selectedGames = allServerGames.filter(a => {
         // Gets only the game from the settings
         return this.selectedGames.includes(a.name);
       });
+      console.log('match/Match#initializeGames #3');
+      console.log('match/Match#initializeGames selectedGames', selectedGames);
       return new (utils.random.pick(selectedGames))({
         playerIds: this.players.map((p) => p.id),
       });
     });
+    console.log('match/Match#initializeGames #4');
     const rounds = games.map((g) => g.getData());
     this.rounds = rounds;
     this.games = games;
     console.log(rounds.forEach(r => console.log(r.className, r.data)));
+    console.log('match/Match#initializeGames #5', this.rounds);
     // match.setGames(selectedGames);
     // match.setRounds(rounds);
   }
@@ -203,8 +211,10 @@ class Match extends utils.Dispatcher {
   }
 
   startMatch() {
+    console.log('>> match/Match#startMatch');
     this.gameOn = true;
     this.initializeGames();
+    console.log('match/Match#startMatch after initializeGames');
     this.showGamePresentation();
     setTimeout(() => {
       this.showGamePrepare();
@@ -250,6 +260,7 @@ class Match extends utils.Dispatcher {
   }
 
   showGamePresentation() {
+    console.log('>> match/Match#showGamePresentation');
     const game = this.getCurrentGame();
     const value = {
       playerIds: this.players.map((p) => p.id),

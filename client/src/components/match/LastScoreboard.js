@@ -129,11 +129,11 @@ const renderMyScore = ({ game, screenInfo }) => {
           </tr>
         </thead>
         <tbody>
-          {results.map(({ name, answer, score }, index) => {
+          {results.map(({ name, answerDisplay, score }, index) => {
             return (
               <tr key={index}>
                 <td>{name}</td>
-                <td>{answer}</td>
+                <td>{answerDisplay}</td>
                 <td>{score}</td>
               </tr>
             );

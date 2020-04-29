@@ -2,15 +2,13 @@ const { random } = require('../../utils/');
 
 class MentalArithmetic {
     constructor({
-        duration = 5,
+        duration = 3,
         playerIds = [],
         operation = []
     }) {
-        // prop scores might not be needed as being duplicated in results
         this.name = 'Calcul mental'; // TODO: i18n
         this.rules = 'Trouvez le résultat de ce calcul'; // TODO: i18n
         this.playerIds = playerIds; // for debug purposes
-        // this.scores = this.getInitialScores(playerIds);
         this.results = this.getInitialResults(playerIds);
         this.duration = duration;
         this.hasAnswered = [];

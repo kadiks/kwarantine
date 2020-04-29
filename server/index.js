@@ -53,7 +53,7 @@ if (env === 'production') {
 }
 
 app.get('/api/stats', async (req, res) => {
-  const statsPath = `${__dirname}/stats.json`;
+  const statsPath = `${__dirname}/stats/all.json`;
   // console.log('server/index statsPath', statsPath);
 
   const content = await fs.readFile(statsPath, 'utf8');
