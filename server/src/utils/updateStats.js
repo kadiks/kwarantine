@@ -12,7 +12,8 @@ const updateStats = ({
     // if (process.env.NODE_ENV !== 'production') {
     //     return;
     // }
-    const statsPath = `${path.join(__dirname, '../../')}/stats.json`;
+    const statsFolderPath = `${path.join(__dirname, '../../')}/stats`;
+    const statsPath = `${statsFolderPath}/all.json`;
     // console.log('statsPath', statsPath);
     fs.readFile(statsPath, 'utf8', (err, content) => {
         if (err) {
@@ -28,6 +29,36 @@ const updateStats = ({
                 console.log('src/utils#updateStats Write stats.json failed');
                 return;
             }
+        });
+    });
+
+    const today = (new Date()).toISOString().split('T')[0];
+    const statsTodayPath = `${statsFolderPath}/daily_${today}.json`;
+    fs.exists(statsTodayPath, (isExist) => {
+        if (isExist === false) {
+            try {
+                fs.writeFileSync(statsTodayPath, '{"players":0,"games":0,"matches":0}', 'utf8');
+            } catch(e) {
+                console.log(`src/utils#updateStats Write daily_${today}.json failed`);
+                return;
+            }
+        }
+        fs.readFile(statsTodayPath, 'utf8', (err, contentToday) => {
+            if (err) {
+                console.log(`src/utils#updateStats Read daily_${today}.json failed`);
+                return;
+            }
+            const statsToday = JSON.parse(contentToday);
+            statsToday.players += players;
+            statsToday.games += games;
+            statsToday.matches += matches;
+            fs.writeFile(statsTodayPath, JSON.stringify(statsToday), () => {
+                if (err) {
+                    console.log(`src/utils#updateStats Write daily_${today}.json failed`);
+                    return;
+                }
+            });
+
         });
     });
 };
