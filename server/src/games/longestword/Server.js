@@ -91,7 +91,8 @@ class LongestWord {
     player.time = time;
 
     if (this.isValidInput(input) === false) {
-        return;
+      player.answerDisplay = `${input} (0)`;
+      return;
     }
 
     player.isGoodAnswer = true;

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "server-build": "npm run build && npm run export && rm -rf ../server/public/* && cp -a out/ ../server/public",
     "start": "next start",
     "export": "next export"
   },

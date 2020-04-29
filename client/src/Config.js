@@ -3,7 +3,7 @@ const dev = {
   API_ENDPOINT: '/api',
   API_EXTENSION: '.json',
   GA_TRACKING_ID: '',
-  VERSION: '0.2.0',
+  VERSION: '0.2.1',
   // IMAGE_SOURCE: 'nd'
 };
 

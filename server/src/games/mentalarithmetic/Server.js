@@ -60,6 +60,7 @@ class MentalArithmetic {
 
         const player = this.results.find(r => r.playerId === playerId);
         player.time = time;
+        player.answerDisplay = input;
 
         if (this.isValidInput(input) === false) {
             return;
@@ -67,7 +68,6 @@ class MentalArithmetic {
 
         player.isGoodAnswer = true;
         player.answer = input;
-        player.answerDisplay = input;
 
         this.calculateAllPlayersScore();
     }

@@ -39,6 +39,10 @@ npm run docs
 
 ## Changelog
 
+### 0.2.1
+
+- Fix when the last scoreboard doesn't show up
+
 ### 0.2.0
 
 - Added game (Mental arithmetic)

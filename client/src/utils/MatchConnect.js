@@ -71,7 +71,7 @@ class MatchConnect extends Dispatcher {
   goToLastScoreboard(results) {
     console.log('>> utils/Api#goToLastScoreboard');
     this.dispatch(this.evts.MATCH_END, results);
-    this.socket.disconnect();
+    // this.socket.disconnect();
   }
 
   goToGameTitle(instructions) {
