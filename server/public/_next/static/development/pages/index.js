@@ -7901,7 +7901,7 @@ var dev = {
   API_ENDPOINT: '/api',
   API_EXTENSION: '.json',
   GA_TRACKING_ID: '',
-  VERSION: '0.2.0' // IMAGE_SOURCE: 'nd'
+  VERSION: '0.3.0' // IMAGE_SOURCE: 'nd'
 
 };
 var test = {
@@ -7918,7 +7918,7 @@ var prod = {
   API_EXTENSION: '',
   GA_TRACKING_ID: 'UA-12326200-18'
 };
-var env = 'test';
+var env = 'prod';
 var Config = {};
 
 if (env === 'dev' || env === 'test' || env === 'prod') {

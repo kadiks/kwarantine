@@ -26041,7 +26041,7 @@ var dev = {
   API_ENDPOINT: '/api',
   API_EXTENSION: '.json',
   GA_TRACKING_ID: '',
-  VERSION: '0.2.0' // IMAGE_SOURCE: 'nd'
+  VERSION: '0.3.0' // IMAGE_SOURCE: 'nd'
 
 };
 var test = {
@@ -26058,7 +26058,7 @@ var prod = {
   API_EXTENSION: '',
   GA_TRACKING_ID: 'UA-12326200-18'
 };
-var env = 'test';
+var env = 'prod';
 var Config = {};
 
 if (env === 'dev' || env === 'test' || env === 'prod') {
@@ -27498,7 +27498,7 @@ var renderMyScore = function renderMyScore(_ref4) {
     }
   }, results.map(function (_ref5, index) {
     var name = _ref5.name,
-        answer = _ref5.answer,
+        answerDisplay = _ref5.answerDisplay,
         score = _ref5.score;
     return __jsx("tr", {
       key: index,
@@ -27522,7 +27522,7 @@ var renderMyScore = function renderMyScore(_ref4) {
         lineNumber: 136,
         columnNumber: 17
       }
-    }, answer), __jsx("td", {
+    }, answerDisplay), __jsx("td", {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
@@ -28814,7 +28814,7 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       columnNumber: 13
     }
   }), __jsx("ul", {
-    "class": "list-group list-group-horizontal mx-auto",
+    className: "list-group list-group-horizontal mx-auto",
     __self: _this,
     __source: {
       fileName: _jsxFileName,
@@ -29081,8 +29081,7 @@ var MatchConnect = /*#__PURE__*/function (_Dispatcher) {
     key: "goToLastScoreboard",
     value: function goToLastScoreboard(results) {
       console.log('>> utils/Api#goToLastScoreboard');
-      this.dispatch(this.evts.MATCH_END, results);
-      this.socket.disconnect();
+      this.dispatch(this.evts.MATCH_END, results); // this.socket.disconnect();
     }
   }, {
     key: "goToGameTitle",
