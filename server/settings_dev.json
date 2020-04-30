@@ -1,8 +1,9 @@
 {
     "games": [
-        "MentalArithmetic",
         "Flag",
-        "LongestWord"
+        "LongestWord",
+        "MentalArithmetic",
+        "Scrambler"
     ],
     "numRounds": 5,
     "maxPlayers": 4

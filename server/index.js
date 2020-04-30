@@ -92,6 +92,7 @@ io.on('connect', async (socket) => {
   let currentMatch = matchMgr.getWaitingMatch();
   // console.log('currentMatch', currentMatch);
   if (currentMatch === null || currentMatch.isWaiting === false) {
+    console.log('server/index #1');
     const { selectedGames, numRounds, maxPlayers } = await loadSettings();
     const match = new Match({
       id: uuid(),
@@ -102,11 +103,16 @@ io.on('connect', async (socket) => {
     matchMgr.addMatch(match);
 
     currentMatch = match;
+    console.log('server/index #2');
   }
 
   const ns = `/${currentMatch.id}`;
   socket.emit('room', ns);
-
+  console.log('server/index #3 typeof socket.id', socket.id);
+  console.log('server/index #3 typeof socket.nsp.name', socket.nsp.name);
+  console.log('server/index #3 typeof io.sockets.sockets', io.sockets.sockets);
+  console.log('server/index #3 typeof currentMatch', typeof currentMatch);
+  console.log('server/index #4 currentMatch.id', currentMatch.id);
   const nsp = io.of(ns);
   nsp.on('connection', function (socket) {
     // deal with nsp user connection

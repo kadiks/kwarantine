@@ -1,4 +1,6 @@
 const mots = require('../../data/dict.json');
+const nomCommuns = require('../../data/mots.json');
+const removeDiacritics = require('diacritics').remove;
 
 function randinc(min, max) {
   min = Math.ceil(min);
@@ -12,6 +14,17 @@ function pick(xs) {
 
 function validateWord(word) {
   return mots.hasOwnProperty(word.toLowerCase());
+}
+
+function pickDictWord(nbLetters = 7) {
+  // console.log('mots', mots);
+  const selectedWords = Object.keys(nomCommuns)
+    .filter(w => w.length <= nbLetters && w.length >= 3);
+  const selectedWordIndex = randinc(0, selectedWords.length - 1);
+  const selectedWord = selectedWords[selectedWordIndex];
+  const cleanWord = removeDiacritics(selectedWord);
+
+  return cleanWord.toUpperCase();
 }
 
 const letterFrequencies = {
@@ -65,4 +78,5 @@ module.exports = {
   pick,
   validateWord,
   randLetter,
+  pickDictWord
 };

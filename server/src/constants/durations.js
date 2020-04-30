@@ -14,7 +14,11 @@ const durations = {
     /**
      * @property {Number}
      */
-    WAITROOM: 30
+    WAITROOM: 5,
+    /**
+     * @property {Number}
+     */
+    TIMEOUT_MATCH_CONNECT: 5
 };
 
 module.exports = durations;

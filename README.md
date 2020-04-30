@@ -39,6 +39,10 @@ npm run docs
 
 ## Changelog
 
+### 0.4.0
+
+- Add game (Scrambler)
+
 ### 0.3.0
 
 - Add game (Guess the flag)

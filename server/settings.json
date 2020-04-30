@@ -2,8 +2,9 @@
     "games": [
         "Flag",
         "LongestWord",
-        "MentalArithmetic"
+        "MentalArithmetic",
+        "Scrambler"
     ],
-    "numRounds": 7,
+    "numRounds": 10,
     "maxPlayers": 4
 }
