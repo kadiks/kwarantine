@@ -14,7 +14,7 @@ const durations = {
     /**
      * @property {Number}
      */
-    WAITROOM: 5,
+    WAITROOM: 30,
     /**
      * @property {Number}
      */
