@@ -275,7 +275,7 @@ class LongestWord extends Dispatcher {
       .map(this.renderLetter)
       .join('');
 
-    return `<h3 class="text-center mb-3">Mot</h3><div class="kwa-answer mb-3">${letters}</div>`;
+    return `<h3 class="text-center mb-3">Mot le plus long</h3><div class="kwa-answer mb-3">${letters}</div>`;
   }
 
   /**

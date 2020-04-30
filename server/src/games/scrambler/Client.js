@@ -224,7 +224,7 @@ class Scrambler extends Dispatcher {
       .map(this.renderLeftLetter)
       .join('');
 
-    return `<h3 class="text-center mb-3">Possibilités</h3><div class="kwa-answer mb-5">${letters}</div>`;
+    return `<h3 class="text-center mb-3">Anagramme</h3><div class="kwa-answer mb-5">${letters}</div>`;
   }
 
   //Front
@@ -275,7 +275,7 @@ class Scrambler extends Dispatcher {
       .map(this.renderLetter)
       .join('');
 
-    return `<h3 class="text-center mb-3">Mot</h3><div class="kwa-answer mb-3">${letters}</div>`;
+    return `<h3 class="text-center mb-3">Mot mélangé</h3><div class="kwa-answer mb-3">${letters}</div>`;
   }
 
   /**
