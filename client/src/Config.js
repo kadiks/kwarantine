@@ -25,8 +25,6 @@ const prod = {
 
 const env = process.env.NEXT_ENV;
 
-console.log('env', env);
-
 let Config = {};
 
 if (env === 'development' || env === 'test' || env === 'production') {

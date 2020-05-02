@@ -76,7 +76,7 @@ const loadSettings = async () => {
   const settings = JSON.parse(content);
 
   // console.log('#loadSettings settings', settings);
-  
+
   return {
     selectedGames: settings.games,
     numRounds: settings.numRounds,
