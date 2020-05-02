@@ -28,73 +28,75 @@ function pickDictWord(nbLetters = 7) {
 }
 
 const letterFrequencies = {
-  A: 815,
-  B: 97,
-  C: 315,
-  D: 373,
-  E: 139,
-  F: 112,
-  G: 97,
-  H: 85,
-  I: 731,
-  J: 45,
-  K: 2,
-  L: 569,
-  M: 287,
-  N: 712,
-  O: 528,
-  P: 28,
-  Q: 121,
-  R: 664,
-  S: 814,
-  T: 722,
-  U: 638,
-  V: 164,
-  W: 3,
-  X: 41,
-  Y: 28,
-  Z: 15,
+  consonants: {
+    B: 97,
+    C: 315,
+    D: 373,
+    F: 112,
+    G: 97,
+    H: 85,
+    J: 45,
+    K: 2,
+    L: 569,
+    M: 287,
+    N: 712,
+    P: 28,
+    Q: 121,
+    R: 664,
+    S: 814,
+    T: 722,
+    V: 164,
+    W: 3,
+    X: 41,
+    Z: 15,
+  },
+  vowels: {
+    A: 815,
+    E: 139,
+    I: 731,
+    O: 528,
+    U: 638,
+    Y: 28
+  }
 };
 
 /**
- * Generates a random letter
- *
+ * Randomly selects a key from an object
+ * The associated values are the key's weight
  */
-function randLetter() {
-  const sumWeights = Object.values(letterFrequencies).reduce((x, y) => x + y);
-  let target = randinc(0, sumWeights-1);
-  const pairs = Object.entries(letterFrequencies);
-  for (let i = 0; i < pairs.length; i++) {
-    // console.log(target, pairs[i][1]);
-    if (target < pairs[i][1]) {
-      return pairs[i][0];
+function randKey(obj){
+  const sumWeights = Object.values(obj).reduce((x, y) => x + y)
+  let target = randinc(0, sumWeights-1)
+  const pairs = Object.entries(obj)
+  for(let i = 0; i < pairs.length; i++){
+    if(target < pairs[i][1]){
+      return pairs[i][0]
     }
     target -= pairs[i][1];
   }
-  console.log('should not happen') // it does, however
 }
 
-[...new Array(100000)].forEach( () => randLetter() )
-
-
+/*
+ * Return an array of numLetters letters
+ * With at least 2 and at most 7 vowels
+ * Letters selected according to weights in
+ * letterFrequencies object
+ */
 function randLetters(numLetters){
-  const vowels = ['A', 'E', 'I', 'O', 'U', 'Y']
-  const consonants = ['B', 'C', 'D', 'F', 'G', 'H', 'J',
-                      'K', 'L', 'M', 'N', 'P', 'Q', 'R',
-                      'S', 'T', 'V', 'X', 'Z']
   const res = new Array(numLetters)
   const numV = randinc(2, 7)
+  const v = letterFrequencies.vowels
+  const c = letterFrequencies.consonants
   for(let i = 0; i < numLetters; i++){
-    res[i] = i < numV ? pick(vowels) : pick(consonants)
+    res[i] = randKey(i < numV ? v : c)
   }
-  return res;
+  return ['a']//res;
 }
-
 
 module.exports = {
   randinc,
   pick,
   validateWord,
-  randLetter,
-  pickDictWord
+  pickDictWord,
+  randLetters
 };

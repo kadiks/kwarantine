@@ -35,11 +35,12 @@ class LongestWord {
     } else {
       this.letters = letters;
     }
+    this.letters = ['a']
   }
 
   // TODO: Find a way to export the 2 #calculate methods but
   // have a way to parameters like the sorting method for score
-  // and a way to transform the "answerDisplay" property 
+  // and a way to transform the "answerDisplay" property
   calculateAllPlayersScore() {
     let maxPoints = this.playerIds.length;
 
@@ -125,7 +126,9 @@ class LongestWord {
    * @memberof Games/LongestWord.Server
    */
   static getLetters(numLetters) {
-    return randomLetters(numLetters);
+    console.log('Server.js/getLetters');
+    return ['a'];
+    //return random.randLetters(numLetters);
   }
 
   /**
@@ -135,7 +138,7 @@ class LongestWord {
    * @memberof Games/LongestWord.Server
    */
   static randLetter() {
-    return String.fromCodePoint(random.randinc(65, 90));
+    return 'a' //String.fromCodePoint(random.randinc(65, 90));
   }
 
   /**
