@@ -23,17 +23,19 @@ const prod = {
   GA_TRACKING_ID: 'UA-12326200-18',
 };
 
-const env = 'prod';
+const env = process.env.NEXT_ENV;
+
+console.log('env', env);
 
 let Config = {};
 
-if (env === 'dev' || env === 'test' || env === 'prod') {
+if (env === 'development' || env === 'test' || env === 'production') {
   Config = Object.assign(Config, dev);
 }
-if (env === 'test' || env === 'prod') {
+if (env === 'test' || env === 'production') {
   Config = Object.assign(Config, test);
 }
-if (env === 'prod') {
+if (env === 'production') {
   Config = Object.assign(Config, prod);
 }
 

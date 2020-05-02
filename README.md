@@ -12,7 +12,7 @@ Current status
 cd client
 npm i
 cd ../server
-vim .env # with variables PORT and PORT_SSL
+vim .env # with variables PORT, PORT_SSL and ENV=development|test|production
 npm i --save-dev
 npm start
 ```

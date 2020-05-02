@@ -1,3 +1,8 @@
+require('dotenv').config();
+
 module.exports = {
-    exportTrailingSlash: true
+    exportTrailingSlash: true,
+    env: {
+        NEXT_ENV: process.env.ENV
+    }
 };
