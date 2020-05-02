@@ -35,7 +35,6 @@ class LongestWord {
     } else {
       this.letters = letters;
     }
-    this.letters = ['a']
   }
 
   // TODO: Find a way to export the 2 #calculate methods but
@@ -127,18 +126,7 @@ class LongestWord {
    */
   static getLetters(numLetters) {
     console.log('Server.js/getLetters');
-    return ['a'];
-    //return random.randLetters(numLetters);
-  }
-
-  /**
-   * Generates a random letter
-   *
-   * @static
-   * @memberof Games/LongestWord.Server
-   */
-  static randLetter() {
-    return 'a' //String.fromCodePoint(random.randinc(65, 90));
+    return random.randLetters(numLetters);
   }
 
   /**

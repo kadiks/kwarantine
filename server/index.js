@@ -9,9 +9,9 @@ const sslOpts = {
   // key: fs.readFileSync('./certs/private.key'),
   // cert: fs.readFileSync('./certs/certificate.crt'),
   // ca: fs.readFileSync('./certs/ca_bundle.crt'),
-  //key: fs.readFileSync('./certs/privkey.pem'),
-  //cert: fs.readFileSync('./certs/cert.pem'),
-  //ca: fs.readFileSync('./certs/chain.pem'),
+  key: fs.readFileSync('./certs/privkey.pem'),
+  cert: fs.readFileSync('./certs/cert.pem'),
+  ca: fs.readFileSync('./certs/chain.pem'),
 };
 const http = require('http');
 const https = require('https');

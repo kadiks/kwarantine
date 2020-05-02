@@ -90,7 +90,7 @@ function randLetters(numLetters){
   for(let i = 0; i < numLetters; i++){
     res[i] = randKey(i < numV ? v : c)
   }
-  return ['a']//res;
+  return res;
 }
 
 module.exports = {
