@@ -71,20 +71,24 @@ function randLetter() {
     }
     target -= pairs[i][1];
   }
-  console.log('should not happen')
+  console.log('should not happen') // it does, however
 }
 
-
-
-const MAXTRIES = 100000
-for(let i = 0; i < MAXTRIES; i++){
-  const numVowels = randinc(2, 7)
-  if(numVowels < 2){
-    console.log(`numVowels < 2 at run ${i} / ${MAXTRIES}`)
-  }else if(numVowels > 7){
-    console.log(`numVowels > 7 at run ${i} / ${MAXTRIES}`)
+function randLetters(numLetters){
+  const vowels = ['A', 'E', 'I', 'O', 'U', 'Y']
+  const consonants = ['B', 'C', 'D', 'F', 'G', 'H', 'J',
+                      'K', 'L', 'M', 'N', 'P', 'Q', 'R',
+                      'S', 'T', 'V', 'X', 'Z']
+  const res = new Array(numLetters)
+  const numV = randinc(2, 7)
+  for(let i = 0; i < numLetters; i++){
+    res[i] = i < numV ? pick(vowels) : pick(consonants)
   }
+  return res;
 }
+
+[...new Array(40)].forEach(() => console.log(randLetters(60).join('')) )
+
 
 module.exports = {
   randinc,
