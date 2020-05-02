@@ -49,7 +49,6 @@ io.on('connect', (socket) => {
   if (currentMatch === null || currentMatch.isWaiting === false) {
     const match = new Match({ id: uuid(), numRounds });
     matchMgr.addMatch(match);
-
     currentMatch = match;
   }
 
@@ -65,8 +64,6 @@ io.on('connect', (socket) => {
     const matchId = socketIdSplitted[0].replace('/', '');
     const playerId = socketIdSplitted[1];
     const match = matchMgr.getMatchById(matchId);
-    // console.log('socket.id', socket.id);
-    // console.log('matchId', matchId);
     match.setSocket(socket);
 
     // Add player

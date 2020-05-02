@@ -58,6 +58,19 @@ function randLetter() {
     }
     target -= pairs[i][1];
   }
+  console.log('should not happen')
+}
+
+
+
+const MAXTRIES = 100000
+for(let i = 0; i < MAXTRIES; i++){
+  const numVowels = randinc(2, 7)
+  if(numVowels < 2){
+    console.log(`numVowels < 2 at run ${i} / ${MAXTRIES}`)
+  }else if(numVowels > 7){
+    console.log(`numVowels > 7 at run ${i} / ${MAXTRIES}`)
+  }
 }
 
 module.exports = {

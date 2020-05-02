@@ -170,6 +170,7 @@ class Match extends utils.Dispatcher {
   }
 
   sendClient(eventName, { playerId = null, value } = {}) {
+    console.log(eventName)
     console.log('>> match/Match#sendClient');
     console.log('>> match/Match#sendClient eventName', eventName);
     // console.log('>> match/Match#sendClient this.socket.id', this.socket.id);
