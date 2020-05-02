@@ -87,8 +87,6 @@ function randLetters(numLetters){
   return res;
 }
 
-[...new Array(40)].forEach(() => console.log(randLetters(60).join('')) )
-
 
 module.exports = {
   randinc,

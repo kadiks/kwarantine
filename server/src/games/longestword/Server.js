@@ -125,7 +125,7 @@ class LongestWord {
    * @memberof Games/LongestWord.Server
    */
   static getLetters(numLetters) {
-    return [...new Array(numLetters)].map(random.randLetter);
+    return randomLetters(numLetters);
   }
 
   /**
