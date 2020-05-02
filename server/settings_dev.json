@@ -1,0 +1,10 @@
+{
+    "games": [
+        "Flag",
+        "LongestWord",
+        "MentalArithmetic",
+        "Scrambler"
+    ],
+    "numRounds": 5,
+    "maxPlayers": 4
+}

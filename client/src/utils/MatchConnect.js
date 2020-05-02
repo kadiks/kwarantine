@@ -71,6 +71,7 @@ class MatchConnect extends Dispatcher {
   goToLastScoreboard(results) {
     console.log('>> utils/Api#goToLastScoreboard');
     this.dispatch(this.evts.MATCH_END, results);
+    // this.socket.disconnect();
   }
 
   goToGameTitle(instructions) {
@@ -110,14 +111,15 @@ class MatchConnect extends Dispatcher {
         resolve();
       });
       socket.on('disconnect', () => {
+        console.log('socket on disconnect');
         socket.removeAllListeners();
       });
     });
   }
 
   removeEvents() {
-    // console.log('>> utils/Api#removeEvents');
-    this.socket.removeAllListeners();
+    console.log('>> utils/Api#removeEvents');
+    // this.socket.removeAllListeners();
   }
 
   setRounds(rounds) {

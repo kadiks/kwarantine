@@ -1,7 +1,7 @@
 export default ({ roundNumber } = {}) => {
     return (
       <div>
-        <h2>Jour {roundNumber}</h2>
+        <h3>Jour {roundNumber}</h3>
       </div>
     );
   };

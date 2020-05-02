@@ -38,11 +38,10 @@ class LongestWord extends Dispatcher {
     const letters = this.state.filter((l) => l.type === 'add-letter');
     let index = -1;
     for (let i = 0; i < letters.length; i++) {
-      console.log('#1', letters[i].value.letter);
-      console.log('#2', letter);
-      console.log('#3', letters[i].value.letter === letter);
+      // console.log('#1', letters[i].value.letter);
+      // console.log('#2', letter);
+      // console.log('#3', letters[i].value.letter === letter);
       if (letters[i].value.letter === letter && index === -1) {
-        console.log('hm?');
         index = letters[i].value.index;
       }
     }
@@ -56,14 +55,15 @@ class LongestWord extends Dispatcher {
    * @memberof Games/LongestWord.Client
    */
   attachEvents() {
-    console.log('>> server/games/LongestWord#attachEvents');
+    // console.log('>> server/games/LongestWord#attachEvents');
     if (this.containerEl === null) {
       this.containerEl = document.querySelector('.kwa-game-container');
     }
+    // this.containerEl.classList.add(this.constructor.name);
     this.containerEl.addEventListener('click', this.handleEventContainer);
     document.addEventListener('keypress', this.onKeyPress);
     document.addEventListener('keydown', this.onKeyDown);
-    console.log('>> server/games/LongestWord#attachEvents');
+    // console.log('>> server/games/LongestWord#attachEvents');
   }
 
   /**
@@ -105,6 +105,8 @@ class LongestWord extends Dispatcher {
     if (target.matches('[kwa-event="click"]')) {
       if (target.matches('[kwa-type="end-game"]')) {
         this.input();
+      } else if (target.matches('[kwa-type="rm-last-letter"]')) {
+        this.removeLastLetter();
       } else {
         this.handleEventElement({ target });
       }
@@ -142,7 +144,7 @@ class LongestWord extends Dispatcher {
     if (this.isValidInput(word) === false) {
       return;
     }
-    console.log('server/games/LongestWord#input word', word);
+    // console.log('server/games/LongestWord#input word', word);
     this.socket.emit('game.input', { input: word, playerId: this.playerId });
     // this.updateState(index);
   }
@@ -152,7 +154,7 @@ class LongestWord extends Dispatcher {
   }
 
   onKeyPress({ keyCode }) {
-    console.log('server/games/LongestWord#onKeyPress keyCode', keyCode);
+    // console.log('server/games/LongestWord#onKeyPress keyCode', keyCode);
     if (keyCode === 13) {
       this.input();
       return;
@@ -179,7 +181,7 @@ class LongestWord extends Dispatcher {
     const letters = this.state
       .filter((l) => l.type === 'rm-letter')
       .sort((a, b) => a.value.position - b.value.position);
-    console.log('server/games/LongestWord#removeLastLetter letters', letters);
+    // console.log('server/games/LongestWord#removeLastLetter letters', letters);
     const lastLetter = letters[letters.length - 1];
     const index = lastLetter.value.index;
     this.updateState(index);
@@ -194,19 +196,25 @@ class LongestWord extends Dispatcher {
     const myWordHtml = this.renderUserWord();
     const leftLettersHtml = this.renderLeftLetters();
     const endGameBtn = this.renderEndButton();
+    const backBtn = this.renderBackButton();
     const styleHtml = this.renderStyleEl();
 
     return `<div class="kwa-game">
   ${myWordHtml}
-  ${endGameBtn}
+  ${backBtn}
   ${leftLettersHtml}
   ${styleHtml}
+  ${endGameBtn}
 </div>`;
+  }
+
+  renderBackButton() {
+    return `<div class="text-center mb-3"><button type="button" class="btn-lg btn-outline-warning" kwa-event="click" kwa-type="rm-last-letter">Effacer</button></div>`;
   }
 
   // Front
   renderEndButton() {
-    return `<button kwa-event="click" kwa-type="end-game">End</button>`;
+    return `<div class="text-center mt-3"><button type="button" class="btn-lg btn-warning" kwa-event="click" kwa-type="end-game">Envoyer</button></div>`;
   }
 
   // Front
@@ -216,7 +224,7 @@ class LongestWord extends Dispatcher {
       .map(this.renderLeftLetter)
       .join('');
 
-    return `<p class="text-header">Possibilités</p><div class="kwa-answer">${letters}</div>`;
+    return `<h3 class="text-center mb-3">Possibilités</h3><div class="kwa-answer mb-5">${letters}</div>`;
   }
 
   //Front
@@ -267,7 +275,7 @@ class LongestWord extends Dispatcher {
       .map(this.renderLetter)
       .join('');
 
-    return `<p class="text-header">Mot</p><div class="kwa-answer">${letters}</div>`;
+    return `<h3 class="text-center mb-3">Mot le plus long</h3><div class="kwa-answer mb-3">${letters}</div>`;
   }
 
   /**

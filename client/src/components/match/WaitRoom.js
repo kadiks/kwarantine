@@ -1,25 +1,27 @@
-import { Avatar } from '../player';
+import { Presentation } from '../player';
+import { Countdown } from '../core/loader';
 
 export default ({ game, screenInfo } = {}) => {
   console.log('screenInfo', screenInfo);
   return (
-    <div>
-      <p>Wait Room</p>
-      <p>
-        En attente de joueurs {screenInfo.numPlayers} / {screenInfo.maxPlayers}
-      </p>
-      <Avatar playerId={screenInfo.playerId} />
-      <ul class="list-group list-group-horizontal">
-        {screenInfo.playerIds
-          .filter((p) => p !== screenInfo.playerId)
-          .map((playerId) => {
-            return (
-              <li className="list-group-item" key={playerId}>
-                <Avatar playerId={playerId} size="small" />
-              </li>
-            );
-          })}
-      </ul>
+    <div className="row text-center">
+      <div className="col-12">
+        <h2>Salle d'attente</h2>
+      </div>
+      <div className="col-12">
+        <p>
+          En attente de confinés {screenInfo.numPlayers} / {screenInfo.maxPlayers}
+        </p>
+      </div>
+      <div className="col-12">
+        <Presentation screenInfo={screenInfo} />
+      </div>
+      <div className="col-12 mt-5">
+        La partie démarre dans...
+      </div>
+      <div className="col-12">
+        <Countdown duration={kwa.constants.durations.WAITROOM} />
+      </div>
     </div>
   );
 };

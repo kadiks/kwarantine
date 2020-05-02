@@ -13,7 +13,7 @@ class LongestWord {
    */
   constructor({
     numLetters = 10,
-    duration = 30,
+    duration = 20,
     playerIds = [],
     letters = [],
   } = {}) {
@@ -21,11 +21,9 @@ class LongestWord {
      * @property
      * @memberof Games/LongestWord.Server
      */
-    // prop scores might not be needed as being duplicated in results
     this.name = 'Le mot le plus long'; // TODO: i18n
-    this.rules = 'Trouver le mot le plus long'; // TODO: i18n
+    this.rules = 'Trouvez le mot le plus long'; // TODO: i18n
     this.playerIds = playerIds; // for debug purposes
-    this.scores = this.getInitialScores(playerIds);
     this.results = this.getInitialResults(playerIds);
     this.duration = duration;
     this.hasAnswered = [];
@@ -39,24 +37,85 @@ class LongestWord {
     }
   }
 
-  getInitialResults(playerIds) {
-    const results = {};
-    playerIds.forEach((playerId) => {
-      results[playerId] = {
-        name: this.name,
-        score: 0,
-        answer: '',
-      };
+  // TODO: Find a way to export the 2 #calculate methods but
+  // have a way to parameters like the sorting method for score
+  // and a way to transform the "answerDisplay" property 
+  calculateAllPlayersScore() {
+    let maxPoints = this.playerIds.length;
+
+    const orderedResults = this.results
+        .filter(p => p.isGoodAnswer)
+        .sort((a, b) => {
+          // https://stackoverflow.com/a/6130014
+          // if length is equal, sort by time
+          if (a.answer.length === b.answer.length) {
+            return a.time - b.time;
+          }
+          // otherwise, sort by word length
+          return b.answer.length - a.answer.length;
+        })
+        .map(p => {
+            maxPoints--;
+            return {
+                playerId: p.playerId,
+                score: maxPoints + 1
+            };
+        });
+
+    this.results.forEach((p) => {
+        const playerScore = orderedResults.find(pS => pS.playerId === p.playerId);
+        // console.log('games/MA.Server#calculateAllPlayersScore playerScore', playerScore);
+        if (typeof playerScore !== 'undefined') {
+            p.score = playerScore.score;
+        }
     });
-    return results;
+}
+
+  /**
+   * Calculate the player score
+   *
+   * @memberof Games/LongestWord.Server
+   * @param {*} input
+   * @param {Object} params
+   * @param {String} params.playerId
+   *
+   * @returns {Number} The score to be resent to the client for info
+   */
+  calculatePlayerScore(input, { playerId, time }) {
+    if (this.hasAnswered.includes(playerId) === false) {
+      this.hasAnswered.push(playerId);
+    }
+
+    const player = this.results.find(r => r.playerId === playerId);
+    player.time = time;
+
+    if (this.isValidInput(input) === false) {
+      player.answerDisplay = `${input} (0)`;
+      return;
+    }
+
+    player.isGoodAnswer = true;
+    player.answer = input;
+    player.answerDisplay = `${input} (${input.length})`;
+
+    this.calculateAllPlayersScore();
   }
 
-  getInitialScores(playerIds) {
-    const scores = {};
-    playerIds.forEach((playerId) => {
-      scores[playerId] = 0;
+  // TODO: Has to be in another module. Already exactly the same
+  getInitialResults(playerIds) {
+    const results = [];
+    playerIds.forEach(playerId => {
+        results.push({
+            playerId,
+            name: this.name,
+            score: 0,
+            isGoodAnswer: false,
+            answer: '',
+            answerDisplay: '',
+            time: 0
+        });
     });
-    return scores;
+    return results;
   }
 
   /**
@@ -77,34 +136,6 @@ class LongestWord {
    */
   static randLetter() {
     return String.fromCodePoint(random.randinc(65, 90));
-  }
-
-  /**
-   * Calculate the player score
-   *
-   * @memberof Games/LongestWord.Server
-   * @param {*} input
-   * @param {Object} params
-   * @param {String} params.playerId
-   *
-   * @returns {Number} The score to be resent to the client for info
-   */
-  calculatePlayerScore(input, { playerId = 'p1' } = {}) {
-    let score = 0;
-    if (this.hasAnswered.includes(playerId) === false) {
-      this.hasAnswered.push(playerId);
-    }
-    if (this.isValidInput(input) === true) {
-      score = input.length; // the player has the n pts that matches the number of letters
-    }
-
-    console.log('#calculatePlayerScore playerId', playerId);
-    console.log('#calculatePlayerScore this.results', this.results);
-
-    this.scores[playerId] = score;
-    this.results[playerId].answer = input;
-    this.results[playerId].score = score;
-    return score;
   }
 
   /**

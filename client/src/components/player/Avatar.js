@@ -10,12 +10,7 @@ class Avatar extends React.Component {
       happy: 'options[eyes][]=happy&options[mouth][]=smile',
       sad: 'options[eyes][]=surprised&options[mouth][]=sad',
     };
-    const bgColors = [
-      styles.color.primary,
-      styles.color.secondary,
-      styles.color.action,
-      styles.color.waiting,
-    ];
+    const bgColors = styles.color.players;
     const bgColor = bgColors[randinc(0, bgColors.length - 1)].replace('#', '');
     let updatedWidth = width;
     if (size === "small") {
@@ -26,7 +21,7 @@ class Avatar extends React.Component {
     }
     return (
       <div
-        className="kwa-avatar"
+        className="kwa-avatar mx-auto"
         style={{
           width: updatedWidth,
         }}

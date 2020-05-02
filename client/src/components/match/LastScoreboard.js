@@ -1,12 +1,35 @@
 import { Avatar } from '../player';
 import { withRouter } from 'next/router';
+import {
+  Basic as Button,
+} from '../core/button';
 
 const LastScoreboard = (props) => {
   // console.log('cmp/match/LastScoreboard props.screenInfo', props.screenInfo);
   return (
-    <div>
+    <div className="row">
+      <div className="col-12 text-center">
+        <Button
+            onClick={() => {
+              window.location = window.location.origin;
+              // props.router.push('/');
+            }}
+          >
+          Sortir du confinement !
+        </Button>
+      </div>
       {renderPlayersScore(props)}
       {renderMyScore(props)}
+      <div className="col-12 text-right">
+        <Button
+          onClick={() => {
+            window.location = window.location.origin;
+            // props.router.push('/');
+          }}
+        >
+          Sortir du confinement !
+        </Button>
+      </div>
     </div>
   );
 };
@@ -14,25 +37,28 @@ const LastScoreboard = (props) => {
 const getScoreboardByPlayerId = (results, { playerId }) => {
   let total = 0;
   const resultsWithTotal = results.map((g) => {
-    const keys = Object.keys(g);
+    // const keys = Object.keys(g);
+    const player = g.find(p => p.playerId === playerId);
     // console.log('playerId', playerId);
     // console.log('g', g);
     // console.log('keys', keys);
-    const result = g[playerId];
-    total += result.score;
-    return result;
+    // const result = g[playerId];
+    console.log('player', player);
+    console.log('playerId', playerId);
+    console.log('g', g);
+    total += player.score;
+    return player;
   });
   resultsWithTotal.push({
     name: 'TOTAL',
-    answer: '',
+    answerDisplay: '',
     score: total,
   });
   return resultsWithTotal;
 };
 
 const renderPlayersScore = ({ game, screenInfo }) => {
-  const playerIds = Object.keys(screenInfo.results[0]);
-  const results = playerIds.map(playerId => {
+  const results = screenInfo.playerIds.map(playerId => {
     const resultPlayer = getScoreboardByPlayerId(screenInfo.results, { playerId }); 
     const totalPlayer = resultPlayer[resultPlayer.length - 1];
     totalPlayer.playerId = playerId;
@@ -44,7 +70,7 @@ const renderPlayersScore = ({ game, screenInfo }) => {
   // console.log('#renderPlayersScore RESULTS RESULTS', results);
   
   return (
-    <div>
+    <div className="col-12">
     <h2>Classement final</h2>
     <table className="table table-striped">
       <thead>
@@ -90,9 +116,9 @@ const renderMyScore = ({ game, screenInfo }) => {
   const results = getScoreboardByPlayerId(screenInfo.results, {
     playerId: game.playerId
   });
-  console.log('#renderMyScore RESULTS RESULTS', results);
+  // console.log('#renderMyScore RESULTS RESULTS', results);
   return (
-    <div>
+    <div className="col-12">
       <h4>Récapitulatif de mes scores</h4>
       <table className="table table-striped">
         <thead>
@@ -103,24 +129,17 @@ const renderMyScore = ({ game, screenInfo }) => {
           </tr>
         </thead>
         <tbody>
-          {results.map(({ name, answer, score }, index) => {
+          {results.map(({ name, answerDisplay, score }, index) => {
             return (
               <tr key={index}>
                 <td>{name}</td>
-                <td>{answer}</td>
+                <td>{answerDisplay}</td>
                 <td>{score}</td>
               </tr>
             );
           })}
         </tbody>
       </table>
-      <button
-        onClick={() => {
-          router.push('/');
-        }}
-      >
-        Back to homepage
-      </button>
     </div>
   );
 };

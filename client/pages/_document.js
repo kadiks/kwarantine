@@ -30,11 +30,11 @@ class MyDocument extends Document {
           <meta charSet="utf8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link
-            href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Quicksand:wght@700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Quicksand:wght@700&family=Material+Icons&display=swap"
             rel="stylesheet"
           />
           <link rel="stylesheet" href="/css/bootstrap.min.css" />
-          <link rel="stylesheet" href="/css/brands.min.css" />
+          {/* <link rel="stylesheet" href="/css/brands.min.css" /> */}
           <link rel="stylesheet" href="/css/animate.min.css" />
           <link rel="stylesheet" href="/css/styles.css" />
 

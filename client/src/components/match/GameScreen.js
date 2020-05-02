@@ -7,13 +7,20 @@ import { Countdown } from '../core/loader';
 const GameScreen = ({ game, screenInfo, roundNumber } = {}) => {
   const html = game.render();
   return (
-    <div>
-      <p>Game screen</p>
-      <RoundCounter roundNumber={roundNumber} />
-      <Countdown duration={game.duration} />
-      <Avatar playerId={game.playerId} />
+    <>
+      <div className="row text-center">
+        <div className="col-4">
+          <Avatar playerId={game.playerId} />
+        </div>
+        <div className="col-4">
+          <RoundCounter roundNumber={roundNumber} />
+        </div>
+        <div className="col-4">
+          <Countdown duration={game.duration} />
+        </div>
+      </div>
       <div dangerouslySetInnerHTML={{ __html: html }}></div>
-    </div>
+    </>
   );
 };
 

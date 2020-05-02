@@ -11,10 +11,8 @@ import {
 
 export default ({ game, screen, screenInfo, roundNumber } = {}) => {
   return (
-    <div className="container">
-      <div className="kwa-game-container">
+    <div className="container kwa-game-container mt-5 mb-5">
         {renderScreen(screen, { game, screenInfo, roundNumber })}
-      </div>
     </div>
   );
 };

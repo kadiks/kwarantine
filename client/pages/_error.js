@@ -1,50 +1,33 @@
+import React from 'react';
 import Link from 'next/link';
-
+import { Header, Body } from '../src/components/core/text';
+import {
+  ButtonGroup,
+  Basic as Button,
+  Link as ButtonLink,
+} from '../src/components/core/button';
 import { NavBar, Footer } from '../src/components/navigation';
-import { Body, Header } from '../src/components/core/text';
+import { Countdown } from '../src/components/core/loader';
+import BrandName from '../src/components/BrandName';
 
 import styles from '../src/utils/styles';
+import Icon from '../src/components/core/Icon';
 
-function Error({ statusCode }) {
+export default function Home() {
   return (
-    <>
-      <NavBar />
-      <div
-        className="container-fluid"
-        style={{
-          paddingTop: styles.size.toolbar,
-        }}
-      >
-        <div className="row">
-          <div className="col-12 text-center mb-5 mt-5">
-            <Header>Désolé, une erreur s'est produite</Header>
+    <div className="container">
+      <div className="row">
+        <div className="col-12 text-center mt-3 mb-3">
+          <div className="logo">
+            <img className="img-fluid" src="/img/logo.png" />
           </div>
+          <BrandName />
         </div>
-        <div className="col-12">
-          <Body>
-            {statusCode
-              ? `Erreur serveur : ${statusCode}`
-              : 'Erreur du côté du navigateur'}
-          </Body>
+        <div className="col-12 text-center">
+          <Body>Désolé, une erreur s'est produite</Body>
+          <ButtonLink href="/">Revenir à la page d'accueil</ButtonLink>
         </div>
-        <div className="col-12">
-          <Body>
-            Revenir à la&nbsp;
-            <Link href="/">
-              <a>page d'accueil</a>
-            </Link>
-          </Body>
-        </div>
-
-        <Footer />
       </div>
-    </>
+    </div>
   );
 }
-
-Error.getInitialProps = ({ res, err }) => {
-  const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
-  return { statusCode };
-};
-
-export default Error;

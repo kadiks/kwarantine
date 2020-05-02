@@ -1,13 +1,11 @@
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
-const UrgeWithPleasureComponent = ({ duration }) => (
-  <div
-    style={{
-      width: 50,
-    }}
-  >
+const UrgeWithPleasureComponent = ({ duration, size = 50 }) => (
+  <div className="mx-auto" style={{
+    width: size
+  }}>
     <CountdownCircleTimer
-      size={50}
+      size={size}
       strokeWidth={3}
       isPlaying
       duration={duration}
