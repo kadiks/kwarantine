@@ -62,7 +62,7 @@ const letterFrequencies = {
  */
 function randLetter() {
   const sumWeights = Object.values(letterFrequencies).reduce((x, y) => x + y);
-  let target = randinc(0, sumWeights);
+  let target = randinc(0, sumWeights-1);
   const pairs = Object.entries(letterFrequencies);
   for (let i = 0; i < pairs.length; i++) {
     // console.log(target, pairs[i][1]);
@@ -73,6 +73,9 @@ function randLetter() {
   }
   console.log('should not happen') // it does, however
 }
+
+[...new Array(100000)].forEach( () => randLetter() )
+
 
 function randLetters(numLetters){
   const vowels = ['A', 'E', 'I', 'O', 'U', 'Y']
