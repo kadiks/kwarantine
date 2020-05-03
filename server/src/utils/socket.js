@@ -3,6 +3,10 @@ const getId = (socketId) => {
   return id;
 };
 
+const getRoom = (socket) => {
+  console.log(socket.rooms);
+};
+
 const getNamespace = (socketId) => {
   const ns = getSplit(socketId)[0];
   return ns.replace('/', '');
@@ -17,6 +21,7 @@ const getMatchId = getNamespace;
 
 module.exports = {
   getId,
+  getRoom,
   getNamespace,
   getMatchId,
   getPlayerId,

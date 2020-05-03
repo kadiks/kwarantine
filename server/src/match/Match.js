@@ -57,7 +57,7 @@ class Match extends utils.Dispatcher {
           playerIds: this.players.map((p) => p.id),
         };
         this.sendClient(evts.MATCH_WAITROOM, {
-          value,
+          value
         });
       }
     }
@@ -160,7 +160,7 @@ class Match extends utils.Dispatcher {
       players: this.players.length,
       games: this.numRounds
     });
-    const games = [...new Array(this.numRounds)].map((_) => {
+    const games = [...new Array(this.numRounds)].map((_, index) => {
       const selectedGames = allServerGames.filter(a => {
         // Gets only the game from the settings
         return this.selectedGames.includes(a.name);
@@ -168,7 +168,14 @@ class Match extends utils.Dispatcher {
       return new (utils.random.pick(selectedGames))({
         playerIds: this.players.map((p) => p.id),
       });
+      // return selectedGames.map(g => new g({
+      //   playerIds: this.players.map(p => p.id)
+      // }));
+      return new selectedGames[index]({
+        playerIds: this.players.map(p => p.id)
+      });
     });
+    console.log('games', games);
     const rounds = games.map((g) => g.getData());
     this.rounds = rounds;
     this.games = games;
@@ -184,6 +191,8 @@ class Match extends utils.Dispatcher {
   sendClient(eventName, { playerId = null, value } = {}) {
     // console.log('>> match/Match#sendClient');
     console.log('>> match/Match#sendClient eventName', eventName);
+    console.log('>> match/Match#sendClient playerId', playerId);
+    console.log('>> match/Match#sendClient value', value);
     // console.log('>> match/Match#sendClient this.socket.id', this.socket.id);
     // console.log('>> match/Match#sendClient this.socket.id', this.socket.id);
     if (playerId) {
@@ -199,9 +208,10 @@ class Match extends utils.Dispatcher {
       // this.io.to(playerId).emit(eventName, value);
       return;
     }
+    this.socket.in(this.id).emit(eventName, value);
     // this.socket.to(this.id).emit(eventName, value);
-    this.socket.emit(eventName, value);
-    this.socket.broadcast.emit(eventName, value);
+    // this.socket.emit(eventName, value);
+    // this.socket.broadcast.emit(eventName, value);
   }
 
   startMatch() {

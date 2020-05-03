@@ -28,6 +28,12 @@ class MatchConnect extends Dispatcher {
     this.socket
       .on('test', (text) => console.log('on test text', text))
       .on('connection', () => console.log('client nsp connection'))
+      .on('connect', (socket) => {
+        console.log('client connection')
+        console.log('this.socket.id', this.socket.id)
+        // console.log('socket.id', socket.id)
+        this.playerId = this.socket.id;
+      })
       .on('join', () => console.log('client nsp join'))
       .on('match.rounds', this.setRounds)
       // .on('match.waitroom', this.goToWaitRoom)
@@ -95,21 +101,23 @@ class MatchConnect extends Dispatcher {
       this.evts = kwa.constants.cEvents;
       const url = Config.API_URL;
       console.log('utils/Api#connect url', url);
-      const socket = io(url);
-      socket.on('room', (room) => {
-        console.log('utils/Api#connect room', room);
-        // set it from socket var as it seems in this.socket
-        // it is not readily available
-        this.playerId = socket.id;
-        this.socket = io(`${url}${room}`);
-        // console.log('utils/Api#connect socket', socket);
-        // console.log('utils/Api#connect this.socket', this.socket);
-        // debugger;
+      this.socket = io(url);
+      this.attachEvents();
+      resolve();
+      // socket.on('room', (room) => {
+      //   console.log('utils/Api#connect room', room);
+      //   // set it from socket var as it seems in this.socket
+      //   // it is not readily available
+      //   this.playerId = socket.id;
+      //   this.socket = io(`${url}${room}`);
+      //   // console.log('utils/Api#connect socket', socket);
+      //   // console.log('utils/Api#connect this.socket', this.socket);
+      //   // debugger;
 
-        // console.log('utils/Api#connect this.playerId', this.playerId);
-        this.attachEvents();
-        resolve();
-      });
+      //   // console.log('utils/Api#connect this.playerId', this.playerId);
+      //   this.attachEvents();
+      //   resolve();
+      // });
       socket.on('disconnect', () => {
         console.log('socket on disconnect');
         socket.removeAllListeners();

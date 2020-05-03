@@ -88,6 +88,7 @@ const loadSettings = async () => {
 io.on('connect', async (socket) => {
   matchMgr.setIo(io);
   console.log('connected on main nsp');
+  console.log('connect socket.id', socket.id);
 
   let currentMatch = matchMgr.getWaitingMatch();
   // console.log('currentMatch', currentMatch);
@@ -105,59 +106,85 @@ io.on('connect', async (socket) => {
     console.log('server/index #2');
   }
 
-  const ns = `/${currentMatch.id}`;
-  socket.emit('room', ns);
-  console.log('server/index #3 typeof socket.id', socket.id);
-  console.log('server/index #3 typeof socket.nsp.name', socket.nsp.name);
-  console.log('server/index #3 typeof io.sockets.sockets', io.sockets.sockets);
-  console.log('server/index #3 typeof currentMatch', typeof currentMatch);
-  console.log('server/index #4 currentMatch.id', currentMatch.id);
-  const nsp = io.of(ns);
-  nsp.on('connection', function (socket) {
-    // deal with nsp user connection
-    console.log('connected on specific nsp');
-    console.log('nsp on connection socket.id', socket.id);
-    const socketIdSplitted = socket.id.split('#');
-    const matchId = socketIdSplitted[0].replace('/', '');
-    const playerId = socketIdSplitted[1];
-    const match = matchMgr.getMatchById(matchId);
-    match.setSocket(socket);
+  currentMatch.setSocket(io);
 
+  socket.join(currentMatch.id, () => {
+    utils.socket.getRoom(socket);
+    const playerId = socket.id;
     // Add player
     const player = new Player({
       id: playerId,
       socket,
     });
-    match.addPlayer(player);
-    match.attachConnectEvents(player);
-    socket.on('disconnect', () => {
-      // A player has disconnected, remove him
-      const numPlayers = match.removeByPlayerId(player.id);
-      // If removal leads to no players in game,
-      if (!numPlayers) {
-        // remove game too
-        matchMgr.removeMatchById(match.id);
-        // and clean namespace
-        // - Force removal of all connections, to be sure
-        // - Remove all event listeners
-        // - Remove reference in io object
-        // There shouldn't be any remaining sockets in here
-        // But we can't leak.
-        Object.keys(nsp.connected).forEach((socketId) => {
-          nsp.connected[socketId].disconnect();
-        });
-        nsp.removeAllListeners();
-        delete io.nsps[ns];
-      }
-    });
-  });
+    currentMatch.addPlayer(player);
+    currentMatch.attachConnectEvents(player);
+  })
 
   socket.on('disconnect', () => {
-    console.log('main disconnect');
+    console.log('main disconnect socket', socket.id);
+    const playerId = socket.id;
+    // Get match from player id
+    const match = matchMgr.getMatchByPlayerId(playerId);
+    // console.log('match', match);
+    // const match = matchMgr.gettMatchById(matchId);
+    // A player has disconnected, remove him
+    const numPlayers = match.removeByPlayerId(playerId);
+    // If removal leads to no players in game,
+    if (!numPlayers) {
+      // remove game too
+      matchMgr.removeMatchById(match.id);
+    }
     // TODO: check playerId and find game from that player
     // TODO: if game is empty, then kill that game
     // TODO: Use MatchManager#getMatchByPlayerId to get the match instance
   });
+
+  // const ns = `/${currentMatch.id}`;
+  // socket.emit('room', ns);
+  // console.log('server/index #3 typeof socket.id', socket.id);
+  // console.log('server/index #3 typeof socket.nsp.name', socket.nsp.name);
+  // console.log('server/index #3 typeof io.sockets.sockets', io.sockets.sockets);
+  // console.log('server/index #3 typeof currentMatch', typeof currentMatch);
+  // console.log('server/index #4 currentMatch.id', currentMatch.id);
+  // const nsp = io.of(ns);
+  // nsp.on('connection', function (socket) {
+  //   // deal with nsp user connection
+  //   console.log('connected on specific nsp');
+  //   console.log('nsp on connection socket.id', socket.id);
+  //   const socketIdSplitted = socket.id.split('#');
+  //   const matchId = socketIdSplitted[0].replace('/', '');
+  //   const playerId = socketIdSplitted[1];
+  //   const match = matchMgr.getMatchById(matchId);
+  //   match.setSocket(socket);
+
+  //   // Add player
+  //   const player = new Player({
+  //     id: playerId,
+  //     socket,
+  //   });
+  //   match.addPlayer(player);
+  //   match.attachConnectEvents(player);
+  //   socket.on('disconnect', () => {
+  //     // A player has disconnected, remove him
+  //     const numPlayers = match.removeByPlayerId(player.id);
+  //     // If removal leads to no players in game,
+  //     if (!numPlayers) {
+  //       // remove game too
+  //       matchMgr.removeMatchById(match.id);
+  //       // and clean namespace
+  //       // - Force removal of all connections, to be sure
+  //       // - Remove all event listeners
+  //       // - Remove reference in io object
+  //       // There shouldn't be any remaining sockets in here
+  //       // But we can't leak.
+  //       Object.keys(nsp.connected).forEach((socketId) => {
+  //         nsp.connected[socketId].disconnect();
+  //       });
+  //       nsp.removeAllListeners();
+  //       delete io.nsps[ns];
+  //     }
+  //   });
+  // });
 });
 
 if (env === 'production') {
