@@ -26041,7 +26041,7 @@ var dev = {
   API_ENDPOINT: '/api',
   API_EXTENSION: '.json',
   GA_TRACKING_ID: '',
-  VERSION: '0.3.0' // IMAGE_SOURCE: 'nd'
+  VERSION: '0.4.0' // IMAGE_SOURCE: 'nd'
 
 };
 var test = {
@@ -26058,18 +26058,18 @@ var prod = {
   API_EXTENSION: '',
   GA_TRACKING_ID: 'UA-12326200-18'
 };
-var env = 'prod';
+var env = "test";
 var Config = {};
 
-if (env === 'dev' || env === 'test' || env === 'prod') {
+if (env === 'development' || env === 'test' || env === 'production') {
   Config = Object.assign(Config, dev);
 }
 
-if (env === 'test' || env === 'prod') {
+if (env === 'test' || env === 'production') {
   Config = Object.assign(Config, test);
 }
 
-if (env === 'prod') {
+if (env === 'production') {
   Config = Object.assign(Config, prod);
 }
 
@@ -29037,10 +29037,17 @@ var MatchConnect = /*#__PURE__*/function (_Dispatcher) {
   (0, _createClass2["default"])(MatchConnect, [{
     key: "attachEvents",
     value: function attachEvents() {
+      var _this2 = this;
+
       this.socket.on('test', function (text) {
         return console.log('on test text', text);
       }).on('connection', function () {
         return console.log('client nsp connection');
+      }).on('connect', function (socket) {
+        console.log('client connection');
+        console.log('this.socket.id', _this2.socket.id); // console.log('socket.id', socket.id)
+
+        _this2.playerId = _this2.socket.id;
       }).on('join', function () {
         return console.log('client nsp join');
       }).on('match.rounds', this.setRounds) // .on('match.waitroom', this.goToWaitRoom)
@@ -29105,27 +29112,30 @@ var MatchConnect = /*#__PURE__*/function (_Dispatcher) {
   }, {
     key: "connect",
     value: function connect() {
-      var _this2 = this;
+      var _this3 = this;
 
       return new Promise(function (resolve) {
-        _this2.evts = kwa.constants.cEvents;
+        _this3.evts = kwa.constants.cEvents;
         var url = _Config["default"].API_URL;
         console.log('utils/Api#connect url', url);
-        var socket = io(url);
-        socket.on('room', function (room) {
-          console.log('utils/Api#connect room', room); // set it from socket var as it seems in this.socket
-          // it is not readily available
+        _this3.socket = io(url);
 
-          _this2.playerId = socket.id;
-          _this2.socket = io("".concat(url).concat(room)); // console.log('utils/Api#connect socket', socket);
-          // console.log('utils/Api#connect this.socket', this.socket);
-          // debugger;
-          // console.log('utils/Api#connect this.playerId', this.playerId);
+        _this3.attachEvents();
 
-          _this2.attachEvents();
+        resolve(); // socket.on('room', (room) => {
+        //   console.log('utils/Api#connect room', room);
+        //   // set it from socket var as it seems in this.socket
+        //   // it is not readily available
+        //   this.playerId = socket.id;
+        //   this.socket = io(`${url}${room}`);
+        //   // console.log('utils/Api#connect socket', socket);
+        //   // console.log('utils/Api#connect this.socket', this.socket);
+        //   // debugger;
+        //   // console.log('utils/Api#connect this.playerId', this.playerId);
+        //   this.attachEvents();
+        //   resolve();
+        // });
 
-          resolve();
-        });
         socket.on('disconnect', function () {
           console.log('socket on disconnect');
           socket.removeAllListeners();
@@ -29250,7 +29260,7 @@ var styles = {
 
 /***/ }),
 
-/***/ 2:
+/***/ 3:
 /*!***********************************************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2Fmatch&absolutePagePath=%2FUsers%2Fjenaic%2FDocuments%2Fcode%2Fkwarantine%2Fclient%2Fpages%2Fmatch%2Findex.js ***!
   \***********************************************************************************************************************************************************/
@@ -29273,5 +29283,5 @@ module.exports = dll_2adc2403d89adc16ead0;
 
 /***/ })
 
-},[[2,"static/runtime/webpack.js"]]]);
+},[[3,"static/runtime/webpack.js"]]]);
 //# sourceMappingURL=match.js.map

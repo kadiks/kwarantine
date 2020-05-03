@@ -3932,7 +3932,7 @@ var dev = {
   API_ENDPOINT: '/api',
   API_EXTENSION: '.json',
   GA_TRACKING_ID: '',
-  VERSION: '0.3.0' // IMAGE_SOURCE: 'nd'
+  VERSION: '0.4.0' // IMAGE_SOURCE: 'nd'
 
 };
 var test = {
@@ -3949,18 +3949,18 @@ var prod = {
   API_EXTENSION: '',
   GA_TRACKING_ID: 'UA-12326200-18'
 };
-var env = 'prod';
+var env = "test";
 var Config = {};
 
-if (env === 'dev' || env === 'test' || env === 'prod') {
+if (env === 'development' || env === 'test' || env === 'production') {
   Config = Object.assign(Config, dev);
 }
 
-if (env === 'test' || env === 'prod') {
+if (env === 'test' || env === 'production') {
   Config = Object.assign(Config, test);
 }
 
-if (env === 'prod') {
+if (env === 'production') {
   Config = Object.assign(Config, prod);
 }
 
