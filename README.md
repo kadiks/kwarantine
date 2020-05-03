@@ -39,6 +39,11 @@ npm run docs
 
 ## Changelog
 
+### 0.4.1
+
+- Fix the server locking out user
+- Fix drawing letters without vowels
+
 ### 0.4.0
 
 - Add game (Scrambler)
