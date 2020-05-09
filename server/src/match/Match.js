@@ -9,7 +9,7 @@ const logger = (level, message, opts = {}) => {
     level,
     message,
     ...opts,
-    filePath: __filename.replace(process.cwd(), '').replace('/src/', '')
+    filePath: __filename.replace(process.cwd(), '').replace('/src/', ''),
   });
 };
 
@@ -56,7 +56,7 @@ class Match extends Dispatcher {
     Logger.log({
       level: 'debug',
       message: '>> #addPlayer',
-      filePath: __filename.replace(process.cwd(), '').replace('/src/', '')
+      filePath: __filename.replace(process.cwd(), '').replace('/src/', ''),
     });
     logger('debug', '>> #addPlayer');
     if (this.isPlayerExists(player) === true) {
@@ -74,7 +74,7 @@ class Match extends Dispatcher {
           playerIds: this.players.map((p) => p.id),
         };
         this.sendClient(evts.MATCH_WAITROOM, {
-          value
+          value,
         });
       }
     }
@@ -112,7 +112,7 @@ class Match extends Dispatcher {
   endMatch() {
     const value = {
       results: this.getResults(),
-      playerIds: this.players.map(p => p.id)
+      playerIds: this.players.map((p) => p.id),
     };
     this.sendClient(evts.MATCH_END, { value });
   }
@@ -159,7 +159,7 @@ class Match extends Dispatcher {
     // console.log('match/Match#handleInput this.socket.id', this.socket.id);
     // console.log('match/Match#handleInput playerId', playerId);
     // const playerId = utils.socket.getPlayerId(this.socket.id);
-    const time = (new Date()).getTime() - this.currentGameStartTime;
+    const time = new Date().getTime() - this.currentGameStartTime;
     game.calculatePlayerScore(input, { playerId, time });
     // console.log('match/Match#handleInput game.hasAnswered.length', game.hasAnswered.length);
     // console.log('match/Match#handleInput this.maxPlayers', this.maxPlayers);
@@ -178,10 +178,10 @@ class Match extends Dispatcher {
     // console.log('>> match/Match#initializeGames');
     updateStats({
       players: this.players.length,
-      games: this.numRounds
+      games: this.numRounds,
     });
     const games = [...new Array(this.numRounds)].map((_, index) => {
-      const selectedGames = allServerGames.filter(a => {
+      const selectedGames = allServerGames.filter((a) => {
         // Gets only the game from the settings
         return this.selectedGames.includes(a.name);
       });
@@ -192,14 +192,14 @@ class Match extends Dispatcher {
       //   playerIds: this.players.map(p => p.id)
       // }));
       return new selectedGames[index]({
-        playerIds: this.players.map(p => p.id)
+        playerIds: this.players.map((p) => p.id),
       });
     });
     console.log('games', games);
     const rounds = games.map((g) => g.getData());
     this.rounds = rounds;
     this.games = games;
-    console.log(rounds.forEach(r => console.log(r.className, r.data)));
+    console.log(rounds.forEach((r) => console.log(r.className, r.data)));
     // match.setGames(selectedGames);
     // match.setRounds(rounds);
   }
@@ -228,7 +228,9 @@ class Match extends Dispatcher {
       // this.io.to(playerId).emit(eventName, value);
       return;
     }
-    this.socket.in(this.id).emit(eventName, value);
+    if (this.socket) {
+      this.socket.in(this.id).emit(eventName, value);
+    }
     // this.socket.to(this.id).emit(eventName, value);
     // this.socket.emit(eventName, value);
     // this.socket.broadcast.emit(eventName, value);
@@ -247,6 +249,13 @@ class Match extends Dispatcher {
       }, durations.GAME_PREPARE * 1000);
     }, durations.GAME_PRESENTATION * 1000);
   }
+
+  /**
+   * TODO:
+   * 1 - Should have all setTimeout available from `this`
+   * 2 - #stop will go through every timeout or interval and clear them
+   */
+  stop() {}
 
   // Returns the number of players remaining after ?deletion
   removeByPlayerId(playerId) {
@@ -278,7 +287,7 @@ class Match extends Dispatcher {
     const value = {
       name: game.name,
       rules: game.rules,
-      duration: game.duration
+      duration: game.duration,
     };
     this.sendClient(evts.GAME_PREPARE, { value });
   }
@@ -297,7 +306,7 @@ class Match extends Dispatcher {
     // console.log('server/match/Match#showMidGameScoreboard game', game);
     const value = {
       results: game.results,
-      playerIds: this.players.map(p => p.id)
+      playerIds: this.players.map((p) => p.id),
     };
     this.sendClient(evts.MATCH_MID_SCOREBOARD, { value });
   }
@@ -305,7 +314,7 @@ class Match extends Dispatcher {
   startGame() {
     const round = this.getCurrentRound();
     // console.log('server/match/Match#startGame round', round);
-    this.currentGameStartTime = (new Date()).getTime();
+    this.currentGameStartTime = new Date().getTime();
     this.timers.roundTimeUp = setTimeout(() => {
       this.endGame();
     }, round.data.duration * 1000);

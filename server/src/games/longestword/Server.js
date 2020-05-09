@@ -44,32 +44,34 @@ class LongestWord {
     let maxPoints = this.playerIds.length;
 
     const orderedResults = this.results
-        .filter(p => p.isGoodAnswer)
-        .sort((a, b) => {
-          // https://stackoverflow.com/a/6130014
-          // if length is equal, sort by time
-          if (a.answer.length === b.answer.length) {
-            return a.time - b.time;
-          }
-          // otherwise, sort by word length
-          return b.answer.length - a.answer.length;
-        })
-        .map(p => {
-            maxPoints--;
-            return {
-                playerId: p.playerId,
-                score: maxPoints + 1
-            };
-        });
+      .filter((p) => p.isGoodAnswer)
+      .sort((a, b) => {
+        // https://stackoverflow.com/a/6130014
+        // if length is equal, sort by time
+        if (a.answer.length === b.answer.length) {
+          return a.time - b.time;
+        }
+        // otherwise, sort by word length
+        return b.answer.length - a.answer.length;
+      })
+      .map((p) => {
+        maxPoints--;
+        return {
+          playerId: p.playerId,
+          score: maxPoints + 1,
+        };
+      });
 
     this.results.forEach((p) => {
-        const playerScore = orderedResults.find(pS => pS.playerId === p.playerId);
-        // console.log('games/MA.Server#calculateAllPlayersScore playerScore', playerScore);
-        if (typeof playerScore !== 'undefined') {
-            p.score = playerScore.score;
-        }
+      const playerScore = orderedResults.find(
+        (pS) => pS.playerId === p.playerId
+      );
+      // console.log('games/MA.Server#calculateAllPlayersScore playerScore', playerScore);
+      if (typeof playerScore !== 'undefined') {
+        p.score = playerScore.score;
+      }
     });
-}
+  }
 
   /**
    * Calculate the player score
@@ -81,39 +83,43 @@ class LongestWord {
    *
    * @returns {Number} The score to be resent to the client for info
    */
-  calculatePlayerScore(input, { playerId, time }) {
+  calculatePlayerScore(input, { playerId = 'p1', time = 0 } = {}) {
     if (this.hasAnswered.includes(playerId) === false) {
       this.hasAnswered.push(playerId);
     }
 
-    const player = this.results.find(r => r.playerId === playerId);
+    const player = this.results.find((r) => r.playerId === playerId);
     player.time = time;
 
     if (this.isValidInput(input) === false) {
       player.answerDisplay = `${input} (0)`;
-      return;
+      return player.scoreDisplay;
     }
 
     player.isGoodAnswer = true;
     player.answer = input;
     player.answerDisplay = `${input} (${input.length})`;
+    player.scoreDisplay = input.length;
 
     this.calculateAllPlayersScore();
+
+    return player.scoreDisplay;
   }
 
   // TODO: Has to be in another module. Already exactly the same
   getInitialResults(playerIds) {
     const results = [];
-    playerIds.forEach(playerId => {
-        results.push({
-            playerId,
-            name: this.name,
-            score: 0,
-            isGoodAnswer: false,
-            answer: '',
-            answerDisplay: '',
-            time: 0
-        });
+    playerIds.forEach((playerId) => {
+      results.push({
+        playerId,
+        name: this.name,
+        score: 0,
+        scoreDisplay: 0,
+        isGoodAnswer: false,
+        answer: '',
+        answerDisplay: '',
+        time: 0,
+      });
     });
     return results;
   }
@@ -153,8 +159,8 @@ class LongestWord {
    * @param {String} input
    */
   isSafeInput(input) {
-    console.log('isSafeInput:', input)
-    console.log('this.letters', this.letters)
+    console.log('isSafeInput:', input);
+    console.log('this.letters', this.letters);
     let isSafe = true;
     const letters = JSON.parse(JSON.stringify(this.letters));
     const inputAr = input.split('');
