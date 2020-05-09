@@ -8,7 +8,7 @@
     "docs": "./node_modules/documentation/bin/documentation.js build ./src/** -f html -o docs",
     "test": "./node_modules/mocha/bin/mocha --recursive test/",
     "test-games": "./node_modules/mocha/bin/mocha --recursive test/unit/games",
-    "test-games-longestword": "./node_modules/mocha/bin/mocha --recursive test/unit//longestword",
+    "test-games-longestword": "./node_modules/mocha/bin/mocha --recursive test/unit/games/longestword",
     "test-match": "./node_modules/mocha/bin/mocha --recursive test/unit/match",
     "test-utils": "./node_modules/mocha/bin/mocha --recursive test/unit/utils",
     "test-socket": "./node_modules/mocha/bin/mocha --recursive test/integration/socket"

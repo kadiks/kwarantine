@@ -20,13 +20,15 @@ describe('LongestWord', () => {
     describe('#calculateScore', () => {
       it('should return 0 if the word does not exist', () => {
         const letters = ['A', 'B', 'S'];
-        const game = new Game({ letters });
-        expect(game.calculatePlayerScore('B')).to.eql(0);
+        const playerId = 'p1';
+        const game = new Game({ letters, playerIds: [playerId] });
+        expect(game.calculatePlayerScore('B', { playerId })).to.eql(0);
       });
       it('should return 3 if the word exists', () => {
         const letters = ['A', 'B', 'S'];
-        const game = new Game({ letters });
-        expect(game.calculatePlayerScore('BAS')).to.eql(3);
+        const playerId = 'p1';
+        const game = new Game({ letters, playerIds: [playerId] });
+        expect(game.calculatePlayerScore('BAS', { playerId })).to.eql(3);
       });
     });
 
