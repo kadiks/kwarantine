@@ -21,6 +21,8 @@ let env = isHttpOnly ? 'dev' : process.env.NODE_ENV || 'dev';
 const port = process.env.PORT || 3000;
 const portSsl = process.env.PORT_SSL || 3000;
 
+require('./src/utils/lettersAndWords.js')
+
 let server;
 
 if (env === 'production') {

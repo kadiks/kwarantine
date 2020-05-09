@@ -17,7 +17,6 @@ function validateWord(word) {
 }
 
 function pickDictWord(nbLetters = 7) {
-  // console.log('mots', mots);
   const selectedWords = Object.keys(nomCommuns)
     .filter(w => w.length <= nbLetters && w.length >= 3);
   const selectedWordIndex = randinc(0, selectedWords.length - 1);
@@ -95,6 +94,7 @@ function randLetters(numLetters){
 
 module.exports = {
   randinc,
+  randKey,
   pick,
   validateWord,
   pickDictWord,

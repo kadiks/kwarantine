@@ -1,8 +1,9 @@
 const { expect } = require('chai');
-const fn = require('../../../src/utils/random');
+//const fn = require('../../../src/utils/random');
+const fn = require('../../../src/utils/lettersAndWords');
 
 describe('utils', () => {
-  describe('random', () => {
+  describe('lettersAndWords', () => {
     describe('#randLetters', () => {
       it('should never have undefined items', () => {
         expect(fn.randLetters(50000)).to.not.include(undefined)

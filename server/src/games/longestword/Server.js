@@ -1,4 +1,4 @@
-const { random } = require('../../utils/');
+const { random, lettersAndWords } = require('../../utils/');
 
 class LongestWord {
   /**
@@ -171,7 +171,7 @@ class LongestWord {
   }
 
   isValidInput(input) {
-    const isValid = random.validateWord(input);
+    const isValid = lettersAndWords.validateWord(input);
     return isValid;
   }
 }

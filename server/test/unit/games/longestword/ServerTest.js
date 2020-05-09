@@ -45,7 +45,7 @@ describe('LongestWord', () => {
       });
     });
     describe('#isValidInput', () => {
-      describe('basic validation, more in utils.random#validateWord', () => {
+      describe('basic validation, more in utils.lettersAndWords#validateWord', () => {
         it('should return false', () => {
           const letters = lettersABC;
           const game = new Game({ letters });

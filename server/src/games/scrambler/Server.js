@@ -1,4 +1,4 @@
-const { random } = require('../../utils/');
+const { random, lettersAndWords } = require('../../utils/');
 
 class Scrambler {
   /**
@@ -193,7 +193,7 @@ class Scrambler {
         // but still is an annagram of equivalent length
         if (
             input.length === this.answer.length &&
-            random.validateWord(input)
+            lettersAndWords.validateWord(input)
         ) {
             return true;
         }
