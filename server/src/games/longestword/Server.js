@@ -126,7 +126,7 @@ class LongestWord {
    */
   static getLetters(numLetters) {
     console.log('Server.js/getLetters');
-    return random.randLetters(numLetters);
+    return lettersAndWords.randLetters(numLetters);
   }
 
   /**

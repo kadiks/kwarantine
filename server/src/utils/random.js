@@ -12,53 +12,6 @@ function pick(xs) {
   return xs[randinc(0, xs.length - 1)];
 }
 
-function validateWord(word) {
-  return mots.hasOwnProperty(word.toLowerCase());
-}
-
-function pickDictWord(nbLetters = 7) {
-  const selectedWords = Object.keys(nomCommuns)
-    .filter(w => w.length <= nbLetters && w.length >= 3);
-  const selectedWordIndex = randinc(0, selectedWords.length - 1);
-  const selectedWord = selectedWords[selectedWordIndex];
-  const cleanWord = removeDiacritics(selectedWord);
-
-  return cleanWord.toUpperCase();
-}
-
-const letterFrequencies = {
-  consonants: {
-    B: 97,
-    C: 315,
-    D: 373,
-    F: 112,
-    G: 97,
-    H: 85,
-    J: 45,
-    K: 2,
-    L: 569,
-    M: 287,
-    N: 712,
-    P: 28,
-    Q: 121,
-    R: 664,
-    S: 814,
-    T: 722,
-    V: 164,
-    W: 3,
-    X: 41,
-    Z: 15,
-  },
-  vowels: {
-    A: 815,
-    E: 139,
-    I: 731,
-    O: 528,
-    U: 638,
-    Y: 28
-  }
-};
-
 /**
  * Randomly selects a key from an object
  * The associated values are the key's weight
@@ -75,28 +28,8 @@ function randKey(obj){
   }
 }
 
-/*
- * Return an array of numLetters letters
- * With at least 2 and at most 7 vowels
- * Letters selected according to weights in
- * letterFrequencies object
- */
-function randLetters(numLetters){
-  const res = new Array(numLetters)
-  const numV = randinc(2, 7)
-  const v = letterFrequencies.vowels
-  const c = letterFrequencies.consonants
-  for(let i = 0; i < numLetters; i++){
-    res[i] = randKey(i < numV ? v : c)
-  }
-  return res;
-}
-
 module.exports = {
   randinc,
   randKey,
-  pick,
-  validateWord,
-  pickDictWord,
-  randLetters
+  pick
 };

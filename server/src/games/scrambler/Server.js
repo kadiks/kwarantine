@@ -119,7 +119,7 @@ class Scrambler {
    * @memberof Games/Scrambler.Server
    */
   getAnswer(numLetters) {
-    const answer = random.pickDictWord(numLetters);
+    const answer = lettersAndWords.pickDictWord(numLetters);
     return answer;
   }
 
