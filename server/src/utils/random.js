@@ -2,6 +2,14 @@ const mots = require('../../data/dict.json');
 const nomCommuns = require('../../data/mots.json');
 const removeDiacritics = require('diacritics').remove;
 
+// min included, max excluded
+function rand(min, max){
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+// min and max included
 function randinc(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -18,7 +26,7 @@ function pick(xs) {
  */
 function randKey(obj){
   const sumWeights = Object.values(obj).reduce((x, y) => x + y)
-  let target = randinc(0, sumWeights-1)
+  let target = rand(0, sumWeights)
   const pairs = Object.entries(obj)
   for(let i = 0; i < pairs.length; i++){
     if(target < pairs[i][1]){
@@ -29,6 +37,7 @@ function randKey(obj){
 }
 
 module.exports = {
+  rand,
   randinc,
   randKey,
   pick
