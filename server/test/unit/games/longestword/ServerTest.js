@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const Game = require('../../../src/games/longestword/Server');
+const Game = require('../../../../src/games/longestword/Server');
 
 const lettersABC = ['A', 'B', 'C'];
 

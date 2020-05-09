@@ -8,3 +8,4 @@ client/out/*
 *.swp
 server/certs/*
 server/stats/*
+server/logs/*

@@ -16,7 +16,8 @@ import Match from '../../src/components/MatchComp';
 import styles from '../../src/utils/styles';
 import Icon from '../../src/components/core/Icon';
 
-import MatchConnect from '../../src/utils/MatchConnect';
+import MatchConnect from '../../src/utils/MatchConnect';
+import Logger from '../../src/utils/Logger';
 
 class MatchPage extends React.Component {
   constructor(props) {
@@ -35,6 +36,24 @@ class MatchPage extends React.Component {
   }
 
   async componentDidMount() {
+
+    Logger.info('info', {
+      message: 'log info 123',
+      socketId: 'abc',
+      matchId: 'def'
+    });
+
+    Logger.track({
+      message: 'log info 123',
+      socketId: 'abc',
+      matchId: 'def'
+    });
+
+    Logger.info('warn', {
+      message: 'log warn 123',
+      socketId: 'abc',
+      matchId: 'def'
+    });
     // const gameData = {
     //   name: 'LongestWord',
     //   data: {

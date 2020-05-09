@@ -5,8 +5,8 @@ describe('utils', () => {
   describe('random', () => {
     describe('#randLetters', () => {
       it('should never have undefined items', () => {
-        expect(fn.randLetters(400000)).to.not.include(undefined)
-      })
+        expect(fn.randLetters(50000)).to.not.include(undefined)
+      });
     })
     describe('#validateWord', () => {
       it('should validate existing word', () => {
@@ -17,9 +17,6 @@ describe('utils', () => {
       });
       it('should validate conjugated word', () => {
         expect(fn.validateWord('accroissions')).to.eql(true);
-      });
-      it('test', () => {
-        expect(fn.validateWord('boum')).to.eql(true);
       });
     });
   });

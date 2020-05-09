@@ -13,6 +13,8 @@ import { NavBar, Footer } from '../src/components/navigation';
 import { Countdown } from '../src/components/core/loader';
 import BrandName from '../src/components/BrandName';
 
+import Logger from '../src/utils/Logger';
+
 import styles from '../src/utils/styles';
 import Icon from '../src/components/core/Icon';
 
@@ -26,6 +28,24 @@ class Home extends React.Component {
   }
 
   async componentDidMount() {
+
+    Logger.info('info', {
+      message: 'log info 123',
+      socketId: 'abc',
+      matchId: 'def'
+    });
+
+    Logger.track({
+      message: 'log info 123',
+      socketId: 'abc',
+      matchId: 'def'
+    });
+
+    Logger.warn('warn', {
+      message: 'log warn 123',
+      socketId: 'abc',
+      matchId: 'def'
+    });
     const url = `${Config.API_URL}${Config.API_ENDPOINT}/stats`;
     const res = await fetch(url);
     const stats = await res.json();

@@ -5,6 +5,7 @@ const apiversion = '0.0.1';
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const bodyParser = require('body-parser');
 const sslOpts = {
   // key: fs.readFileSync('./certs/private.key'),
   // cert: fs.readFileSync('./certs/certificate.crt'),
@@ -35,6 +36,10 @@ const { uuid } = require('uuidv4');
 // Match imports
 const { Match, MatchManager, Player } = require('./src/match');
 
+const logger = require('./src/utils/Logger');
+
+const beaverLogger = require('beaver-logger/server');
+
 const matchMgr = new MatchManager().getInstance();
 
 if (env === 'production') {
@@ -52,14 +57,39 @@ if (env === 'production') {
   app.use(cors());
 }
 
-app.get('/api/stats', async (req, res) => {
-  const statsPath = `${__dirname}/stats/all.json`;
-  // console.log('server/index statsPath', statsPath);
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
 
-  const content = await fs.readFile(statsPath, 'utf8');
-  const stats = JSON.parse(content);
-  res.json(stats);
-});
+app.use(beaverLogger.expressEndpoint({
+ 
+  // URI to recieve logs at
+  uri: '/api/log',
+  logger: {
+    log: (req, level, event, payload) => {
+      // console.log('BEAVER', level, event, payload);
+      const logInfo = Object.assign({}, payload);
+      delete logInfo.timestamp;
+      logger.log({
+        level,
+        ...logInfo,
+        origin: 'client'
+      });
+    }
+  }
+  // logger: (a, b, c, d) => {
+  //   console.log('BEAVER', a, b, c, d);
+  // }
+
+  // Custom logger (optional, by default logs to console)
+  // logger: myLogger,
+
+  // Enable cross-origin requests to your logging endpoint
+  // enableCors: false
+}));
+
+app.use('/', express.static('public'));
 
 app.use(
   '/assets/games.js',
@@ -68,7 +98,14 @@ app.use(
   })
 );
 
-app.use('/', express.static('public'));
+app.get('/api/stats', async (req, res) => {
+  const statsPath = `${__dirname}/stats/all.json`;
+  // console.log('server/index statsPath', statsPath);
+
+  const content = await fs.readFile(statsPath, 'utf8');
+  const stats = JSON.parse(content);
+  res.json(stats);
+});
 
 const loadSettings = async () => {
   const settingsFilename = process.env.NODE_ENV !== 'production' ? 'settings_dev' : 'settings';
@@ -87,13 +124,15 @@ const loadSettings = async () => {
 // Connects from the host.com/match page
 io.on('connect', async (socket) => {
   matchMgr.setIo(io);
-  console.log('connected on main nsp');
-  console.log('connect socket.id', socket.id);
+  // console.log('connect socket.id', socket.id);
+  logger.log({
+    level: 'http',
+    message: `Main connect on socket ID: [${socket.id}]`
+  });
 
   let currentMatch = matchMgr.getWaitingMatch();
   // console.log('currentMatch', currentMatch);
   if (currentMatch === null || currentMatch.isWaiting === false) {
-    console.log('server/index #1');
     const { selectedGames, numRounds, maxPlayers } = await loadSettings();
     const match = new Match({
       id: uuid(),
@@ -103,13 +142,17 @@ io.on('connect', async (socket) => {
     });
     matchMgr.addMatch(match);
     currentMatch = match;
-    console.log('server/index #2');
+
+    logger.log({
+      level: 'verbose',
+      message: `New match created. Match ID: [${match.id}]`
+    });
   }
 
   currentMatch.setSocket(io);
 
   socket.join(currentMatch.id, () => {
-    utils.socket.getRoom(socket);
+    // utils.socket.getRoom(socket);
     const playerId = socket.id;
     // Add player
     const player = new Player({
@@ -118,10 +161,19 @@ io.on('connect', async (socket) => {
     });
     currentMatch.addPlayer(player);
     currentMatch.attachConnectEvents(player);
+
+    logger.log({
+      level: 'verbose',
+      message: `Player [ID=${playerId}] has been added to match [ID=${currentMatch.id}]`
+    });
   })
 
   socket.on('disconnect', () => {
-    console.log('main disconnect socket', socket.id);
+    // console.log('main disconnect socket', socket.id);
+    logger.log({
+      level: 'http',
+      message: `Main disconnect on socket ID: [${socket.id}]`
+    });
     const playerId = socket.id;
     // Get match from player id
     const match = matchMgr.getMatchByPlayerId(playerId);
@@ -132,69 +184,34 @@ io.on('connect', async (socket) => {
     // If removal leads to no players in game,
     if (!numPlayers) {
       // remove game too
+      logger.log({
+        level: 'verbose',
+        message: `Match deleted. ID [${match.id}]`
+      });
       matchMgr.removeMatchById(match.id);
     }
     // TODO: check playerId and find game from that player
     // TODO: if game is empty, then kill that game
     // TODO: Use MatchManager#getMatchByPlayerId to get the match instance
   });
-
-  // const ns = `/${currentMatch.id}`;
-  // socket.emit('room', ns);
-  // console.log('server/index #3 typeof socket.id', socket.id);
-  // console.log('server/index #3 typeof socket.nsp.name', socket.nsp.name);
-  // console.log('server/index #3 typeof io.sockets.sockets', io.sockets.sockets);
-  // console.log('server/index #3 typeof currentMatch', typeof currentMatch);
-  // console.log('server/index #4 currentMatch.id', currentMatch.id);
-  // const nsp = io.of(ns);
-  // nsp.on('connection', function (socket) {
-  //   // deal with nsp user connection
-  //   console.log('connected on specific nsp');
-  //   console.log('nsp on connection socket.id', socket.id);
-  //   const socketIdSplitted = socket.id.split('#');
-  //   const matchId = socketIdSplitted[0].replace('/', '');
-  //   const playerId = socketIdSplitted[1];
-  //   const match = matchMgr.getMatchById(matchId);
-  //   match.setSocket(socket);
-
-  //   // Add player
-  //   const player = new Player({
-  //     id: playerId,
-  //     socket,
-  //   });
-  //   match.addPlayer(player);
-  //   match.attachConnectEvents(player);
-  //   socket.on('disconnect', () => {
-  //     // A player has disconnected, remove him
-  //     const numPlayers = match.removeByPlayerId(player.id);
-  //     // If removal leads to no players in game,
-  //     if (!numPlayers) {
-  //       // remove game too
-  //       matchMgr.removeMatchById(match.id);
-  //       // and clean namespace
-  //       // - Force removal of all connections, to be sure
-  //       // - Remove all event listeners
-  //       // - Remove reference in io object
-  //       // There shouldn't be any remaining sockets in here
-  //       // But we can't leak.
-  //       Object.keys(nsp.connected).forEach((socketId) => {
-  //         nsp.connected[socketId].disconnect();
-  //       });
-  //       nsp.removeAllListeners();
-  //       delete io.nsps[ns];
-  //     }
-  //   });
-  // });
 });
 
 if (env === 'production') {
   http.createServer(app).listen(port);
   server.listen(portSsl, () => {
-    console.log('Server started on port SSL:', portSsl, 'and port:', port);
+    // console.log('Server started on port SSL:', portSsl, 'and port:', port);
+    logger.log({
+      level: 'info',
+      message: `Server started on port SSL: ${portSsl} and port: ${port}`
+    });
   });
 } else {
   server.listen(port, () => {
-    console.log('Server started on port:', port);
+    // console.log('Server started on port:', port);
+    logger.log({
+      level: 'info',
+      message: `Server started on port: ${port}`
+    });
   });
 }
 

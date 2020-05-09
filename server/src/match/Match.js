@@ -1,12 +1,22 @@
-const utils = require('../utils');
+const { Dispatcher, random, Logger, updateStats } = require('../utils');
 const evts = require('../constants/cEvents');
 const durations = require('../constants/durations');
 const Games = require('../games');
 const allServerGames = Object.keys(Games).map((g) => Games[g].Server);
 
-class Match extends utils.Dispatcher {
+const logger = (level, message, opts = {}) => {
+  Logger.log({
+    level,
+    message,
+    ...opts,
+    filePath: __filename.replace(process.cwd(), '').replace('/src/', '')
+  });
+};
+
+class Match extends Dispatcher {
   constructor({ id, numRounds = 14, maxPlayers = 1, selectedGames = [] } = {}) {
     super();
+    logger('debug', '>> #constructor');
     this.gameOn = false;
     this.isOpenToInput = false;
     this.id = id;
@@ -43,7 +53,14 @@ class Match extends utils.Dispatcher {
    * @param {Player} player
    */
   addPlayer(player) {
+    Logger.log({
+      level: 'debug',
+      message: '>> #addPlayer',
+      filePath: __filename.replace(process.cwd(), '').replace('/src/', '')
+    });
+    logger('debug', '>> #addPlayer');
     if (this.isPlayerExists(player) === true) {
+      logger('debug', '<< #addPlayer [player already exists]');
       return;
     }
     if (this.players.length < this.maxPlayers) {
@@ -61,11 +78,14 @@ class Match extends utils.Dispatcher {
         });
       }
     }
+    logger('debug', '<< #addPlayer');
   }
 
   attachConnectEvents(player) {
+    logger('debug', '>> #attachConnectEvents');
     player.socket.emit('test', 'okok');
     player.socket.on('game.input', this.handleInput);
+    logger('debug', '<< #attachConnectEvents');
   }
 
   endGame() {
@@ -156,7 +176,7 @@ class Match extends utils.Dispatcher {
 
   initializeGames() {
     // console.log('>> match/Match#initializeGames');
-    utils.updateStats({
+    updateStats({
       players: this.players.length,
       games: this.numRounds
     });
@@ -165,7 +185,7 @@ class Match extends utils.Dispatcher {
         // Gets only the game from the settings
         return this.selectedGames.includes(a.name);
       });
-      return new (utils.random.pick(selectedGames))({
+      return new (random.pick(selectedGames))({
         playerIds: this.players.map((p) => p.id),
       });
       // return selectedGames.map(g => new g({

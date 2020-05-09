@@ -7,13 +7,17 @@
     "start": "node index.js",
     "docs": "./node_modules/documentation/bin/documentation.js build ./src/** -f html -o docs",
     "test": "./node_modules/mocha/bin/mocha --recursive test/",
-    "test-games": "./node_modules/mocha/bin/mocha --recursive test/games",
-    "test-games-longestword": "./node_modules/mocha/bin/mocha --recursive test/games/longestword",
-    "test-match": "./node_modules/mocha/bin/mocha --recursive test/match"
+    "test-games": "./node_modules/mocha/bin/mocha --recursive test/unit/games",
+    "test-games-longestword": "./node_modules/mocha/bin/mocha --recursive test/unit//longestword",
+    "test-match": "./node_modules/mocha/bin/mocha --recursive test/unit/match",
+    "test-utils": "./node_modules/mocha/bin/mocha --recursive test/unit/utils",
+    "test-socket": "./node_modules/mocha/bin/mocha --recursive test/integration/socket"
   },
   "author": "SocialHackeur.fr",
   "license": "ISC",
   "dependencies": {
+    "beaver-logger": "^4.0.14",
+    "body-parser": "^1.19.0",
     "browserify-middleware": "^8.1.1",
     "cheerio": "^1.0.0-rc.3",
     "cors": "^2.8.5",
@@ -22,7 +26,10 @@
     "express": "^4.17.1",
     "fs-extra": "^9.0.0",
     "socket.io": "^2.3.0",
-    "uuidv4": "^6.0.7"
+    "socket.io-client": "^2.3.0",
+    "uuidv4": "^6.0.7",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.4.2"
   },
   "devDependencies": {
     "documentation": "^12.3.0",
