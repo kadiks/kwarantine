@@ -13,7 +13,7 @@
     "beaver-logger": "^4.0.14",
     "dotenv": "^8.2.0",
     "isomorphic-unfetch": "^3.0.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "next": "9.3.5",
     "qs": "^6.9.3",
     "react": "^16.13.1",
